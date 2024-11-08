@@ -38,7 +38,7 @@
    height: 100vh;
    width: 100vw;
    overflow: hidden;
-   background: rgba(35,35,35,1);
+   background-image: url('https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Editor_Background.svg?v=1731034534');
  }
 
 
@@ -250,21 +250,23 @@
 
 
 
- #canvas-container {
-   position:absolute;
-   z-index:0;
-   top:0;
-   left:50%;
-   transform: translateX(-50%);
-   flex: 1;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   height: 100vh;
-   width: 100vw;
-   background-image: url('https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Editor_Background.svg?v=1731034534');
- }
+#canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+}
 
+#designCanvas {
+  transform-origin: center center;
+  /* Keep transformations centered */
+}
 
 
 
@@ -886,6 +888,34 @@ input[type="color"]:focus {
         position:absolute;
         right:20px;
     }
+    
+    
+    
+    #zoomControls {
+      position:absolute;
+      bottom:85px;
+      right:15px;
+      z-index:10;
+    }
+    
+    
+    
+    
+    
+    #layersPanel {
+    width: 200px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+#layersButton {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
 
 </style>
 </head>
@@ -997,6 +1027,17 @@ input[type="color"]:focus {
 </div>
 
 
+<!-- Button for layers -->
+<button id="layersButton" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); writing-mode: vertical-rl;">Layers</button>
+
+<!-- Layers panel -->
+<div id="layersPanel" style="display: none; position: absolute; left: 50px; top: 50px; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 10px;">
+    <h3>Layers</h3>
+    <ul id="layersList"></ul>
+</div>
+
+
+
 <div id="objectActions">
  <button id="copyBtn" class="material-icons-outlined">
   content_copy
@@ -1018,6 +1059,14 @@ input[type="color"]:focus {
     <label class="material-icons-outlined" for="colorPickerObjects">edit</label>
   </div>
 
+
+
+
+<div id="zoomControls">
+    <button onclick="zoomIn()">Zoom In</button>
+    <button onclick="zoomOut()">Zoom Out</button>
+    <button onclick="resetZoom()">Reset Zoom</button>
+</div>
 
 
 
@@ -1620,96 +1669,7 @@ const googleFonts = [
 "Aleo", "Alfa Slab One", "Alice", "Alike", "Alike Angular",
 "Allan", "Allerta", "Allerta Stencil", "Allura", "Almarai",
 "Amarante", "Amatic SC", "Amethysta", "Amiko", "Amiri",
-"Amita", "Anaheim", "Andada", "Andika", "Angkor",
-"Annie Use Your Telescope", "Anonymous Pro", "Antic", "Antic Didone", "Antic Slab",
-"Arapey", "Arbutus", "Arbutus Slab", "Archivo", "Archivo Narrow",
-"Aref Ruqaa", "Arima Madurai", "Arimo", "Arizonia", "Armata",
-"Arvo", "Asap", "Asar", "Asset", "Assistant",
-"Athiti", "Atma", "Atomic Age", "Aubrey", "Audiowide",
-"Autour One", "Average", "Average Sans", "Averia Gruesa Libre", "Averia Libre",
-"Averia Sans Libre", "Averia Serif Libre", "B612", "B612 Mono", "Bad Script",
-"Bahiana", "Bahianita", "Bai Jamjuree", "Baloo", "Baloo Bhai 2",
-"Baloo Bhaina 2", "Baloo Chettan 2", "Baloo Da 2", "Baloo Paaji 2", "Baloo Tamma 2",
-"Baloo Tammudu 2", "Baloo Thambi 2", "Balsamiq Sans", "Bangers", "Barlow",
-"Barlow Condensed", "Barlow Semi Condensed", "Barriecito", "Barrio", "Basic",
-"Battambang", "Baumans", "Bayon", "Belgrano", "Bellefair",
-"Belleza", "BenchNine", "Bentham", "Berkshire Swash", "Bevan",
-"Big Shoulders Display", "Big Shoulders Inline Display", "Big Shoulders Inline Text", "Big Shoulders Stencil Display", "Big Shoulders Stencil Text",
-"Big Shoulders Text", "Bigelow Rules", "Bigshot One", "Bilbo", "Bilbo Swash Caps",
-"BioRhyme", "BioRhyme Expanded", "Bitter", "Black And White Picture", "Black Han Sans",
-"Black Ops One", "Blinker", "Bonbon", "Boogaloo", "Bowlby One",
-"Bowlby One SC", "Brawler", "Bree Serif", "Bubblegum Sans", "Bubbler One",
-"Buda", "Buenard", "Bungee", "Bungee Hairline", "Bungee Inline",
-"Bungee Outline", "Bungee Shade", "Butcherman", "Butterfly Kids", "Cabin",
-"Cabin Condensed", "Cabin Sketch", "Caesar Dressing", "Cagliostro", "Cairo",
-"Caladea", "Calistoga", "Calligraffitti", "Cambay", "Cambo",
-"Candal", "Cantarell", "Cantata One", "Cantora One", "Capriola",
-"Caramel", "Carattere", "Cardo", "Carme", "Carrois Gothic",
-"Carrois Gothic SC", "Carter One", "Castoro", "Catamaran", "Caudex",
-"Caveat", "Caveat Brush", "Cedarville Cursive", "Ceviche One", "Chakra Petch",
-"Changa", "Changa One", "Chango", "Charm", "Charmonman",
-"Chathura", "Chelsea Market", "Chenla", "Cherry Cream Soda", "Cherry Swash",
-"Chewy", "Chicle", "Chivo", "Chonburi", "Cinzel",
-"Cinzel Decorative", "Clicker Script", "Coda", "Coda Caption", "Codystar",
-"Coiny", "Combo", "Comfortaa", "Comic Neue", "Coming Soon",
-"Concert One", "Condiment", "Contrail One", "Convergence", "Cookie",
-"Copse", "Corben", "Cormorant", "Cormorant Garamond", "Cormorant Infant",
-"Cormorant SC", "Cormorant Unicase", "Cormorant Upright", "Courgette", "Cousine",
-"Coustard", "Covered By Your Grace", "Crafty Girls", "Creepster", "Crete Round",
-"Crimson Pro", "Croissant One", "Crushed", "Cuprum", "Cute Font",
-"Cutive", "Cutive Mono", "DM Sans", "DM Serif Display", "DM Serif Text",
-"Damion", "Dancing Script", "Dangrek", "David Libre", "Dawning of a New Day",
-"Days One", "Dekko", "Delius", "Delius Swash Caps", "Delius Unicase",
-"Della Respira", "Denk One", "Devonshire", "Dhurjati", "Didact Gothic",
-"Diplomata", "Diplomata SC", "Do Hyeon", "Dokdo", "Domine",
-"Donegal One", "Doppio One", "Dorsa", "Dosis", "Dr Sugiyama",
-"Duru Sans", "Dynalight", "EB Garamond", "Eagle Lake", "East Sea Dokdo",
-"Eater", "Economica", "Eczar", "El Messiri", "Electrolize",
-"Elsie", "Elsie Swash Caps", "Emblema One", "Emilys Candy", "Encode Sans",
-"Encode Sans Condensed", "Encode Sans Expanded", "Encode Sans SC", "Encode Sans Semi Condensed", "Encode Sans Semi Expanded",
-"Engagement", "Englebert", "Enriqueta", "Erica One", "Esteban",
-"Euphoria Script", "Ewert", "Exo", "Exo 2", "Expletus Sans",
-"Fahkwang", "Fanwood Text", "Farro", "Farsan", "Fascinate",
-"Fascinate Inline", "Faster One", "Fauna One", "Faustina", "Federant",
-"Federo", "Felipa", "Fenix", "Finger Paint", "Fira Code",
-"Fira Mono", "Fira Sans", "Fira Sans Condensed", "Fira Sans Extra Condensed", "Fjalla One",
-"Fjord One", "Flamenco", "Flavors", "Fondamento", "Fontdiner Swanky",
-"Forum", "Francois One", "Frank Ruhl Libre", "Freckle Face", "Fredericka the Great",
-"Fredoka One", "Freehand", "Fresca", "Frijole", "Fruktur",
-"Fugaz One", "GFS Didot", "GFS Neohellenic", "Gabriela", "Gaegu",
-"Gafata", "Galada", "Galdeano", "Galindo", "Gamja Flower",
-"Gayathri", "Gelasio", "Gentium Basic", "Gentium Book Basic", "Geo",
-"Geostar", "Geostar Fill", "Germania One", "Gidugu", "Gilda Display",
-"Give You Glory", "Glass Antiqua", "Glegoo", "Gloria Hallelujah", "Goblin One",
-"Gochi Hand", "Gorditas", "Gothic A1", "Goudy Bookletter 1911", "Graduate",
-"Grand Hotel", "Gravitas One", "Great Vibes", "Grenze", "Griffy",
-"Gruppo", "Gudea", "Gugi", "Gupter", "Gurajada",
-"Halant", "Hammersmith One", "Hanalei", "Hanalei Fill", "Happy Monkey",
-"Headland One", "Henny Penny", "Hiragino Mincho Pro", "Hiragino Sans", "Holtwood One SC",
-"Homemade Apple", "Homenajeh", "Imbue", "Imprima", "Inconsolata",
-"Indie Flower", "Inika", "Inria Sans", "Inria Serif", "Irish Grover",
-"Isabella", "Italianno", "Julius Sans One", "Julius Sans One", "Junge",
-"Julius Sans One", "Kalam", "Kanit", "Karla", "Kavoon",
-"Kdam Thmor", "Kumar One", "Laila", "Lato", "Lora",
-"Louis", "Love Ya Like A Sister", "Mako", "Mali", "Mansalva",
-"Mate", "Mate SC", "Merriweather", "Merriweather Sans", "Michroma",
-"Miltonian", "Miltonian Tattoo", "Muli", "Nunito", "Nunito Sans",
-"Odor MeanCheer", "Open Sans", "Open Sans Condensed", "Oswald", "Overpass",
-"Overlock", "Patua One", "Pattaya", "Philosopher", "Piedra",
-"Pinyon Script", "Play", "Playfair Display", "Poiret One", "Poppins",
-"Port Lligat Sans", "Quicksand", "Raleway", "Raleway Dots", "Roboto",
-"Roboto Condensed", "Roboto Slab", "Rock Salt", "Rokkitt", "Russo One",
-"Rylo", "Sacramento", "Satisfy", "Schoolbell", "Sevillana",
-"Shadows Into Light", "Shadows Into Light Two", "Shanti", "Share", "Share Tech",
-"Sigmar One", "Simple", "Sirin Stencil", "Slackey", "Smokum",
-"Solway", "Space Mono", "Spectral", "Spectral SC", "Spinnaker",
-"Squada One", "Staatliches", "Stalemate", "Dancing Script", "Sonsie One",
-"Source Code Pro", "Source Sans Pro", "Source Serif Pro", "Space Grotesk", "Special Elite",
-"Stardos Stencil", "Stint Ultra Condensed", "Stint Ultra Expanded", "Teko", "Telex",
-"Tenor Sans", "Tilda", "Titillium Web", "Trade Winds", "Trocchi",
-"Tulpen One", "Ubuntu", "Ubuntu Condensed", "Ubuntu Mono", "Ulma",
-"Varela", "Varela Round", "Vast Shadow", "Vibur", "Vidaloka",
-"Volkorn", "Vollkorn", "Vollkorn SC", "Wendy One", "Zilla Slab"
+"Amita", "Anaheim", "Andada", "Andika", "Angkor"
 
 
 ];
@@ -1836,6 +1796,7 @@ function bringToFront() {
    if (activeObject) {
        activeObject.bringToFront();
        canvas.renderAll();
+       updateLayersList();
    }
 }
 
@@ -1846,6 +1807,7 @@ function sendToBack() {
    if (activeObject) {
        activeObject.sendToBack();
        canvas.renderAll();
+       updateLayersList();
    }
 }
 
@@ -1856,6 +1818,7 @@ function bringForward() {
    if (activeObject) {
        activeObject.bringForward();
        canvas.renderAll();
+       updateLayersList();
    }
 }
 
@@ -1866,6 +1829,7 @@ function sendBackward() {
    if (activeObject) {
        activeObject.sendBackwards();
        canvas.renderAll();
+       updateLayersList();
    }
 }
 
@@ -1972,100 +1936,100 @@ document.getElementById('pasteBtn').addEventListener('click', pasteCopied);
 
 
 
+
 // Save the current state to the undo stack and clear redo stack
 function saveState() {
- undoStack.push(JSON.stringify(canvas.toJSON()));
- canvas.renderAll();
+  // Save canvas state including font family and other properties
+  undoStack.push(JSON.stringify(canvas.toJSON(['fontFamily', 'fontSize', 'fill', 'left', 'top', 'text', 'width', 'height', 'scaleX', 'scaleY', 'angle', 'flipX', 'flipY'])));
+  redoStack = []; // Clear redo stack after a new action
+  canvas.renderAll();
+  updateLayersList(); // Update layers list after saving state
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Load a specific state and render it
 function loadState(state) {
- canvas.loadFromJSON(state, () => {
-     canvas.renderAll();
- });
+  canvas.loadFromJSON(state, () => {
+    canvas.renderAll();
+    updateLayersList(); // Update layers after loading
+  });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Undo function
 function undo() {
- if (undoStack.length > 1) { // Keep at least one state on the undo stack
-     redoStack.push(undoStack.pop()); // Move the current state to redo stack
-     loadState(undoStack[undoStack.length - 1]); // Load the previous state
- }
+  if (undoStack.length > 1) {
+    redoStack.push(undoStack.pop()); 
+    loadState(undoStack[undoStack.length - 1]); 
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Redo function
 function redo() {
- if (redoStack.length > 0) {
-     const state = redoStack.pop(); // Get the last redo state
-     undoStack.push(state); // Push it to the undo stack
-     loadState(state); // Load it on the canvas
- }
+  if (redoStack.length > 0) {
+    const state = redoStack.pop();
+    undoStack.push(state);
+    loadState(state);
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Initialize and capture the initial state
 function initializeState() {
- saveState(); // Capture the initial state
+  saveState();
 }
+
+// Update layers list dynamically based on canvas z-order
+function updateLayersList() {
+  const layersList = document.getElementById('layersList');
+  layersList.innerHTML = ''; // Clear existing list
+
+  // Get all objects and groups in z-order
+  const items = canvas.getObjects().slice().reverse(); // Reverse to list top-most objects first
+  items.forEach((item, index) => {
+    const listItem = document.createElement('li');
+    listItem.textContent = item.layerName || `Layer ${canvas.getObjects().length - index}`;
+    listItem.style.cursor = 'pointer';
+    
+    // Rename functionality
+    listItem.addEventListener('click', () => renameLayer(item, index));
+
+    // Append to the list
+    layersList.appendChild(listItem);
+  });
+}
+
+// Rename layer functionality
+function renameLayer(item, index) {
+  const newLayerName = prompt('Enter a new name for the layer:', item.layerName || `Layer ${index + 1}`);
+  if (newLayerName) {
+    item.set('layerName', newLayerName); // Save layer name as a custom property
+    saveState(); // Save new state after renaming
+  }
+}
+
+// Toggle the layers panel visibility
+document.getElementById('layersButton').addEventListener('click', () => {
+  const layersPanel = document.getElementById('layersPanel');
+  layersPanel.style.display = (layersPanel.style.display === 'none') ? 'block' : 'none';
+  updateLayersList(); // Update the layers list whenever the panel is toggled
+});
+
+// Event listeners to update layers list on canvas changes
+canvas.on({
+  'object:added': updateLayersList,
+  'object:removed': updateLayersList,
+  'object:modified': updateLayersList,
+  'object:moving': updateLayersList,
+  'object:scaling': updateLayersList,
+  'object:rotating': updateLayersList
+});
+
+// Initial setup
+initializeState();
+
+
+
+
+
+
 
 
 
@@ -3101,142 +3065,70 @@ canvas.on('object:rotating', function (event) {
 
 
 document.getElementById('resizeCanvasBtn').addEventListener('click', function() {
-// Recalculate screen width on each click to handle viewport changes on mobile
-const screenWidth = Math.min(window.innerWidth, window.outerWidth) * 0.9; // Fixed width to 90% of screen width
-let targetWidth = screenWidth;
-let targetHeight;
+  // Recalculate screen width on each click to handle viewport changes on mobile
+  const screenWidth = Math.min(window.innerWidth, window.outerWidth) * 0.9; // Fixed width to 90% of screen width
+  let targetWidth = screenWidth;
+  let targetHeight;
 
+  // Get the selected aspect ratio
+  const aspectRatio = document.getElementById('documentType').value; // "landscape", "portrait", or "square"
 
+  // Set the height based on the selected aspect ratio
+  if (aspectRatio === "landscape") {
+    targetHeight = targetWidth * (3 / 4); // 4:3 aspect ratio
+  } else if (aspectRatio === "portrait") {
+    targetHeight = targetWidth * (4 / 3); // 3:4 aspect ratio
+  } else if (aspectRatio === "square") {
+    targetHeight = targetWidth; // 1:1 aspect ratio
+  }
 
+  // Check if the calculated height exceeds 90% of the screen height
+  const maxHeight = Math.min(window.innerHeight, window.outerHeight) * 0.9;
+  if (targetHeight > maxHeight) {
+    // Scale down the width and height to fit within screen height while maintaining aspect ratio
+    const scale = maxHeight / targetHeight;
+    targetWidth *= scale;
+    targetHeight = maxHeight;
+  }
 
+  // Apply the calculated dimensions to the canvas
+  canvas.setWidth(targetWidth);
+  canvas.setHeight(targetHeight);
+  canvas.renderAll();
 
-
-
-
-// Get the selected aspect ratio
-const aspectRatio = document.getElementById('documentType').value; // "landscape", "portrait", or "square"
-
-
-
-
-
-
-
-
-// Set the height based on the selected aspect ratio
-if (aspectRatio === "landscape") {
-  targetHeight = targetWidth * (3 / 4); // 4:3 aspect ratio
-} else if (aspectRatio === "portrait") {
-  targetHeight = targetWidth * (4 / 3); // 3:4 aspect ratio
-} else if (aspectRatio === "square") {
-  targetHeight = targetWidth; // 1:1 aspect ratio
-}
-
-
-
-
-
-
-
-
-// Check if the calculated height exceeds 90% of the screen height
-const maxHeight = Math.min(window.innerHeight, window.outerHeight) * 0.9;
-if (targetHeight > maxHeight) {
-  // Scale down the width and height to fit within screen height while maintaining aspect ratio
-  const scale = maxHeight / targetHeight;
-  targetWidth *= scale;
-  targetHeight = maxHeight;
-}
-
-
-
-
-
-
-
-
-// Apply the calculated dimensions to the canvas
-canvas.setWidth(targetWidth);
-canvas.setHeight(targetHeight);
-canvas.renderAll();
+  // Save the canvas size to localStorage
+  localStorage.setItem('canvasWidth', targetWidth);
+  localStorage.setItem('canvasHeight', targetHeight);
+  localStorage.setItem('canvasAspectRatio', aspectRatio);
 });
 
 
 
 
 
+document.addEventListener("DOMContentLoaded", function() {
+  // Initialize your Fabric.js canvas here
+  const canvas = new fabric.Canvas('designCanvas'); // Replace with your actual canvas ID
 
+  // Load saved canvas size and aspect ratio
+  loadCanvasSize()
+});
 
+function loadCanvasSize(canvas) {
+  // Retrieve saved dimensions and aspect ratio from localStorage
+  const savedWidth = localStorage.getItem('canvasWidth');
+  const savedHeight = localStorage.getItem('canvasHeight');
+  const savedAspectRatio = localStorage.getItem('canvasAspectRatio');
 
+  if (savedWidth && savedHeight && savedAspectRatio) {
+    // Apply the saved dimensions to the canvas
+    canvas.setWidth(Number(savedWidth));
+    canvas.setHeight(Number(savedHeight));
+    canvas.renderAll();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Function to resize the main display canvas based on selected aspect ratio
-function resizeCanvas() {
-const aspectRatio = document.getElementById('documentType').value;
-const screenWidth = Math.min(window.innerWidth, window.outerWidth) * 0.9; // Fixed width to 90% of screen width
-let targetWidth = screenWidth;
-let targetHeight;
-
-
-
-
-
-
-
-
-// Set the height based on the selected aspect ratio
-if (aspectRatio === "landscape") {
-  targetHeight = targetWidth * (3 / 4); // 4:3 aspect ratio
-} else if (aspectRatio === "portrait") {
-  targetHeight = targetWidth * (4 / 3); // 3:4 aspect ratio
-} else if (aspectRatio === "square") {
-  targetHeight = targetWidth; // 1:1 aspect ratio
+    // Set the selected aspect ratio in the dropdown (if it exists)
+    document.getElementById('documentType').value = savedAspectRatio;
+  }
 }
 
 
@@ -3246,30 +3138,98 @@ if (aspectRatio === "landscape") {
 
 
 
-// Ensure the height doesn't exceed 90% of the screen height
-const maxHeight = Math.min(window.innerHeight, window.outerHeight) * 0.7;
-if (targetHeight > maxHeight) {
-  const scale = maxHeight / targetHeight;
-  targetWidth *= scale;
-  targetHeight = maxHeight;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Initialize the canvas and load saved size on DOMContentLoaded
+document.addEventListener("DOMContentLoaded", function() {
+  // Initialize your Fabric.js canvas here
+  const canvas = new fabric.Canvas('designCanvas'); // Replace 'yourCanvasElementID' with your actual canvas ID
+
+  // After initializing, load the saved canvas size
+  loadCanvasSize(canvas);
+});
+
+function loadCanvasSize(canvas) {
+  // Retrieve saved dimensions and aspect ratio from localStorage
+  const savedWidth = localStorage.getItem('canvasWidth');
+  const savedHeight = localStorage.getItem('canvasHeight');
+  const savedAspectRatio = localStorage.getItem('canvasAspectRatio');
+
+  if (savedWidth && savedHeight && savedAspectRatio) {
+    // Apply the saved dimensions to the canvas
+    canvas.setWidth(Number(savedWidth));
+    canvas.setHeight(Number(savedHeight));
+    canvas.renderAll();
+
+    // Set the selected aspect ratio in the dropdown
+    document.getElementById('documentType').value = savedAspectRatio;
+  }
 }
 
 
+function loadCanvasSize() {
+  // Retrieve saved dimensions and aspect ratio from localStorage
+  const savedWidth = localStorage.getItem('canvasWidth');
+  const savedHeight = localStorage.getItem('canvasHeight');
+  const savedAspectRatio = localStorage.getItem('canvasAspectRatio');
 
+  if (savedWidth && savedHeight && savedAspectRatio) {
+    // Apply the saved dimensions to the canvas
+    canvas.setWidth(parseFloat(savedWidth));
+    canvas.setHeight(parseFloat(savedHeight));
+    canvas.renderAll();
 
-
-
-
-
-// Apply the dimensions to the canvas
-canvas.setWidth(targetWidth);
-canvas.setHeight(targetHeight);
-canvas.renderAll();
+    // Set the selected aspect ratio in the dropdown
+    document.getElementById('documentType').value = savedAspectRatio;
+  }
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+  // Initialize the canvas here if needed
 
-
-
+  // Load saved canvas size and aspect ratio
+  loadCanvasSize();
+});
 
 
 
@@ -3337,6 +3297,7 @@ const savedState = localStorage.getItem('canvasState');
 if (savedState) {
   canvas.loadFromJSON(savedState, () => {
     canvas.renderAll();
+    loadCanvasSize();
   });
 }
 }
@@ -3349,7 +3310,6 @@ if (savedState) {
 
 
 // Event listeners
-document.getElementById('resizeCanvasBtn').addEventListener('click', resizeCanvas);
 document.getElementById('exportCanvasBtn').addEventListener('click', function() {
 exportCanvas();
 saveCanvasState(); // Save state before any potential page reload
@@ -3364,7 +3324,6 @@ saveCanvasState(); // Save state before any potential page reload
 
 // Initial canvas resize and load state on page load
 window.onload = function() {
-resizeCanvas();
 loadCanvasState();
 };
 
@@ -3980,6 +3939,134 @@ fullscreenButton.addEventListener("click", () => {
 
 
 
+
+
+
+let zoomLevel = 1;  // Initial zoom level
+let isPanning = false;  // Track panning state
+let startX, startY;  // Starting coordinates for panning
+let initialTouchDistance = 0; // Used for two-finger touch distance
+let isKeyActive = false;  // Track if the key is being held down
+
+// Get the canvas and its container
+const canvasContainer = document.getElementById('canvas-container');
+const canvas = document.getElementById('designCanvas');
+
+// Function to zoom in
+function zoomIn() {
+    zoomLevel += 0.1;
+    applyZoom();
+}
+
+// Function to zoom out
+function zoomOut() {
+    zoomLevel = Math.max(zoomLevel - 0.1, 0.1);  // Prevent zooming out too far
+    applyZoom();
+}
+
+// Function to reset zoom
+function resetZoom() {
+    zoomLevel = 1;
+    applyZoom();
+}
+
+// Function to apply the zoom level to the canvas
+function applyZoom() {
+    canvasContainer.style.transform = `scale(${zoomLevel})`;
+    canvasContainer.style.transformOrigin = 'center center';  // Keep canvas centered
+}
+
+// Start panning on mousedown, but only if the key is held down
+canvasContainer.addEventListener('mousedown', (e) => {
+    if (!isKeyActive) return;  // Prevent panning if the key is not active
+
+    isPanning = true;
+    startX = e.clientX - canvasContainer.offsetLeft;
+    startY = e.clientY - canvasContainer.offsetTop;
+    canvasContainer.style.cursor = 'grabbing';
+});
+
+// Stop panning on mouseup
+canvasContainer.addEventListener('mouseup', () => {
+    isPanning = false;
+    canvasContainer.style.cursor = 'default';
+});
+
+// Pan on mousemove, but only if the key is held down
+canvasContainer.addEventListener('mousemove', (e) => {
+    if (!isPanning || !isKeyActive) return;  // Only pan if panning is active and key is held
+    e.preventDefault();
+    const x = e.clientX - startX;
+    const y = e.clientY - startY;
+    canvasContainer.style.left = `${x}px`;
+    canvasContainer.style.top = `${y}px`;
+});
+
+// Keydown event to activate panning when a specific key is held down (e.g., "Shift")
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Shift') {  // Change this to any key you prefer
+        isKeyActive = true;
+    }
+});
+
+// Keyup event to deactivate panning when the key is released
+window.addEventListener('keyup', (e) => {
+    if (e.key === 'Shift') {  // Change this to the same key you used in keydown
+        isKeyActive = false;
+        
+    }
+});
+
+// For touch devices - handle touch start, move, and end for panning (only when key is active)
+canvasContainer.addEventListener('touchstart', (e) => {
+    if (!isKeyActive || e.touches.length !== 2) return;  // Ensure two-finger touch for panning
+    
+    isPanning = true;
+    startX = e.touches[0].clientX - canvasContainer.offsetLeft;
+    startY = e.touches[0].clientY - canvasContainer.offsetTop;
+    canvasContainer.style.cursor = 'grabbing';
+
+    initialTouchDistance = getTouchDistance(e); // Initialize touch distance
+}, { passive: true });
+
+canvasContainer.addEventListener('touchend', () => {
+    isPanning = false;
+    canvasContainer.style.cursor = 'default';
+}, { passive: true });
+
+canvasContainer.addEventListener('touchmove', (e) => {
+    if (!isPanning || e.touches.length !== 2) return;  // Only pan with two fingers
+    e.preventDefault();
+    
+    // Track the movement of the two fingers
+    const x = e.touches[0].clientX - startX;
+    const y = e.touches[0].clientY - startY;
+
+    canvasContainer.style.left = `${x}px`;
+    canvasContainer.style.top = `${y}px`;
+
+    initialTouchDistance = getTouchDistance(e); // Update touch distance
+}, { passive: true });
+
+// Helper function to calculate the distance between two touch points
+function getTouchDistance(e) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
+// Mouse wheel zooming
+canvasContainer.addEventListener('wheel', (e) => {
+    if (e.ctrlKey) {  // Optional: Only zoom when Ctrl is held (for trackpad)
+        e.preventDefault();
+        const zoomFactor = 0.1;
+        if (e.deltaY < 0) {
+            zoomIn(); // Zoom in
+        } else {
+            zoomOut(); // Zoom out
+        }
+    }
+}, { passive: true });
 
 
 
