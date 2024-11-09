@@ -39,7 +39,6 @@
    width: 100vw;
    overflow: hidden;
    background-image: url('https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Editor_Background.svg?v=1731034534');
-   touch-action: none;
  }
 
 
@@ -255,36 +254,21 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: grab;
+  transition: all 0.2s ease;
 }
-
-#designCanvas {
-  transform-origin: center center;
-  /* Keep transformations centered */
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
  canvas {
+   transform-origin: center center;
    border: 1px dashed #47D0FF;
+   transition: all 0.3s ease;
  }
 
 
@@ -952,11 +936,32 @@ input[type="color"]:focus {
 
 
 
-     <select id="documentType">
-       <option value="landscape">Landscape (4:3)</option>
-       <option value="portrait">Portrait (3:4)</option>
-       <option value="square">Square (1:1)</option>
-     </select>
+    <select id="categorySelect" onchange="updateAspectRatios()">
+         <!-- Categor will be populated dynamically here -->
+      </select>
+      
+      <select id="documentType">
+        <!-- Aspect ratios will be populated dynamically here -->
+      </select>
+      
+      <!-- Custom input field for predefined ratios -->
+<div id="customRatioContainer" style="display: none;">
+    <label for="customRatio">Enter Custom Aspect Ratio (width:height): </label>
+    <input type="text" id="customRatio" placeholder="e.g., 16:9">
+  </div>
+  
+  <!-- Pixel input fields to allow users to enter width and height -->
+  <div id="pixelInputContainer" style="display: none;">
+    <label for="pixelWidth">Width (px): </label>
+    <input type="number" id="pixelWidth" placeholder="Enter width in px">
+  
+    <label for="pixelHeight">Height (px): </label>
+    <input type="number" id="pixelHeight" placeholder="Enter height in px">
+    
+    <p>Aspect Ratio: <span id="calculatedAspectRatio">-</span></p>
+  </div>
+
+
      <button id="resizeCanvasBtn">Resize Canvas</button>
 
 
@@ -3062,47 +3067,221 @@ canvas.on('object:rotating', function (event) {
 
 
 
+const aspectRatios = {
+  "Popular": {
+    "16:9 Standard": (width) => width * (9 / 16), // Common for HD, 4K, and 8K
+    "1:1 Square": (width) => width,               // Social media posts
+    "4:3 Standard": (width) => width * (3 / 4),   // Older monitors and some mobile
+    "3:2 Standard": (width) => width * (2 / 3),   // Photography, some tablets
+    "9:16 Vertical": (width) => width * (9 / 16), // Stories, TikTok
+    "2:1 Ultrawide": (width) => width * (1 / 2),  // Banner ads, ultrawide monitors
+    "5:4 Standard": (width) => width * (4 / 5),   // Older monitors, SXGA
+    "1.91:1 Facebook Ad": (width) => width * (1 / 1.91),
+    "2.35:1 CinemaScope": (width) => width * (1 / 2.35),
+    "1.43:1 IMAX": (width) => width * (1 / 1.43),
+    "16:10": (width) => width * (10 / 16),         // Widescreen monitors
+    "2.76:1 Ultra Panavision": (width) => width * (1 / 2.76),
+    "1.85:1 DCP Flat": (width) => width * (1 / 1.85),
+    "2.39:1 DCP Scope": (width) => width * (1 / 2.39),
+    "19.5:9 Mobile Portrait": (width) => width * (9 / 19.5), // Mobile phones
+    "3:4 Social Media Portrait": (width) => width * (4 / 3),
+    "18:9 Android": (width) => width * (9 / 18),
+    "3:2 Surface Pro": (width) => width * (2 / 3),
+    "21:9 Cinema Ultrawide": (width) => width * (9 / 21),
+    "4:5 Instagram Portrait": (width) => width * (5 / 4),
+  },
+  "Screen Sizes": {
+    "Widescreen": (width) => width * (9 / 16),
+    "Cinema": (width) => width * (9 / 21),
+    "HD": (width) => width * (9 / 16),
+    "4K UHD": (width) => width * (9 / 16),
+    "Full HD": (width) => width * (9 / 16),
+    "SXGA": (width) => width * (4 / 5),
+    "UXGA": (width) => width * (3 / 4),
+    "QVGA": (width) => width * (3 / 4),
+    "5K Display": (width) => width * (9 / 16),
+    "8K Display": (width) => width * (9 / 16),
+    "16:10 Widescreen": (width) => width * (10 / 16)
+  },
+  "Paper Sizes": {
+    "Letter": (width) => width * (11 / 8.5),
+    "Legal": (width) => width * (14 / 8.5),
+    "A4": (width) => width * (297 / 210),
+    "A3": (width) => width * (420 / 297),
+    "A5": (width) => width * (210 / 148),
+    "A2": (width) => width * (594 / 420),
+    "A1": (width) => width * (841 / 594),
+    "A0": (width) => width * (1189 / 841),
+    "B5": (width) => width * (250 / 176),
+    "C4 Envelope": (width) => width * (324 / 229)
+  },
+  "Mobile & Tablets": {
+    "Mobile Portrait": (width) => width * (16 / 9),
+    "Tablet Landscape": (width) => width * (3 / 4),
+    "iPhone X": (width) => width * (19.5 / 9),
+    "iPad Pro": (width) => width * (4 / 3),
+    "Android Phone": (width) => width * (18 / 9),
+    "Galaxy S20": (width) => width * (20 / 9),
+    "Surface Pro": (width) => width * (3 / 2),
+    "iPhone 12": (width) => width * (19.5 / 9),
+    "iPad Air": (width) => width * (4 / 3)
+  },
+  "Social Media": {
+    "Instagram Post": (width) => width,            // 1:1 Square
+    "Instagram Story": (width) => width * (16 / 9),
+    "Facebook Cover": (width) => width * (9 / 16),
+    "Facebook Post": (width) => width * (4 / 3),
+    "Twitter Post": (width) => width * (2 / 1),
+    "LinkedIn Banner": (width) => width * (4 / 1),
+    "YouTube Thumbnail": (width) => width * (16 / 9),
+    "Pinterest Pin": (width) => width * (2 / 3),
+    "Snapchat Story": (width) => width * (9 / 16),
+    "LinkedIn Post": (width) => width * (1.91 / 1),
+    "TikTok Video": (width) => width * (16 / 9),
+    "Facebook Ad": (width) => width * (1.91 / 1)
+  },
+  "Video & Film": {
+    "CinemaScope": (width) => width * (1 / 2.35 ),
+    "IMAX": (width) => width * (1 / 1.43),
+    "Ultra Panavision": (width) => width * (1 / 2.76),
+    "DCP Flat": (width) => width * (1 / 1.85 ),
+    "DCP Scope": (width) => width * (1 / 2.39),
+    "Academy Ratio": (width) => width * (1 / 1.375),
+    "Anamorphic": (width) => width * (1 / 2.4 )
+  },
+  "Other": {
+    "Square": (width) => width,
+    "Panorama": (width) => width * (1 / 2),
+    "Polaroid": (width) => width * (3 / 4),
+    "Golden Ratio": (width) => width * (1.618 / 1),
+    "CD Cover": (width) => width,
+    "DVD Cover": (width) => width * (1.5 / 1),
+    "Banner": (width) => width * (3 / 1)
+  },
+  "Custom": {
+    "Aspect Ratio": null,
+    "Pixel": null
+  }
+};
 
 
 
+// Populate the categorySelect dropdown
+function populateCategories() {
+  const categorySelect = document.getElementById('categorySelect');
+  categorySelect.innerHTML = '';
+
+  for (const category in aspectRatios) {
+    const option = document.createElement('option');
+    option.value = category;
+    option.text = category;
+    categorySelect.appendChild(option);
+  }
+}
+
+// Update the documentType dropdown based on selected category
+function updateAspectRatios() {
+  const category = document.getElementById('categorySelect').value;
+  const documentType = document.getElementById('documentType');
+  documentType.innerHTML = '';
+
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.text = 'Select Aspect Ratio';
+  documentType.appendChild(defaultOption);
+
+  if (aspectRatios[category]) {
+    for (const ratio in aspectRatios[category]) {
+      const option = document.createElement('option');
+      option.value = ratio;
+      option.text = ratio;
+      documentType.appendChild(option);
+    }
+  }
+}
+
+
+
+// Show custom input fields based on documentType selection
+function toggleCustomInput() {
+  const documentType = document.getElementById('documentType').value;
+  document.getElementById('customRatioContainer').style.display = documentType === 'Aspect Ratio' ? 'block' : 'none';
+  document.getElementById('pixelInputContainer').style.display = documentType === 'Pixel' ? 'block' : 'none';
+}
+
+// Handle the canvas resizing based on selection
 document.getElementById('resizeCanvasBtn').addEventListener('click', function() {
-  // Recalculate screen width on each click to handle viewport changes on mobile
-  const screenWidth = Math.min(window.innerWidth, window.outerWidth) * 0.9; // Fixed width to 90% of screen width
+  const screenWidth = Math.min(window.innerWidth, window.outerWidth) * 0.9;
   let targetWidth = screenWidth;
   let targetHeight;
 
-  // Get the selected aspect ratio
-  const aspectRatio = document.getElementById('documentType').value; // "landscape", "portrait", or "square"
+  const category = document.getElementById('categorySelect').value;
+  const aspectRatio = document.getElementById('documentType').value;
 
-  // Set the height based on the selected aspect ratio
-  if (aspectRatio === "landscape") {
-    targetHeight = targetWidth * (3 / 4); // 4:3 aspect ratio
-  } else if (aspectRatio === "portrait") {
-    targetHeight = targetWidth * (4 / 3); // 3:4 aspect ratio
-  } else if (aspectRatio === "square") {
-    targetHeight = targetWidth; // 1:1 aspect ratio
+  // Calculate height for "Custom" options or predefined aspect ratios
+  if (category === "Custom" && aspectRatio === "Aspect Ratio") {
+    const customRatio = document.getElementById('customRatio').value;
+    const [customWidth, customHeight] = customRatio.split(':').map(Number);
+
+    if (isNaN(customWidth) || isNaN(customHeight) || customHeight === 0) {
+      alert('Please enter a valid aspect ratio (e.g., 16:9).');
+      return;
+    }
+
+    targetHeight = targetWidth * (customHeight / customWidth);
+  } else if (category === "Custom" && aspectRatio === "Pixel") {
+    const pixelWidth = Number(document.getElementById('pixelWidth').value);
+    const pixelHeight = Number(document.getElementById('pixelHeight').value);
+
+    if (pixelWidth && pixelHeight) {
+      targetWidth = pixelWidth;
+      targetHeight = pixelHeight;
+      const aspectRatioValue = pixelWidth / pixelHeight;
+      document.getElementById('calculatedAspectRatio').textContent = `${pixelWidth}:${pixelHeight}`;
+    } else {
+      alert('Please enter valid pixel dimensions.');
+      return;
+    }
+  } else {
+    if (aspectRatios[category] && aspectRatios[category][aspectRatio]) {
+      targetHeight = aspectRatios[category][aspectRatio](targetWidth);
+    } else {
+      console.warn('Unknown aspect ratio');
+      return;
+    }
   }
 
-  // Check if the calculated height exceeds 90% of the screen height
+  // Limit height to 90% of the screen height if needed
   const maxHeight = Math.min(window.innerHeight, window.outerHeight) * 0.9;
   if (targetHeight > maxHeight) {
-    // Scale down the width and height to fit within screen height while maintaining aspect ratio
     const scale = maxHeight / targetHeight;
     targetWidth *= scale;
     targetHeight = maxHeight;
   }
 
-  // Apply the calculated dimensions to the canvas
-  canvas.setWidth(targetWidth);
-  canvas.setHeight(targetHeight);
-  canvas.renderAll();
+  // Apply calculated dimensions to the Fabric.js canvas
+  if (window.canvas) {
+    window.canvas.setWidth(targetWidth);
+    window.canvas.setHeight(targetHeight);
+    window.canvas.renderAll();
+  } else {
+    console.warn('Fabric.js canvas instance not found.');
+  }
 
-  // Save the canvas size to localStorage
+  // Save dimensions in local storage
   localStorage.setItem('canvasWidth', targetWidth);
   localStorage.setItem('canvasHeight', targetHeight);
   localStorage.setItem('canvasAspectRatio', aspectRatio);
+
+  console.log('Canvas resized to:', targetWidth, targetHeight);
 });
 
+// Event listeners
+document.getElementById('categorySelect').addEventListener('change', updateAspectRatios);
+document.getElementById('documentType').addEventListener('change', toggleCustomInput);
+
+// Initialize the categories dropdown
+populateCategories();
 
 
 
@@ -4068,6 +4247,10 @@ canvasContainer.addEventListener('wheel', (e) => {
         }
     }
 }, { passive: true });
+
+document.getElementById('canvas-container').addEventListener('wheel', function(event) {
+  event.preventDefault(); // Prevent zooming on wheel
+}, { passive: false });
 
 
 
