@@ -1,1 +1,226 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced HTML Editor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.5/lib/codemirror.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.5/theme/material-darker.css">
+    <style>
+        body, html {
+            margin: 0; padding: 0; box-sizing: border-box; height: 100%; 
+            font-family: Arial, sans-serif; background-color: #1e1e2f; color: white;
+            display: flex; flex-direction: column;
+        }
+        #main-banner { 
+            background-color: #333; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+
+        #editor-container 
+        { flex: 1; position: relative; }
+
+        #autosave-notice 
+        { font-size: 0.9rem; color: #4caf50; opacity: 0; transition: opacity 0.3s; }
+
+        .toolbar button 
+        { background: #4caf50; color: white; padding: 8px 12px; border: none; cursor: pointer; transition: 0.3s; }
+
+        .toolbar button:hover 
+        { background-color: #45a049; }
+
+        #code-editor 
+        { position: absolute; top: 0; left: 0; right: 0; bottom: 0; font-size: 16px; z-index:0;}
+
+        .preview {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: #f9f9f9;
+    border-left: 2px solid #ddd;
+    display: none;
+}
+
+.preview.visiblePreview {
+    display: block;
+}
+
+.preview.visibleExpanded {
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+#expand-button {
+    position: absolute;
+    top: 100px;
+    right: 15px;
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    z-index:1;
+}
+
+
+/* Active class for the toggle button when preview is visible */
+#toggle-preview.active {
+    background-color: #4caf50;
+    color: white;
+}
+
+/* Class for the toggle button when preview is expanded */
+#toggle-preview.expanded {
+    background-color: #ff9800;
+    color: white;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="main-banner">
+    <div class="toolbar">
+        <button id="save-button">Save</button>
+        <button id="format-button">Format</button>
+        <button id="cut-button">Cut</button>
+        <button id="copy-button">Copy</button>
+        <button id="paste-button">Paste</button>
+        <button id="undo-button">Undo</button>
+        <button id="redo-button">Redo</button>
+    </div>
+    <span id="autosave-notice">Saved</span>
+</div>
+
+<div id="editor-container">
+    <textarea id="code-editor"></textarea>
+</div>
+
+<button id="toggle-preview">Preview</button>
+
+<!-- Preview Area -->
+<div id="preview-container" class="preview hidden">
+    <iframe id="preview-frame"></iframe>
+    <button id="expand-button">Expand</button>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.5/lib/codemirror.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.5/addon/edit/closetag.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.5/addon/selection/active-line.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.5/mode/xml/xml.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.5/mode/javascript/javascript.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.5/mode/css/css.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.5/mode/htmlmixed/htmlmixed.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-beautify@1.14.0/js/lib/beautify-html.js"></script>
+
+<script>
+    // Initialize CodeMirror with improved highlighting and mixed-mode support
+    const editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+        lineNumbers: true,
+        mode: "htmlmixed", // Supports HTML, CSS, and JavaScript
+        theme: "material-darker", // Ensures color highlighting
+        autoCloseTags: true,
+        lineWrapping: true,
+        styleActiveLine: true,
+        matchBrackets: true,
+        autoCloseBrackets: true
+    });
+
+    // Get references to buttons and autosave notice
+    const saveButton = document.getElementById("save-button");
+    const formatButton = document.getElementById("format-button");
+    const autosaveNotice = document.getElementById("autosave-notice");
+
+    // Format HTML content using js-beautify
+    function formatHTML() {
+        const content = editor.getValue();
+        const formattedContent = html_beautify(content, {
+            indent_size: 2,
+            preserve_newlines: true,
+            max_preserve_newlines: 2,
+            extra_liners: []
+        });
+        editor.setValue(formattedContent);
+    }
+
+    // Save content to localStorage and show save feedback
+    function saveContent(isAutosave = false) {
+        const content = editor.getValue();
+        localStorage.setItem("html-editor-content", content);
+        autosaveNotice.textContent = isAutosave ? "Autosaved" : "Saved";
+        autosaveNotice.style.opacity = 1;
+        setTimeout(() => { autosaveNotice.style.opacity = 0; }, 2000);
+    }
+
+    // Load saved content from localStorage
+    function loadContent() {
+        const savedContent = localStorage.getItem("html-editor-content");
+        if (savedContent) {
+            editor.setValue(savedContent);
+        }
+    }
+
+    // Attach event listeners for toolbar actions
+    saveButton.addEventListener("click", () => saveContent());
+    formatButton.addEventListener("click", formatHTML);
+
+    // Autosave when changes are detected
+    editor.on("change", () => saveContent(true));
+
+    // Load editor content on page load
+    window.addEventListener("load", loadContent);
+
+
+
+    
+
+
+
+
+    // Get the toggle button, preview container, and expand button
+const togglePreviewButton = document.getElementById("toggle-preview");
+const previewContainer = document.getElementById("preview-container");
+const expandButton = document.getElementById("expand-button");
+
+// Toggle Preview Visibility and Button Class
+togglePreviewButton.addEventListener("click", () => {
+    // Toggle the visiblePreview class to show/hide preview
+    previewContainer.classList.toggle("visiblePreview");
+    
+    // Add/Remove 'active' class to toggle button when preview is open
+    togglePreviewButton.classList.toggle("active", previewContainer.classList.contains("visiblePreview"));
+
+    updatePreview(); // Update preview content
+});
+
+// Toggle Expanded View and Button Class
+expandButton.addEventListener("click", () => {
+    // Toggle the visibleExpanded class to expand the preview
+    previewContainer.classList.toggle("visibleExpanded");
+
+    // Update toggle button appearance when expanded
+    togglePreviewButton.classList.toggle("expanded", previewContainer.classList.contains("visibleExpanded"));
+});
+
+// Update Preview on Editor Change
+function updatePreview() {
+    const content = editor.getValue();
+    const previewFrame = document.getElementById("preview-frame");
+    const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+    doc.open();
+    doc.write(content);
+    doc.close();
+}
+
+editor.on("change", updatePreview);
+
+
+
+
+</script>
+
+</body>
+</html>
