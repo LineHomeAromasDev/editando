@@ -1,1 +1,4488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>editando</title>
+  <link rel="icon" href="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Black_Simple_Letters_J_and_K_Monogram_Logo_20241102_165546_0000.png?v=1730566564" type="image/x-icon">
+  <link rel="shortcut icon" href="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Black_Simple_Letters_J_and_K_Monogram_Logo_20241102_165546_0000.png?v=1730566564" type="image/x-icon">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+
+
+
+
+
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    
+
+
+
+
+<style>
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+
+
+ body {
+   font-family: "Poppins", sans-serif;
+   margin: 0;
+   display: block;
+   height: 100vh;
+   width: 100vw;
+   overflow: hidden;
+   background-image: url('https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Editor_Background.svg?v=1731034534');
+ }
+
+
+
+
+
+
+
+
+
+
+/* Launcher button */
+#launcherButton {
+  position: fixed;
+  bottom: 50%;
+  right: 15px;
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index:3;
+  
+}
+
+
+
+/* Launcher panel */
+#appLauncher {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 80%;
+  background-color: rgba(35,35,35,1);
+  border-radius: 15px 15px 0 0;
+  padding: 0;
+  box-sizing:border-box;
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5);
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+  overflow-y:scroll;
+  z-index: 10; /* Ensure it stays on top */
+  display:flex;
+  flex-wrap:wrap;
+  
+}
+
+#appLauncher.active {
+  transform: translateY(0);
+}
+
+
+#appSearchBarContainer {
+    width:100%;
+  background: rgba(40,40,40,1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-radius: 15px 15px 0 0;
+  position:sticky;
+  top:0;
+  padding:15px;
+  box-sizing: border-box;
+}
+
+/* Search bar */
+#searchBar {
+ border: 1px solid rgba(255,255,255,0.1);
+ border-radius:10px;
+ height:45px;
+ width:100%;
+ background: rgba(30,30,30,1);
+ padding:0 0 0 10px;
+ margin:0;
+ box-sizing: border-box;
+ font-size:1em;
+}
+
+#appBtnList {
+    width:100%;
+}
+
+/* App button styling */
+.appButton {
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-sizing:border-box;
+  overflow: hidden;
+  height:auto;
+  width:50%;
+  max-width:250px;
+  aspect-ratio: 1.3/1;
+  background: rgba(255,255,255,0.2);
+  color: rgba(200,200,200,1);
+}
+
+.appButton p{
+  padding: 0;
+  margin: 0;
+  box-sizing:border-box;
+  font-size:1em;
+}
+
+.appBtnImgWrapper {
+  width: 100%;
+  height: 50%;
+  overflow:hidden;
+  border-radius:10px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.appButton img {
+  width:100%;
+  height: auto;
+  margin:0;
+}
+
+.appButton:hover {
+  background-color: #eee;
+  color: rgba(40,40,40,1);
+}
+
+/* Hide the panel on tap outside */
+.backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 5; /* Place it below the launcher */
+}
+
+.backdrop.active {
+  display: block;
+}
+
+
+
+
+
+
+
+
+/* Top banner styling */
+.top-banner {
+ display: flex;
+ justify-content: flex-start;
+ align-items: center;
+ background-color: #2c2c2e;
+ padding: 0 0 0 10px;
+ position: fixed;
+ top: 0;
+ width: 100%;
+ height:30px;
+ z-index: 2;
+ color: #fff;
+ font-family: Arial, sans-serif;
+}
+
+
+/* Menu button styling */
+.menu {
+ position: relative;
+ margin-right: 20px;
+}
+
+
+.menu-button {
+ background: none;
+ color: #fff;
+ border: none;
+ font-size: 16px;
+ cursor: pointer;
+}
+
+
+.menu-button:hover {
+ color: #d1d1d6;
+}
+
+
+/* Dropdown menu styling */
+.dropdown {
+ display: none;
+ position: absolute;
+ top: 100%;
+ transform:translateY(10px);
+ left: 0;
+ background-color: #3a3a3c;
+ border-radius: 5px;
+ padding: 10px 0;
+ min-width: 200px;
+ max-height:60vh;
+ overflow-y:scroll;
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.dropdown button, .dropdown select {
+ display: block;
+ padding: 10px;
+ color: #fff;
+ text-decoration: none;
+ text-align:left;
+ border-left:none;
+ border-right:none;
+ border-top:none;
+ border-bottom: 1px solid rgba(255,255,255,0.1);
+ background:transparent;
+ width:95%;
+}
+
+
+.dropdown a:hover {
+ background-color: #575759;
+ color: #fff;
+}
+
+
+.menuSubtitle {
+ text-align:left;
+ border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+ background:transparent;
+ width:95%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ #tool-footer {
+   position: absolute;
+   bottom:10px;
+   left:50%;
+   transform: translateX(-50%);
+   width: 95vw;
+   height:60px;
+   max-width:700px;
+   background-color: #f4f4f4;
+   padding: 5px;
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+   border-radius:15px;
+   position: absolute;
+   overflow-x:scroll;
+   box-sizing:border-box;
+   gap:10px;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ #tool-footer button {
+   padding: 5px;
+   border: none;
+   background-color: rgba(0,0,0,0);
+   color: black;
+   cursor: pointer;
+   box-sizing: border-box;
+   border-radius: 5px;
+   transition: 0.2s ease;
+   font-size:1.2em;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ #tool-footer button:hover {
+   background-color: rgba(0,0,0,0.1);
+   color: black;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ #tool-footer input[type="file"] {
+   display: none;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+
+ canvas {
+   transform-origin: center center;
+   border: 1px dashed #47D0FF;
+   transition: all 0.3s ease;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ #snapSection {
+   flex-direction: column;
+   align-items: flex-start;
+   gap: 10px;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ #snapSection select, #snapSection input[type="checkbox"] {
+   margin-top: 5px;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ #toleranceSlider {
+   width: 100%;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ #toleranceValue {
+   margin-top: 5px;
+   font-weight: bold;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#secTools {
+ position:absolute;
+ top:40px;
+ left:10px;
+ width: fit-content;
+ height:auto;
+ box-shadow: 0px 0px 10px rgba(0,0,0,0.25);
+ border-radius: 10px;
+ padding:5px;
+ display:flex;
+ gap:5px;
+ background: rgb(255, 255, 255);
+ z-index:2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#secTools button {
+ border:none;
+ padding:10px;
+ border-radius: 5px;
+ margin:0;
+ font-size:1em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#secTools button:hover {
+ border:none;
+ padding:10px;
+ border-radius: 5px;
+ margin:0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#itemsContainer {
+ position: absolute;
+ bottom: -50vh;
+ left: 0;
+ width: 100%;
+ max-height:50vh;
+ background-color: rgba(40,40,40,1);
+ padding: 20px;
+ box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5);
+ border-radius:15px 15px 0 0;
+ display: flex;
+ justify-content: space-around;
+ transition: transform 0.5s ease;
+ visibility:hidden;
+ display:flex;
+ flex-wrap:wrap;
+ opacity:0;
+ transition:all 0.3s ease;
+ justify-content:flex-start;
+ z-index:2;
+ box-sizing:border-box;
+ overflow-y:auto;
+}
+
+
+#itemsContainer button{
+ width: 33.33%;
+ aspect-ratio:1/1;
+ border:none;
+ border-radius:10px;
+ background: transparent;
+ color:white;
+}
+
+#itemsContainer button:hover {
+ background: rgba(0,0,0,0.1)
+}
+
+#itemsContainer button:active {
+  animation: itemScale 0.1s ease 0s forwards;
+}
+
+@keyframes itemScale {
+  0%{
+    transform: scale(1);
+    opacity:1;
+  }
+  100% {
+    transform: scale(2);
+    opacity:0;
+  }
+}
+
+#itemsContainer.visible {
+ bottom:0;
+ visibility:visible;
+ opacity:1;
+}
+
+
+#openItemsContainerBtn {
+ position: absolute;
+ bottom: 85px;
+ height:40px;
+ width:40px;
+ border-radius:50%;
+ left:15px;
+ padding: 0;
+ background-color: #d776de;
+ color: white;
+ border: none;
+ cursor: pointer;
+ display:flex;
+ transition: all 0.3s ease;
+}
+
+
+#openItemsContainerBtn span {
+ position: absolute;
+ top:50%;
+ left:50%;
+ transform: translate(-50%, -50%);
+ padding:0;
+ margin:0;
+ font-size:30px;
+ transition: all 0.3s ease;
+}
+
+
+#openItemsContainerBtn:hover  {
+ transform: scale(1.2);
+ }
+
+
+#openItemsContainerBtn:hover span {
+ transform: rotate(90deg) translate(-50%, 50%);
+ }
+   
+   
+#objectActions {
+ position:absolute;
+ top:40px;
+ right:10px;
+ width: fit-content;
+ height:auto;
+ box-shadow: 0px 0px 10px rgba(0,0,0,0.25);
+ border-radius: 10px;
+ padding:5px;
+ display:flex;
+ gap:5px;
+ background: rgb(255, 255, 255);
+ z-index:2;
+}
+
+
+
+
+#objectActions button {
+ border:none;
+ padding:10px;
+ border-radius: 5px;
+ margin:0;
+ background: rgba(0,0,0,0.1);
+ font-size:1em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#objectActions button:active {
+ border:none;
+ padding:10px;
+ border-radius: 5px;
+ margin:0;
+}
+
+
+
+
+#svgOutput {
+  min-width:100px;
+  max-height:100%;
+}
+
+
+
+
+
+
+
+
+
+
+.tooltip {
+   position: absolute;
+   z-index:10;
+   padding: 4px 8px;
+   background-color: rgba(0,0,0,0.5);
+   backdrop-filter: blur(5px);
+   color: white;
+   border-radius: 5px;
+   font-size: 12px;
+   display: none; /* Hidden by default */
+   pointer-events: none; /* Prevent blocking hover events */
+   touch-action: none;
+}
+
+
+#fontSelectMenu {
+   height: 50vh;
+   overflow-y: auto;
+   position: fixed;
+   bottom: -50vh;
+   left: 0;
+   width: 100%;
+   max-width:600px;
+   box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5);
+   padding: 0;
+   z-index: 10;
+   background: rgba(35, 35, 35, 1);
+   color: white;
+   transition: transform 0.3s ease; /* Animate transform */
+   box-sizing: border-box;
+}
+
+.fontMenuOpen {
+   transform: translate(0, -100%); /* Slide up into view */
+}
+
+#fontSearchContainer {
+  width:100%;
+  background: rgba(40,40,40,1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-radius: 15px 15px 0 0;
+  position:sticky;
+  top:0;
+  padding:15px;
+  box-sizing: border-box;
+}
+
+#fontSearch {
+ border: 1px solid rgba(255,255,255,0.1);
+ border-radius:10px;
+ height:45px;
+ width:100%;
+ background: rgba(30,30,30,1);
+ padding:0 0 0 10px;
+ margin:0;
+ box-sizing: border-box;
+ font-size:1em;
+}
+
+
+#fontList div {
+   padding: 10px;
+   font-size:17pt;
+   cursor: pointer;
+   border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+
+#fontList div:hover {
+   background-color: #f0f0f0;
+}
+
+
+#deleteInPlaceButton {
+ background:black;
+ color:white
+}
+
+
+
+
+    /* Container for color pickers */
+.color-picker-container {
+  position:fixed;
+  bottom:135px;
+  left:15px;
+  display: flex;
+  flex-direction: column;
+  gap:5px;
+  background:white;
+  box-sizing:border-box;
+  padding:5px;
+  border-radius:20px;
+  width:40px;
+}
+
+/* Custom color input style */
+input[type="color"] {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  padding:0;
+  cursor: pointer;
+  overflow:hidden;
+  transition: all 0.3s ease;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+	border: none;
+}
+
+input[type="color"]:focus {
+  outline: none;
+  border-color: #000; /* Blue color when focused */
+}
+
+
+    /* Optional: Adding a label for the color input */
+    .color-picker-container label {
+      font-size: 15px;
+      color: white;
+      display: block;
+      margin: 0;
+      position:absolute;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      text-shadow: 0px 0px 15px rgba(0,0,0,1)
+    }
+
+    .color-picker-container input:hover {
+      transform: scale(1.1);
+      filter:brightness(0.85);
+    }
+
+    label[for="colorPickerBackground"] {
+      top:20px;
+      left:50%;
+      transform: translate(-50%, -50%);
+      opacity:0;
+    }
+
+    label[for="colorPickerObjects"] {
+      bottom:20px;
+      left:50%;
+      transform: translate(-50%, 50%);
+      opacity:0;
+    }
+
+    #colorPickerBackground:hover + label[for="colorPickerBackground"] {
+      opacity:1;
+    }
+
+    #colorPickerObjects:hover + label[for="colorPickerObjects"] {
+      opacity:1;
+    }
+    
+
+
+    #logo{
+        height:80px;
+        filter:invert(1);
+        width:auto;
+        padding:0;
+        margin:0;
+        pointer-events: none;
+        position:absolute;
+        right:20px;
+    }
+    
+    
+    
+    #zoomControls {
+      position:absolute;
+      bottom:85px;
+      right:15px;
+      z-index:2;
+    }
+    
+    
+    
+    
+    
+    #layersPanel {
+    width: 200px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+#layersButton {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+
+</style>
+</head>
+<body>
+
+
+
+
+<!-- Launcher button -->
+<button id="launcherButton"><p>Apps</p></button>
+
+<!-- Launcher panel -->
+<div id="appLauncher">
+  <!-- Search bar -->
+  <div id="appSearchBarContainer">
+    <input type="text" id="searchBar" placeholder="Search apps...">
+  </div>
+
+  <div id="appBtnList">
+  <!-- App buttons -->
+  <a class="appButton" data-name="Calculator" href="https://linehomearomasdev.github.io/editando/EditandoHTML.html">
+    <div class="appBtnImgWrapper">
+      <img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/20241109_180213_0000.png?v=1731175370" alt="HTML Editor">
+    </div>
+    
+    <span>HTML Editor</span>
+
+    <p>Write and edit code quickly and easily with editandoHTML.</p>
+  </a>
+
+  <a class="appButton" data-name="Notes">
+    <img src="notes-icon.png" alt="Notes">
+    <span>Notes</span>
+  </a>
+  <a class="appButton" data-name="Gallery">
+    <img src="gallery-icon.png" alt="Gallery">
+    <span>Gallery</span>
+  </a>
+  <!-- Add more app buttons as needed -->
+  </div>
+</div>
+
+<!-- Background overlay for closing the panel when clicked outside -->
+<div class="backdrop" id="backdrop"></div>
+
+
+
+<div id="appletContainer">
+
+
+
+
+<div id="tooltip" class="tooltip"></div>
+
+
+
+
+ <div class="top-banner">
+
+
+    <img id="logo" src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Editando_Logo.svg?v=1731034821">
+
+
+ <div class="menu">
+   <button class="menu-button" onclick="toggleMenu('menu1')">Document</button>
+   <div class="dropdown" id="menu1">
+
+
+
+
+    <select id="categorySelect" onchange="updateAspectRatios()">
+         <!-- Categor will be populated dynamically here -->
+      </select>
+      
+      <select id="documentType">
+        <!-- Aspect ratios will be populated dynamically here -->
+      </select>
+      
+      <!-- Custom input field for predefined ratios -->
+<div id="customRatioContainer" style="display: none;">
+    <label for="customRatio">Enter Custom Aspect Ratio (width:height): </label>
+    <input type="text" id="customRatio" placeholder="e.g., 16:9">
+  </div>
+  
+  <!-- Pixel input fields to allow users to enter width and height -->
+  <div id="pixelInputContainer" style="display: none;">
+    <label for="pixelWidth">Width (px): </label>
+    <input type="number" id="pixelWidth" placeholder="Enter width in px">
+  
+    <label for="pixelHeight">Height (px): </label>
+    <input type="number" id="pixelHeight" placeholder="Enter height in px">
+    
+    <p>Aspect Ratio: <span id="calculatedAspectRatio">-</span></p>
+  </div>
+
+
+     <button id="resizeCanvasBtn">Resize Canvas</button>
+
+
+     <span id="menuSubtitle">Export Options</span>
+
+
+     <button id="exportPngBtn">Export as PNG</button>
+     <button id="exportJpegBtn">Export as JPEG</button>
+     <button id="exportSvgBtn">Export as SVG</button>
+
+
+     <select id="exportResolution">
+       <option value="1">Low (1x)</option>
+       <option value="2">Medium (2x)</option>
+       <option value="3">High (3x)</option>
+     </select>
+     <button id="exportCanvasBtn">Export Canvas</button>
+
+
+   </div>
+ </div>
+
+
+
+
+
+ <div class="menu">
+   <button class="menu-button" onclick="toggleMenu('menu2')">Edit</button>
+   <div class="dropdown" id="menu2">
+    <button id="convertToPaths">Convert Text to SVG Paths</button>
+
+   </div>
+ </div>
+ <div class="menu">
+   <button class="menu-button" onclick="toggleMenu('menu3')">View</button>
+   <div class="dropdown" id="menu3">
+     <button id="fullscreenButton">Go Fullscreen</button>
+     <div id="snapSection">
+        <!-- Enable/Disable Snap Rotation -->
+        <label for="enableSnapRotation">Enable Snap Rotation:</label>
+        <input type="checkbox" id="enableSnapRotation" />
+    
+        <!-- Snap Angle dropdown -->
+        <label for="snapAngleSelect">Snap Angle:</label>
+        <select id="snapAngleSelect" disabled>
+            <option value="15">15°</option>
+            <option value="30">30°</option>
+            <option value="45">45°</option>
+            <option value="60">60°</option>
+            <option value="90">90°</option>
+        </select>
+    
+        <!-- Tolerance slider -->
+        <label for="toleranceSlider">Tolerance:</label>
+        <input type="range" id="toleranceSlider" min="1" max="20" value="5" disabled />
+        <div id="toleranceValue">5px</div>
+    </div>
+    
+     <button id="generateSvgBtn">Generate SVG</button>
+     <textarea id="svgOutput" rows="10" cols="50" readonly></textarea>
+    
+   </div>
+ </div>
+</div>
+
+
+<div id="canvas-container">
+ <canvas id="designCanvas"></canvas>
+</div>
+
+
+
+<!-- Button for layers -->
+<button id="layersButton" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); writing-mode: vertical-rl;">Layers</button>
+
+<!-- Layers panel -->
+<div id="layersPanel" style="display: none; position: absolute; left: 50px; top: 50px; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 10px;">
+    <h3>Layers</h3>
+    <ul id="layersList"></ul>
+</div>
+
+
+
+<div id="objectActions">
+ <button id="copyBtn" class="material-icons-outlined">
+  content_copy
+ </button>
+ <button id="pasteBtn" class="material-icons-outlined">
+  content_paste
+ </button>
+</div>
+
+
+
+<!-- Color Picker for Background and Selected Objects -->
+<div class="color-picker-container">
+    
+    <input type="color" id="colorPickerBackground" data-label="Change Background Colour" data-target="background" value="#ffffff">
+    <label class="material-icons-outlined" for="colorPickerBackground">edit</label>
+
+    <input type="color" id="colorPickerObjects" data-label="Change Object Colour" data-target="objects" value="#ff0000">
+    <label class="material-icons-outlined" for="colorPickerObjects">edit</label>
+  </div>
+
+
+
+
+<div id="zoomControls">
+    <button onclick="zoomIn()">Zoom In</button>
+    <button onclick="zoomOut()">Zoom Out</button>
+    <button onclick="resetZoom()">Reset Zoom</button>
+</div>
+
+
+
+
+
+
+
+<button id="openItemsContainerBtn"><span class="material-icons-outlined">add_circle</span></button>
+
+
+
+
+<div id="itemsContainer">
+ <button id="drawingModeBtn">Enable Free Drawing Mode</button>
+ <button id="pointModeBtn">Enable Point Drawing Mode</button>
+ <button id="addTextBtn">Add Text</button>
+ <button id="addRectBtn"><svg width="50" height="50"><rect width="50" height="50" style="fill:blue;"></rect></svg></button>
+ <button id="addCircleBtn"><svg width="50" height="50"><circle cx="25" cy="25" r="25" style="fill:red;"></circle></svg></button>
+ <button id="addTriangleBtn"><svg width="50" height="50"><polygon points="25,0 50,50 0,50" style="fill:green;"></polygon></svg></button>
+ <button id="addEllipseBtn">ellipse</button>
+   <button id="addDiamondBtn">Diamond</button>
+ <button id="addSimpleHeartBtn"><svg width="50" height="50" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+   <path fill="#555" d="M13.6705038,1.65775755 C15.7733256,1.1643364 17.8346764,1.87952015 18.8050117,3.09161872 C19.7007318,4.21051134 20.1078092,5.37372498 19.9755956,7.08978592 C19.8803055,8.32659959 19.4754445,9.24351338 18.6768484,10.253173 C18.5296466,10.4392792 18.3687155,10.6302896 18.1658464,10.862046 C18.0465566,10.9983221 17.5949329,11.5061955 17.6178177,11.4803526 C16.8186802,12.3827879 14.4625844,14.643494 10.5145935,18.299202 C10.224182,18.5681134 9.76777894,18.5667637 9.47905081,18.2961397 C6.089961,15.1195561 3.89625857,13.0278592 2.89042367,12.0135158 C1.03250481,10.1398805 0.326468943,9.0511668 0.0698691381,7.29291272 C-0.198560664,5.45359801 0.31465113,3.94412412 1.46841698,2.77151837 C2.55037542,1.67189257 4.4852998,1.26441086 6.39590277,1.65285729 C7.51456274,1.88029307 8.70597506,2.61194275 9.99645377,3.83297717 C11.0971959,2.70423085 12.323284,1.97387885 13.6705038,1.65775755 Z"></path>
+ </svg></button>
+ <button id="addStarBtn">Star</button>
+ <button id="addDiamondBtn">Diamond</button>
+ <button id="addCrescentBtn">Crescent</button>
+ <button id="addCircleBtn">Circle</button>
+ <button id="addTriangleBtn">Triangle</button>
+ <button>Upload Image</button>
+ <input type="file" id="uploadImage" accept="image/*">
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="secTools">
+ <button data-label="Undo" id="undoButton" class="material-icons-outlined">
+ undo</button>
+<button data-label="Redo" id="redoButton" class="material-icons-outlined">
+  redo</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="fontSelectMenu">
+  <div id="fontSearchContainer">
+   <input type="text" id="fontSearch" placeholder="Search fonts..." />
+   </div>
+   <div id="fontList">
+    <div id="customFonts">
+        <h3>Custom Fonts</h3>
+    </div>
+   </div>
+</div>
+
+
+
+
+<!-- Footer for tools -->
+<div id="tool-footer">
+ <button class="material-icons-outlined"  id="deleteButton">delete</button>
+ <button data-label="Change Font" class="material-icons-outlined" id="fontChangeButton">font_download</button>
+ <button data-label="Text Align Left" class="material-icons-outlined" id="alignLeft">format_align_left</button>
+ <button data-label="Text Align Center" class="material-icons-outlined" id="alignCenter">format_align_center</button>
+ <button data-label="Text Align Right" class="material-icons-outlined" id="alignRight">format_align_right</button> 
+ <label class="material-icons-outlined" for="lineHeightRange">format_line_spacing</label>
+ <input type="range" id="lineHeightRange" min="0.5" max="3" step="0.1" value="1.2" />
+ <label class="material-icons-outlined" for="letterSpacingRange">format_letter_spacing</label>
+<input type="range" id="letterSpacingRange" min="-10" max="50" step="1" value="0" />
+
+
+
+
+
+
+    <button class="material-icons-outlined" data-label="Group Selected" id="group">link</button>
+   <button class="material-icons-outlined" data-label="Ungroup Selected" id="ungroup">link_off</button>
+    <button data-label="Bring to Front" id="bring-to-front" class="material-icons-outlined">
+     flip_to_front
+   </button>
+    <button data-label="Send to Back" id="send-to-back" class="material-icons-outlined">
+     flip_to_back
+   </button>
+   <button data-label="Bring Forward" id="bring-forward">Bring Forward</button>
+   <button data-label="Send Backward" id="send-backward">Send Backward</button>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<!-- Corner Rounding -->
+<input type="range" id="cornerRadius" min="0" max="50">
+<button id="roundCornersBtn">Round Corners</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <!-- Rotate snapping toggle -->
+ <div>
+   <label>
+     <input type="checkbox" id="rotateSnapToggle"> Enable Rotate Snapping
+   </label>
+ </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <!-- Snap angle dropdown and tolerance slider -->
+ <div id="snapSection">
+   <label for="snapAngleSelect">Snap Angle:</label>
+   <select id="snapAngleSelect">
+     <option value="15">15°</option>
+     <option value="30">30°</option>
+     <option value="45">45°</option>
+     <option value="60">60°</option>
+     <option value="90">90°</option>
+   </select>
+    <!-- Tolerance slider -->
+   <label for="toleranceSlider">Tolerance:</label>
+   <input type="range" id="toleranceSlider" min="1" max="20" value="5">
+   <div id="toleranceValue">5px</div>
+ </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.min.js"></script>
+<script>
+
+
+// Elements
+const launcherButton = document.getElementById('launcherButton');
+const appLauncher = document.getElementById('appLauncher');
+const searchBar = document.getElementById('searchBar');
+const backdrop = document.getElementById('backdrop');
+const appButtons = document.querySelectorAll('.appButton');
+
+// Toggle launcher panel
+launcherButton.addEventListener('click', () => {
+  appLauncher.classList.toggle('active');
+  backdrop.classList.toggle('active');
+});
+
+// Hide launcher panel on backdrop click
+backdrop.addEventListener('click', () => {
+  appLauncher.classList.remove('active');
+  backdrop.classList.remove('active');
+});
+
+// Search functionality
+searchBar.addEventListener('input', () => {
+  const query = searchBar.value.toLowerCase();
+  appButtons.forEach(button => {
+    const name = button.getAttribute('data-name').toLowerCase();
+    button.style.display = name.includes(query) ? 'flex' : 'none';
+  });
+});
+
+
+ document.addEventListener('DOMContentLoaded', function () {
+   // Initialize the Fabric.js canvas
+   const canvas = new fabric.Canvas('designCanvas', {
+    selectionColor: 'rgba(0, 255, 0, 0.3)', // Background color of the selection area
+   selectionBorderColor: 'red',             // Border color of the selection area
+   selectionLineWidth: 2,                   // Border width
+   selectionDashArray: [5, 5]               // Dashed line pattern
+   });
+    canvas.isDrawingMode = false; // Start with drawing mode disabled
+
+
+
+// Listen for a click event on the container
+document.getElementById('canvas-container').addEventListener('click', function (e) {
+  // Check if the click occurred outside of any selected object
+  const clickedOnCanvas = e.target === document.getElementById('canvas-container');
+  if (clickedOnCanvas) {
+    // Deselect all selected objects
+    canvas.discardActiveObject();
+    canvas.renderAll();
+  }
+});
+
+
+// Function to apply consistent styles to all objects on the canvas
+function applyConsistentStyles() {
+   const allObjects = canvas.getObjects();  // Get all objects on the canvas
+   allObjects.forEach(obj => {
+       obj.set({
+           strokeUniform: true,  // Set strokeUniform to false
+       });
+   });
+}
+
+
+
+
+  // Add text button functionality
+  document.getElementById('addTextBtn').addEventListener('click', function () {
+    const text = new fabric.Textbox('Your Text Here', {
+      left: 100,
+      top: 100,
+      width: 200, // Set width large enough to see alignment
+      fontSize: 20,
+      fill: '#333',
+      textAlign: 'left'
+    });
+    canvas.add(text);
+    canvas.setActiveObject(text);
+  });
+
+
+  fabric.Object.prototype.transparentCorners = false;
+fabric.Object.prototype.cornerColor = 'rgba(255,255,255,0.1)';         // Color of the corner control points
+fabric.Object.prototype.cornerStrokeColor = 'lime';  // Stroke color of corner controls
+fabric.Object.prototype.cornerSize = 8;              // Size of corner controls
+fabric.Object.prototype.cornerStyle = 'circle';       // Can be 'circle' or 'rect'
+fabric.Object.prototype.controls.mtr.cornerSize = 30;  // Size of the rotation control
+fabric.Object.prototype.controls.mtr.cursorStyle = 'crosshair'; // Cursor style
+fabric.Object.prototype.controls.mtr.cornerColor = 'green';     // Color
+
+canvas.selectionColor = 'rgba(255, 255, 255, 0.1)';
+canvas.selectionBorderColor = 'lime';
+canvas.selectionLineWidth = 1;
+canvas.selectionDashArray = [5, 5];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   // Add rectangle
+   document.getElementById('addRectBtn').addEventListener('click', function () {
+     const rect = new fabric.Rect({
+       width: 100,
+       height: 100,
+       fill: 'blue',
+       left: 50,
+       top: 50
+     });
+     canvas.add(rect);
+   });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   // Add circle
+document.getElementById('addCircleBtn').addEventListener('click', function () {
+ const circle = new fabric.Circle({
+     radius: 50,
+     fill: 'red',
+     left: 200,
+     top: 50
+ });
+ canvas.add(circle);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Add triangle
+document.getElementById('addTriangleBtn').addEventListener('click', function () {
+ const triangle = new fabric.Triangle({
+     width: 100,
+     height: 100,
+     fill: 'green',
+     left: 300,
+     top: 50
+ });
+ canvas.add(triangle);
+});
+
+
+// Add ellipse
+document.getElementById('addEllipseBtn').addEventListener('click', function() {
+ const ellipse = new fabric.Ellipse({
+ left: 250,
+ top: 100,
+ fill: 'purple',
+ rx: 50,
+ ry: 30
+});
+canvas.add(ellipse);
+});
+
+
+
+
+// Add polygon
+document.getElementById('addDiamondBtn').addEventListener('click', function () {
+ const polygon = new fabric.Polygon([
+ { x: 300, y: 150 },
+ { x: 350, y: 200 },
+ { x: 300, y: 250 },
+ { x: 250, y: 200 }
+], {
+ fill: 'orange',
+ left: 250,
+ top: 100
+});
+canvas.add(polygon);
+});
+
+
+
+
+
+
+// Add custom SVG shape
+document.getElementById('addSimpleHeartBtn').addEventListener('click', function () {
+ const customShape = new fabric.Path('M13.6705038,1.65775755 C15.7733256,1.1643364 17.8346764,1.87952015 18.8050117,3.09161872 C19.7007318,4.21051134 20.1078092,5.37372498 19.9755956,7.08978592 C19.8803055,8.32659959 19.4754445,9.24351338 18.6768484,10.253173 C18.5296466,10.4392792 18.3687155,10.6302896 18.1658464,10.862046 C18.0465566,10.9983221 17.5949329,11.5061955 17.6178177,11.4803526 C16.8186802,12.3827879 14.4625844,14.643494 10.5145935,18.299202 C10.224182,18.5681134 9.76777894,18.5667637 9.47905081,18.2961397 C6.089961,15.1195561 3.89625857,13.0278592 2.89042367,12.0135158 C1.03250481,10.1398805 0.326468943,9.0511668 0.0698691381,7.29291272 C-0.198560664,5.45359801 0.31465113,3.94412412 1.46841698,2.77151837 C2.55037542,1.67189257 4.4852998,1.26441086 6.39590277,1.65285729 C7.51456274,1.88029307 8.70597506,2.61194275 9.99645377,3.83297717 C11.0971959,2.70423085 12.323284,1.97387885 13.6705038,1.65775755 Z', {
+     fill: 'orange',
+     left: 50,
+     top: 50
+ });
+ canvas.add(customShape);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   // Upload and add image
+   document.getElementById('uploadImage').addEventListener('change', function (event) {
+     const file = event.target.files[0];
+     const reader = new FileReader();
+     reader.onload = function (e) {
+       fabric.Image.fromURL(e.target.result, function (img) {
+         img.scale(0.5);
+         canvas.add(img);
+       });
+     };
+     if (file) {
+       reader.readAsDataURL(file);
+     }
+     closeItemsContainer();
+   });
+
+
+
+
+
+
+// Listen to the object:added event
+canvas.on('object:added', function(e) {
+   const addedObject = e.target;
+   closeItemsContainer();
+   canvas.setActiveObject(addedObject);
+});
+
+
+
+
+// Function to add SVG paths to Fabric.js Canvas
+function addSVGPathToCanvas(svgPath) {
+  fabric.loadSVGFromString(svgPath, (objects, options) => {
+    const obj = fabric.util.groupSVGElements(objects, options);
+    obj.set({
+      left: 100,
+      top: 100,
+      scaleX: 2,
+      scaleY: 2
+    });
+    canvas.add(obj);
+    canvas.renderAll();
+  });
+}
+
+// SVG path strings for each shape
+const shapes = {
+  heart: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="#555" d="M13.6705038,1.65775755 C15.7733256,1.1643364 17.8346764,1.87952015 18.8050117,3.09161872 C19.7007318,4.21051134 20.1078092,5.37372498 19.9755956,7.08978592 C19.8803055,8.32659959 19.4754445,9.24351338 18.6768484,10.253173 C18.5296466,10.4392792 18.3687155,10.6302896 18.1658464,10.862046 C18.0465566,10.9983221 17.5949329,11.5061955 17.6178177,11.4803526 C16.8186802,12.3827879 14.4625844,14.643494 10.5145935,18.299202 C10.224182,18.5681134 9.76777894,18.5667637 9.47905081,18.2961397 C6.089961,15.1195561 3.89625857,13.0278592 2.89042367,12.0135158 C1.03250481,10.1398805 0.326468943,9.0511668 0.0698691381,7.29291272 C-0.198560664,5.45359801 0.31465113,3.94412412 1.46841698,2.77151837 C2.55037542,1.67189257 4.4852998,1.26441086 6.39590277,1.65285729 C7.51456274,1.88029307 8.70597506,2.61194275 9.99645377,3.83297717 C11.0971959,2.70423085 12.323284,1.97387885 13.6705038,1.65775755 Z"/></svg>`,
+  star: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#555" d="M12 2L13.09 8.26L18 9.27L14.5 12.97L15.6 19L12 15.9L8.4 19L9.5 12.97L6 9.27L10.91 8.26L12 2Z"/></svg>`,
+  diamond: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#555" d="M12 2L20 12L12 22L4 12L12 2Z"/></svg>`,
+  crescent: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#555" d="M12.5 2C13.33 2 14.14 2.17 14.92 2.47C9.9 3.99 7 8.96 8.52 13.98C9.24 16.36 10.8 18.24 12.83 19.28C11.73 19.73 10.5 20 9.22 20C4.94 20 1.52 16.58 1.52 12.3C1.52 7.8 5.02 4.3 9.5 4.3C10.68 4.3 11.83 4.56 12.91 5.05C12.97 4.73 13 4.4 13 4.05C13 3.47 12.94 2.91 12.85 2.36C12.74 2.25 12.62 2.13 12.5 2Z"/></svg>`,
+  circle: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#555" /></svg>`,
+  triangle: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#555" d="M12 2L22 20H2L12 2Z"/></svg>`
+};
+
+// Add event listeners to each button
+document.getElementById('addSimpleHeartBtn').addEventListener('click', () => addSVGPathToCanvas(shapes.heart));
+document.getElementById('addStarBtn').addEventListener('click', () => addSVGPathToCanvas(shapes.star));
+document.getElementById('addDiamondBtn').addEventListener('click', () => addSVGPathToCanvas(shapes.diamond));
+document.getElementById('addCrescentBtn').addEventListener('click', () => addSVGPathToCanvas(shapes.crescent));
+document.getElementById('addCircleBtn').addEventListener('click', () => addSVGPathToCanvas(shapes.circle));
+document.getElementById('addTriangleBtn').addEventListener('click', () => addSVGPathToCanvas(shapes.triangle));
+
+
+
+
+  // Function to change text alignment for single or multiple selected items
+  function alignText(alignment) {
+    const activeObject = canvas.getActiveObject();
+
+    if (activeObject) {
+      if (activeObject.type === 'activeSelection') {
+        // If multiple objects are selected, apply alignment to each text object
+        activeObject.forEachObject((obj) => {
+          if (obj.type === 'textbox') {
+            obj.set({ textAlign: alignment });
+          }
+        });
+      } else if (activeObject.type === 'textbox') {
+        // If a single textbox is selected, apply alignment directly
+        activeObject.set({ textAlign: alignment });
+      }
+      canvas.renderAll();
+    }
+  }
+
+
+  // Optional: You can also add event listeners to update the text object live
+document.getElementById('lineHeightRange').addEventListener('input', (e) => {
+  const activeObject = canvas.getActiveObject();
+  if (activeObject && activeObject.type === 'textbox') {
+    const lineHeight = parseFloat(e.target.value);
+    activeObject.set({ lineHeight: lineHeight });
+    canvas.renderAll();
+  }
+});
+
+document.getElementById('letterSpacingRange').addEventListener('input', (e) => {
+  const activeObject = canvas.getActiveObject();
+  if (activeObject && activeObject.type === 'textbox') {
+    const letterSpacing = parseFloat(e.target.value);
+    activeObject.set({ letterSpacing: letterSpacing });
+    canvas.renderAll();
+  }
+});
+
+
+
+  // Alignment button event listeners
+  document.getElementById('alignLeft').onclick = () => alignText('left');
+  document.getElementById('alignCenter').onclick = () => alignText('center');
+  document.getElementById('alignRight').onclick = () => alignText('right');
+  
+
+  document.getElementById('convertToPaths').onclick = () => {
+  const activeObject = canvas.getActiveObject();
+
+  // Check if active object is a text object
+  if (activeObject && activeObject.type === 'textbox') {
+    // Get the current values from the range inputs
+    const lineHeight = parseFloat(document.getElementById('lineHeightRange').value);
+    const letterSpacing = parseFloat(document.getElementById('letterSpacingRange').value);
+
+    // Set the line height and letter spacing on the active text object
+    activeObject.set({
+      lineHeight: lineHeight,      // Adjust line height
+      letterSpacing: letterSpacing, // Adjust letter spacing
+    });
+
+    // Clone the active text object after applying new settings
+    activeObject.clone((clonedText) => {
+      const text = clonedText.text;
+      const characters = text.split('');
+      const letterObjects = [];
+      let offsetX = 0;
+      let offsetY = 0;
+
+      // Loop through each character to create an individual letter object
+      characters.forEach((char, index) => {
+        const charObj = new fabric.Text(char, {
+          left: offsetX,
+          top: offsetY,
+          fontFamily: clonedText.fontFamily,
+          fontSize: clonedText.fontSize,
+          fill: clonedText.fill,
+          fontWeight: clonedText.fontWeight,
+          lineHeight: clonedText.lineHeight,
+          letterSpacing: clonedText.letterSpacing,
+          textAlign: clonedText.textAlign,
+          textBaseline: clonedText.textBaseline,
+        });
+
+        // Adjust for letter spacing and line height
+        offsetX += charObj.width + letterSpacing;
+
+        // If a new line is reached, adjust offsetY and reset offsetX
+        if (char === '\n') {
+          offsetY += lineHeight;
+          offsetX = 0;
+        }
+
+        letterObjects.push(charObj);
+      });
+
+      // Create a group of all the letter objects
+      const pathGroup = new fabric.Group(letterObjects, {
+        left: activeObject.left,
+        top: activeObject.top,
+      });
+
+      // Remove the original text from the canvas
+      canvas.remove(activeObject);
+
+      // Add the new path group to the canvas
+      canvas.add(pathGroup);
+      canvas.setActiveObject(pathGroup);
+      canvas.renderAll();
+    });
+  }
+};
+
+
+
+
+  
+
+// Top 20 popular Google Fonts
+const googleFonts = [
+"ABeeZee", "Abel", "Abril Fatface", "Aclonica", "Acme",
+"Actor", "Adamina", "Aguafina Script", "Akronim", "Aladin",
+"Aldrich", "Alef", "Alegreya", "Alegreya Sans", "Alegreya SC",
+"Aleo", "Alfa Slab One", "Alice", "Alike", "Alike Angular",
+"Allan", "Allerta", "Allerta Stencil", "Allura", "Almarai",
+"Amarante", "Amatic SC", "Amethysta", "Amiko", "Amiri",
+"Amita", "Anaheim", "Andada", "Andika", "Angkor"
+
+
+];
+
+
+// Event listener to toggle the font select menu
+document.getElementById("fontChangeButton").onclick = () => {
+  const fontMenu = document.getElementById("fontSelectMenu");
+  fontMenu.classList.toggle("fontMenuOpen");
+
+  console.log("Toggled fontMenuOpen class. Current class list:", fontMenu.classList); // Debugging
+
+  // Only load fonts initially when opening the menu
+  if (fontMenu.classList.contains("fontMenuOpen")) {
+    displayFonts(googleFonts);
+  }
+};
+
+// Display fonts in the font menu
+function displayFonts(fontList) {
+  const fontListDiv = document.getElementById("fontList");
+  fontListDiv.innerHTML = ""; // Clear previous fonts
+
+  fontList.forEach(font => {
+    const fontDiv = document.createElement("div");
+    fontDiv.textContent = font;
+    fontDiv.classList.add("font-item");
+    fontDiv.style.fontFamily = "Arial, sans-serif"; // Set default font style
+    fontDiv.onclick = () => applyFont(font); // Apply font on click
+    fontListDiv.appendChild(fontDiv);
+
+    // Load each font individually and update its style once loaded
+    WebFont.load({
+      google: { families: [font] },
+      fontactive: function(familyName) {
+        if (familyName === font) {
+          fontDiv.style.fontFamily = font; // Update to the correct font style
+        }
+      },
+      inactive: function() {
+        console.error(`Could not load font ${font}`);
+      }
+    });
+  });
+}
+
+// Filter fonts as user types in the search bar
+document.getElementById("fontSearch").oninput = (event) => {
+  const searchTerm = event.target.value.toLowerCase();
+  const filteredFonts = googleFonts.filter(font => font.toLowerCase().includes(searchTerm));
+  displayFonts(filteredFonts);
+};
+
+// Apply the selected font to the active Fabric.js text object
+function applyFont(font) {
+  WebFont.load({
+    google: { families: [font] },
+    active: function() {
+      const activeObject = canvas.getActiveObject();
+      if (activeObject && activeObject.type === 'textbox') {
+        activeObject.set("fontFamily", font);
+        canvas.renderAll();
+      } else {
+        alert("Please select a text object to apply the font.");
+      }
+
+      // Close the font menu after applying the font
+      document.getElementById("fontSelectMenu").classList.remove("fontMenuOpen");
+    },
+    inactive: function() {
+      console.error(`Could not load font ${font}`);
+    }
+  });
+  saveState();
+}
+
+// Close the font menu if clicked outside
+document.addEventListener("click", (event) => {
+  const fontMenu = document.getElementById("fontSelectMenu");
+  const fontButton = document.getElementById("fontChangeButton");
+
+  if (!fontMenu.contains(event.target) && !fontButton.contains(event.target)) {
+    fontMenu.classList.remove("fontMenuOpen");
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// State variables
+let isFreeDrawingMode = false;
+let isPointDrawingMode = false;
+let isAngleSnappingEnabled = false;
+let clickPathPoints = [];
+const drawSnapAngle = 45; // Snap to 45-degree increments
+const drawTolerance = 15; // Tolerance for snapping
+let previewLine = null;
+let copiedObjects = [];
+let lines = []; // Store individual lines drawn
+let snapLine = null; // Line for visual snapping indication
+let undoStack = [];
+let redoStack = [];
+window.canvas = canvas;
+
+
+
+
+// Bring the selected object to the front
+function bringToFront() {
+   const activeObject = canvas.getActiveObject();
+   if (activeObject) {
+       activeObject.bringToFront();
+       canvas.renderAll();
+       updateLayersList();
+   }
+}
+
+
+// Send the selected object to the back
+function sendToBack() {
+   const activeObject = canvas.getActiveObject();
+   if (activeObject) {
+       activeObject.sendToBack();
+       canvas.renderAll();
+       updateLayersList();
+   }
+}
+
+
+// Bring the selected object one step forward
+function bringForward() {
+   const activeObject = canvas.getActiveObject();
+   if (activeObject) {
+       activeObject.bringForward();
+       canvas.renderAll();
+       updateLayersList();
+   }
+}
+
+
+// Send the selected object one step backward
+function sendBackward() {
+   const activeObject = canvas.getActiveObject();
+   if (activeObject) {
+       activeObject.sendBackwards();
+       canvas.renderAll();
+       updateLayersList();
+   }
+}
+
+
+// Event listeners for z-index buttons
+document.getElementById('bring-to-front').addEventListener('click', bringToFront);
+document.getElementById('send-to-back').addEventListener('click', sendToBack);
+document.getElementById('bring-forward').addEventListener('click', bringForward);
+document.getElementById('send-backward').addEventListener('click', sendBackward);
+
+
+
+
+
+
+// Grouping objects
+document.getElementById('group').onclick = function() {
+ if (!canvas.getActiveObject()) {
+   alert('Please select objects to group');
+   return;
+ }
+
+
+ const activeObject = canvas.getActiveObject();
+
+
+ if (activeObject.type === 'activeSelection') {
+   activeObject.toGroup();
+   canvas.renderAll();
+
+
+ }
+};
+
+
+// Ungroup objects
+document.getElementById('ungroup').onclick = function() {
+ if (!canvas.getActiveObject()) {
+   alert('Please select a group to ungroup');
+   return;
+ }
+
+
+ const activeObject = canvas.getActiveObject();
+
+
+ if (activeObject.type === 'group') {
+   activeObject.toActiveSelection();
+   canvas.renderAll();
+ }
+};
+
+
+
+
+// Function to copy the selected objects
+function copySelected() {
+const activeObjects = canvas.getActiveObjects(); // Get selected objects
+copiedObjects = activeObjects.map(obj => obj.toJSON()); // Store the JSON representation of the objects
+}
+
+
+
+
+
+
+
+
+// Function to paste the copied objects
+function pasteCopied() {
+if (copiedObjects.length > 0) { // Check if there are copied objects
+  copiedObjects.forEach(copiedObject => {
+    // Create a new object from the copied JSON
+    const newObject = fabric.util.enlivenObjects([copiedObject], function(objects) {
+      objects.forEach((obj) => {
+        // Offset the new object position slightly
+        obj.set({
+          left: obj.left + 10, // Move pasted object to the right
+          top: obj.top + 10 // Move pasted object down
+        });
+        canvas.add(obj); // Add the new object to the canvas
+      });
+      canvas.renderAll(); // Render the updated canvas
+    });
+  });
+}
+}
+
+
+
+
+
+
+
+
+// Event listeners
+document.getElementById('copyBtn').addEventListener('click', copySelected);
+document.getElementById('pasteBtn').addEventListener('click', pasteCopied);
+
+
+
+
+
+
+
+
+
+// Save the current state to the undo stack and clear redo stack
+function saveState() {
+  // Save canvas state including font family and other properties
+  undoStack.push(JSON.stringify(canvas.toJSON(['fontFamily', 'fontSize', 'fill', 'left', 'top', 'text', 'width', 'height', 'scaleX', 'scaleY', 'angle', 'flipX', 'flipY'])));
+  redoStack = []; // Clear redo stack after a new action
+  canvas.renderAll();
+  updateLayersList(); // Update layers list after saving state
+}
+
+// Load a specific state and render it
+function loadState(state) {
+  canvas.loadFromJSON(state, () => {
+    canvas.renderAll();
+    updateLayersList(); // Update layers after loading
+  });
+}
+
+// Undo function
+function undo() {
+  if (undoStack.length > 1) {
+    redoStack.push(undoStack.pop()); 
+    loadState(undoStack[undoStack.length - 1]); 
+  }
+}
+
+// Redo function
+function redo() {
+  if (redoStack.length > 0) {
+    const state = redoStack.pop();
+    undoStack.push(state);
+    loadState(state);
+  }
+}
+
+// Initialize and capture the initial state
+function initializeState() {
+  saveState();
+}
+
+// Update layers list dynamically based on canvas z-order
+function updateLayersList() {
+  const layersList = document.getElementById('layersList');
+  layersList.innerHTML = ''; // Clear existing list
+
+  // Get all objects and groups in z-order
+  const items = canvas.getObjects().slice().reverse(); // Reverse to list top-most objects first
+  items.forEach((item, index) => {
+    const listItem = document.createElement('li');
+    listItem.textContent = item.layerName || `Layer ${canvas.getObjects().length - index}`;
+    listItem.style.cursor = 'pointer';
+    
+    // Rename functionality
+    listItem.addEventListener('click', () => renameLayer(item, index));
+
+    // Append to the list
+    layersList.appendChild(listItem);
+  });
+}
+
+// Rename layer functionality
+function renameLayer(item, index) {
+  const newLayerName = prompt('Enter a new name for the layer:', item.layerName || `Layer ${index + 1}`);
+  if (newLayerName) {
+    item.set('layerName', newLayerName); // Save layer name as a custom property
+    saveState(); // Save new state after renaming
+  }
+}
+
+// Toggle the layers panel visibility
+document.getElementById('layersButton').addEventListener('click', () => {
+  const layersPanel = document.getElementById('layersPanel');
+  layersPanel.style.display = (layersPanel.style.display === 'none') ? 'block' : 'none';
+  updateLayersList(); // Update the layers list whenever the panel is toggled
+});
+
+// Event listeners to update layers list on canvas changes
+canvas.on({
+  'object:added': updateLayersList,
+  'object:removed': updateLayersList,
+  'object:modified': updateLayersList,
+  'object:moving': updateLayersList,
+  'object:scaling': updateLayersList,
+  'object:rotating': updateLayersList
+});
+
+// Initial setup
+initializeState();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Capture canvas changes and save the state
+function attachCanvasListeners() {
+ canvas.on('object:added', saveState);
+ canvas.on('object:removed', saveState);
+ canvas.on('object:modified', saveState);
+ canvas.on('object:scaled', saveState); // Capture scaling actions
+ canvas.on('object:rotated', saveState); // Capture rotation actions
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Bind undo and redo buttons to the respective functions
+document.getElementById('undoButton').addEventListener('click', undo);
+document.getElementById('redoButton').addEventListener('click', redo);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Initialize and attach listeners
+initializeState();
+attachCanvasListeners();
+
+
+
+
+
+
+
+
+      // Add event listener for the SVG generation button
+      document.getElementById('generateSvgBtn').addEventListener('click', function() {
+          // Generate the SVG code
+          const svgData = canvas.toSVG();
+
+
+
+
+          // Display the SVG code in the textarea
+          const svgOutput = document.getElementById('svgOutput');
+          svgOutput.value = svgData;
+      });
+
+
+
+
+
+
+
+
+
+// Function to handle color changes for background or selected objects
+function changeColor(event) {
+  const color = event.target.value;  // Get the selected color
+  const target = event.target.getAttribute('data-target');  // Get target (background or objects)
+
+  if (target === 'background') {
+    // If it's the background color picker, change the canvas background
+    canvas.setBackgroundColor(color, canvas.renderAll.bind(canvas));
+  } else if (target === 'objects') {
+    // If it's the object color picker, change the color of selected objects
+    canvas.getActiveObjects().forEach((object) => {
+      object.set({
+        fill: color,   // Set fill color
+      });
+    });
+    canvas.renderAll();  // Re-render the canvas to apply changes
+  }
+}
+
+// Add event listeners to both color pickers
+document.querySelectorAll('input[type="color"]').forEach(input => {
+  input.addEventListener('input', changeColor);  // Trigger color change on input event
+});
+
+
+
+
+
+
+
+
+// Function to round the corners of selected objects
+function roundCorners() {
+  const radius = parseFloat(document.getElementById('cornerRadius').value);
+
+
+
+
+
+
+
+
+  // Iterate through all selected objects and round corners if applicable
+  canvas.getActiveObjects().forEach((object) => {
+      if (object.type === 'rect') { // Check if the object is a rectangle
+          object.set('rx', radius); // Set the corner radius for rectangles
+          object.set('ry', radius); // Set the corner radius for rectangles
+      }
+  });
+   // Render the updated canvas
+  canvas.renderAll();
+}
+
+
+
+
+
+
+
+
+document.getElementById('roundCornersBtn').addEventListener('click', roundCorners);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Toggle free drawing mode
+function toggleFreeDrawingMode() {
+ isFreeDrawingMode = !isFreeDrawingMode;
+ canvas.isDrawingMode = isFreeDrawingMode;
+ document.getElementById('drawingModeBtn').innerText = isFreeDrawingMode ? 'Disable Free Drawing Mode' : 'Enable Free Drawing Mode';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // Turn off point drawing mode when free drawing is enabled
+ if (isFreeDrawingMode) {
+     isPointDrawingMode = false;
+     document.getElementById('pointModeBtn').innerText = 'Enable Point Drawing Mode';
+ }
+ closeItemsContainer();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Toggle point drawing mode
+function togglePointDrawingMode() {
+ isPointDrawingMode = !isPointDrawingMode;
+ document.getElementById('pointModeBtn').innerText = isPointDrawingMode ? 'Disable Point Drawing Mode' : 'Enable Point Drawing Mode';
+ closeItemsContainer();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // Clear existing points and preview line if exiting point drawing mode
+ if (!isPointDrawingMode) {
+     clickPathPoints = [];
+     lines.forEach(line => canvas.remove(line)); // Remove all lines
+     lines = []; // Clear the lines array
+     if (previewLine) {
+         canvas.remove(previewLine);
+         previewLine = null;
+     }
+     if (snapLine) {
+         canvas.remove(snapLine);
+         snapLine = null;
+     }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // Turn off free drawing mode when point drawing is enabled
+ if (isPointDrawingMode) {
+     isFreeDrawingMode = false;
+     canvas.isDrawingMode = false;
+     document.getElementById('drawingModeBtn').innerText = 'Enable Free Drawing Mode';
+ }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Helper function to snap to nearest angle
+function getSnappedPoint(startPoint, endPoint) {
+ const dx = endPoint.x - startPoint.x;
+ const dy = endPoint.y - startPoint.y;
+ const angle = Math.atan2(dy, dx) * (180 / Math.PI); // Angle in degrees
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ const snappedAngle = Math.round(angle / drawSnapAngle) * drawSnapAngle;
+ if (Math.abs(snappedAngle - angle) <= drawTolerance) {
+     const distance = Math.sqrt(dx * dx + dy * dy); // Distance to new point
+     const snappedRadians = snappedAngle * (Math.PI / 180); // Convert to radians
+     return {
+         x: startPoint.x + distance * Math.cos(snappedRadians),
+         y: startPoint.y + distance * Math.sin(snappedRadians)
+     };
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ return endPoint;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Check if points are within tolerance
+function pointsAreWithinTolerance(p1, p2, tolerance) {
+ const distance = Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
+ return distance <= tolerance;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Preview line when in point drawing mode and snapping
+canvas.on('mouse:move', function(event) {
+ if (isPointDrawingMode && clickPathPoints.length > 0 && event.pointer) {
+     const lastPoint = clickPathPoints[clickPathPoints.length - 1];
+     let newPoint = { x: event.pointer.x, y: event.pointer.y };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     if (isAngleSnappingEnabled) {
+         newPoint = getSnappedPoint(lastPoint, newPoint);
+     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     // Update or create preview line
+     if (previewLine) {
+         previewLine.set({ x2: newPoint.x, y2: newPoint.y });
+     } else {
+         previewLine = new fabric.Line([lastPoint.x, lastPoint.y, newPoint.x, newPoint.y], {
+             stroke: 'red',
+             strokeDashArray: [5, 5],
+             selectable: false,
+             evented: false,
+             hasControls: false,
+             hasBorders: false
+         });
+         canvas.add(previewLine);
+      
+     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     // Create or update snap line to indicate snapping point
+     if (pointsAreWithinTolerance(clickPathPoints[0], newPoint, drawTolerance)) {
+         if (!snapLine) {
+             snapLine = new fabric.Line([lastPoint.x, lastPoint.y, clickPathPoints[0].x, clickPathPoints[0].y], {
+                 stroke: 'orange',
+                 strokeDashArray: [5, 5],
+                 selectable: false,
+                 evented: false,
+                 hasControls: false,
+             hasBorders: false
+             });
+             canvas.add(snapLine);
+         } else {
+             snapLine.set({ x1: lastPoint.x, y1: lastPoint.y, x2: clickPathPoints[0].x, y2: clickPathPoints[0].y });
+         }
+     } else {
+         if (snapLine) {
+             canvas.remove(snapLine);
+             snapLine = null;
+         }
+     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     canvas.renderAll();
+ }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Handle click in point drawing mode
+canvas.on('mouse:down', function(event) {
+ if (isPointDrawingMode && event.pointer) {
+     const lastPoint = clickPathPoints[clickPathPoints.length - 1] || { x: event.pointer.x, y: event.pointer.y };
+     let newPoint = { x: event.pointer.x, y: event.pointer.y };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     if (isAngleSnappingEnabled) {
+         newPoint = getSnappedPoint(lastPoint, newPoint);
+     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     // If the last point is within tolerance of the first point, snap it
+     if (clickPathPoints.length > 0 && pointsAreWithinTolerance(clickPathPoints[0], newPoint, drawTolerance)) {
+         newPoint = clickPathPoints[0]; // Snap to the starting point
+     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     // Create a new line segment
+     const line = new fabric.Line([lastPoint.x, lastPoint.y, newPoint.x, newPoint.y], {
+         stroke: 'blue',
+         selectable: false
+     });
+     canvas.add(line);
+     lines.push(line); // Store the line in the lines array
+     clickPathPoints.push(newPoint);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     // Remove preview line and snap line to refresh for the next segment
+     if (previewLine) {
+         canvas.remove(previewLine);
+         previewLine = null;
+     }
+     if (snapLine) {
+         canvas.remove(snapLine);
+         snapLine = null;
+     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     // Check if the last point is within tolerance of the first point
+     if (clickPathPoints.length > 2 && pointsAreWithinTolerance(clickPathPoints[0], newPoint, drawTolerance)) {
+         // Create the polygon on click if within tolerance
+         const polygon = new fabric.Polygon(clickPathPoints, {
+             fill: 'rgba(100, 150, 255, 0.5)',
+             stroke: 'black',
+             strokeWidth: 2,
+             selectable: true
+         });
+         canvas.add(polygon);
+         clickPathPoints = []; // Reset for a new shape
+         lines.forEach(line => canvas.remove(line)); // Remove all lines after shape creation
+         lines = []; // Clear the lines array
+         togglePointDrawingMode();
+     }
+   
+     canvas.renderAll();
+ }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Function to delete selected items
+function deleteSelectedItems() {
+ const activeObjects = canvas.getActiveObjects(); // Get selected objects
+ if (activeObjects.length) {
+     activeObjects.forEach((obj) => {
+         // Check if object is text and not currently in editing mode
+         if (obj.type === 'textbox' || obj.type === 'text') {
+             if (!obj.isEditing) {
+                 canvas.remove(obj); // Remove text if not being edited
+             }
+         } else {
+             canvas.remove(obj); // Remove non-text objects as usual
+         }
+     });
+     canvas.discardActiveObject(); // Clear the selection
+     canvas.renderAll(); // Re-render the canvas
+ }
+}
+
+
+// Event listener for the delete button
+document.getElementById('deleteButton').addEventListener('click', deleteSelectedItems);
+
+
+// Event listener for backspace key
+document.addEventListener('keydown', (event) => {
+ // Only proceed if Backspace or Delete is pressed and no text input is active
+ if ((event.key === 'Backspace' || event.key === 'Delete') && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+     deleteSelectedItems(); // Call the delete function
+     event.preventDefault(); // Prevent default backspace behavior
+ }
+});
+
+
+
+
+
+
+// Create your delete button element (hidden by default)
+const deleteButton = document.createElement('deleteInPlaceButton');
+deleteButton.innerText = 'Delete';
+deleteButton.style.position = 'absolute';
+deleteButton.style.display = 'none';
+deleteButton.style.background = 'rgba(0,0,0,0.3)';
+deleteButton.style.color = 'rgba(220,220,220,1';
+deleteButton.style.backdropFilter = 'blur(5px)';
+deleteButton.style.padding = '5px';
+deleteButton.style.borderRadius = '15px';
+deleteButton.style.transform = 'translate(50%, 10px)'
+document.body.appendChild(deleteButton);
+
+
+// Function to position the delete button
+function positionDeleteButton() {
+ const activeObject = canvas.getActiveObject();
+ if (activeObject) {
+   // Get the object's position on the canvas
+   const boundingRect = activeObject.getBoundingRect();
+  
+   // Calculate position for the button below the selected object
+   deleteButton.style.left = `${canvas._offset.left + boundingRect.left}px`;
+   deleteButton.style.top = `${canvas._offset.top + boundingRect.top + boundingRect.height}px`;
+  
+   // Show the delete button
+   deleteButton.style.display = 'block';
+ }
+}
+
+
+// Hide delete button function
+function hideDeleteButton() {
+ deleteButton.style.display = 'none';
+}
+
+
+// Attach event listeners to the canvas
+canvas.on('selection:created', positionDeleteButton);
+canvas.on('selection:updated', positionDeleteButton);
+canvas.on('object:moving', hideDeleteButton); // Hide button while moving
+canvas.on('object:modified', positionDeleteButton); // Show button in the new position after move
+canvas.on('object:rotating', hideDeleteButton, positionDeleteButton);
+canvas.on('selection:cleared', hideDeleteButton);
+
+
+// Add delete functionality to the button
+deleteButton.addEventListener('click', () => {
+ const activeObjects = canvas.getActiveObjects();
+ if (activeObjects.length > 0) {
+   // Remove all selected objects
+   activeObjects.forEach(obj => canvas.remove(obj));
+
+
+   // Hide the delete button immediately after deletion
+   hideDeleteButton();
+   canvas.discardActiveObject(); // Deselect objects immediately
+ }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // Initial rotation snap settings
+let snapAngle = 15; // Default snap angle in degrees
+let tolerance = 5; // Default tolerance in degrees
+let isSnappingEnabled = false; // Rotation snapping is initially disabled
+
+// Function to update snap settings
+function updateSnapSettings() {
+    // Get the selected snap angle and tolerance
+    snapAngle = parseInt(document.getElementById('snapAngleSelect').value);
+    tolerance = parseInt(document.getElementById('toleranceSlider').value);
+
+    // Enable or disable snap settings based on checkbox
+    if (isSnappingEnabled) {
+        document.getElementById('snapAngleSelect').disabled = false;
+        document.getElementById('toleranceSlider').disabled = false;
+    } else {
+        document.getElementById('snapAngleSelect').disabled = true;
+        document.getElementById('toleranceSlider').disabled = true;
+    }
+}
+
+// Event listener for enabling/disabling snap rotation
+document.getElementById('enableSnapRotation').addEventListener('change', function (event) {
+    isSnappingEnabled = event.target.checked;
+    updateSnapSettings(); // Update settings based on checkbox state
+});
+
+// Event listener for snap angle change
+document.getElementById('snapAngleSelect').addEventListener('change', function () {
+    snapAngle = parseInt(this.value); // Update the snap angle based on the selection
+});
+
+// Event listener for tolerance slider change
+document.getElementById('toleranceSlider').addEventListener('input', function () {
+    tolerance = parseInt(this.value); // Update tolerance value
+    document.getElementById('toleranceValue').innerText = `${tolerance}px`;
+});
+
+// Rotation snapping logic (only active if snapping is enabled)
+canvas.on('object:rotating', function (event) {
+    if (isSnappingEnabled) {
+        const obj = event.target;
+        const currentAngle = obj.angle;
+        const center = obj.getCenterPoint();
+
+        // Calculate the closest snapped angle
+        const snappedAngle = Math.round(currentAngle / snapAngle) * snapAngle;
+
+        // Snap only if within the tolerance
+        if (Math.abs(snappedAngle - currentAngle) <= tolerance) {
+            obj.set('angle', snappedAngle); // Set the snapped angle
+        }
+
+        // Restore the object's center position after snapping
+        obj.setPositionByOrigin(center, 'center', 'center');
+        canvas.renderAll(); // Re-render the canvas to reflect the new angle
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const aspectRatios = {
+  "Popular": {
+    "16:9 Standard": (width) => width * (9 / 16), // Common for HD, 4K, and 8K
+    "1:1 Square": (width) => width,               // Social media posts
+    "4:3 Standard": (width) => width * (3 / 4),   // Older monitors and some mobile
+    "3:2 Standard": (width) => width * (2 / 3),   // Photography, some tablets
+    "9:16 Vertical": (width) => width * (9 / 16), // Stories, TikTok
+    "2:1 Ultrawide": (width) => width * (1 / 2),  // Banner ads, ultrawide monitors
+    "5:4 Standard": (width) => width * (4 / 5),   // Older monitors, SXGA
+    "1.91:1 Facebook Ad": (width) => width * (1 / 1.91),
+    "2.35:1 CinemaScope": (width) => width * (1 / 2.35),
+    "1.43:1 IMAX": (width) => width * (1 / 1.43),
+    "16:10": (width) => width * (10 / 16),         // Widescreen monitors
+    "2.76:1 Ultra Panavision": (width) => width * (1 / 2.76),
+    "1.85:1 DCP Flat": (width) => width * (1 / 1.85),
+    "2.39:1 DCP Scope": (width) => width * (1 / 2.39),
+    "19.5:9 Mobile Portrait": (width) => width * (9 / 19.5), // Mobile phones
+    "3:4 Social Media Portrait": (width) => width * (4 / 3),
+    "18:9 Android": (width) => width * (9 / 18),
+    "3:2 Surface Pro": (width) => width * (2 / 3),
+    "21:9 Cinema Ultrawide": (width) => width * (9 / 21),
+    "4:5 Instagram Portrait": (width) => width * (5 / 4),
+  },
+  "Screen Sizes": {
+    "Widescreen": (width) => width * (9 / 16),
+    "Cinema": (width) => width * (9 / 21),
+    "HD": (width) => width * (9 / 16),
+    "4K UHD": (width) => width * (9 / 16),
+    "Full HD": (width) => width * (9 / 16),
+    "SXGA": (width) => width * (4 / 5),
+    "UXGA": (width) => width * (3 / 4),
+    "QVGA": (width) => width * (3 / 4),
+    "5K Display": (width) => width * (9 / 16),
+    "8K Display": (width) => width * (9 / 16),
+    "16:10 Widescreen": (width) => width * (10 / 16)
+  },
+  "Paper Sizes": {
+    "Letter": (width) => width * (11 / 8.5),
+    "Legal": (width) => width * (14 / 8.5),
+    "A4": (width) => width * (297 / 210),
+    "A3": (width) => width * (420 / 297),
+    "A5": (width) => width * (210 / 148),
+    "A2": (width) => width * (594 / 420),
+    "A1": (width) => width * (841 / 594),
+    "A0": (width) => width * (1189 / 841),
+    "B5": (width) => width * (250 / 176),
+    "C4 Envelope": (width) => width * (324 / 229)
+  },
+  "Mobile & Tablets": {
+    "Mobile Portrait": (width) => width * (16 / 9),
+    "Tablet Landscape": (width) => width * (3 / 4),
+    "iPhone X": (width) => width * (19.5 / 9),
+    "iPad Pro": (width) => width * (4 / 3),
+    "Android Phone": (width) => width * (18 / 9),
+    "Galaxy S20": (width) => width * (20 / 9),
+    "Surface Pro": (width) => width * (3 / 2),
+    "iPhone 12": (width) => width * (19.5 / 9),
+    "iPad Air": (width) => width * (4 / 3)
+  },
+  "Social Media": {
+    "Instagram Post": (width) => width,            // 1:1 Square
+    "Instagram Story": (width) => width * (16 / 9),
+    "Facebook Cover": (width) => width * (9 / 16),
+    "Facebook Post": (width) => width * (4 / 3),
+    "Twitter Post": (width) => width * (2 / 1),
+    "LinkedIn Banner": (width) => width * (4 / 1),
+    "YouTube Thumbnail": (width) => width * (16 / 9),
+    "Pinterest Pin": (width) => width * (2 / 3),
+    "Snapchat Story": (width) => width * (9 / 16),
+    "LinkedIn Post": (width) => width * (1.91 / 1),
+    "TikTok Video": (width) => width * (16 / 9),
+    "Facebook Ad": (width) => width * (1.91 / 1)
+  },
+  "Video & Film": {
+    "CinemaScope": (width) => width * (1 / 2.35 ),
+    "IMAX": (width) => width * (1 / 1.43),
+    "Ultra Panavision": (width) => width * (1 / 2.76),
+    "DCP Flat": (width) => width * (1 / 1.85 ),
+    "DCP Scope": (width) => width * (1 / 2.39),
+    "Academy Ratio": (width) => width * (1 / 1.375),
+    "Anamorphic": (width) => width * (1 / 2.4 )
+  },
+  "Other": {
+    "Square": (width) => width,
+    "Panorama": (width) => width * (1 / 2),
+    "Polaroid": (width) => width * (3 / 4),
+    "Golden Ratio": (width) => width * (1.618 / 1),
+    "CD Cover": (width) => width,
+    "DVD Cover": (width) => width * (1.5 / 1),
+    "Banner": (width) => width * (3 / 1)
+  },
+  "Custom": {
+    "Aspect Ratio": null,
+    "Pixel": null
+  }
+};
+
+
+
+// Populate the categorySelect dropdown
+function populateCategories() {
+  const categorySelect = document.getElementById('categorySelect');
+  categorySelect.innerHTML = '';
+
+  for (const category in aspectRatios) {
+    const option = document.createElement('option');
+    option.value = category;
+    option.text = category;
+    categorySelect.appendChild(option);
+  }
+}
+
+// Update the documentType dropdown based on selected category
+function updateAspectRatios() {
+  const category = document.getElementById('categorySelect').value;
+  const documentType = document.getElementById('documentType');
+  documentType.innerHTML = '';
+
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.text = 'Select Aspect Ratio';
+  documentType.appendChild(defaultOption);
+
+  if (aspectRatios[category]) {
+    for (const ratio in aspectRatios[category]) {
+      const option = document.createElement('option');
+      option.value = ratio;
+      option.text = ratio;
+      documentType.appendChild(option);
+    }
+  }
+}
+
+
+
+// Show custom input fields based on documentType selection
+function toggleCustomInput() {
+  const documentType = document.getElementById('documentType').value;
+  document.getElementById('customRatioContainer').style.display = documentType === 'Aspect Ratio' ? 'block' : 'none';
+  document.getElementById('pixelInputContainer').style.display = documentType === 'Pixel' ? 'block' : 'none';
+}
+
+// Handle the canvas resizing based on selection
+document.getElementById('resizeCanvasBtn').addEventListener('click', function() {
+  const screenWidth = Math.min(window.innerWidth, window.outerWidth) * 0.9;
+  let targetWidth = screenWidth;
+  let targetHeight;
+
+  const category = document.getElementById('categorySelect').value;
+  const aspectRatio = document.getElementById('documentType').value;
+
+  // Calculate height for "Custom" options or predefined aspect ratios
+  if (category === "Custom" && aspectRatio === "Aspect Ratio") {
+    const customRatio = document.getElementById('customRatio').value;
+    const [customWidth, customHeight] = customRatio.split(':').map(Number);
+
+    if (isNaN(customWidth) || isNaN(customHeight) || customHeight === 0) {
+      alert('Please enter a valid aspect ratio (e.g., 16:9).');
+      return;
+    }
+
+    targetHeight = targetWidth * (customHeight / customWidth);
+  } else if (category === "Custom" && aspectRatio === "Pixel") {
+    const pixelWidth = Number(document.getElementById('pixelWidth').value);
+    const pixelHeight = Number(document.getElementById('pixelHeight').value);
+
+    if (pixelWidth && pixelHeight) {
+      targetWidth = pixelWidth;
+      targetHeight = pixelHeight;
+      const aspectRatioValue = pixelWidth / pixelHeight;
+      document.getElementById('calculatedAspectRatio').textContent = `${pixelWidth}:${pixelHeight}`;
+    } else {
+      alert('Please enter valid pixel dimensions.');
+      return;
+    }
+  } else {
+    if (aspectRatios[category] && aspectRatios[category][aspectRatio]) {
+      targetHeight = aspectRatios[category][aspectRatio](targetWidth);
+    } else {
+      console.warn('Unknown aspect ratio');
+      return;
+    }
+  }
+
+  // Limit height to 90% of the screen height if needed
+  const maxHeight = Math.min(window.innerHeight, window.outerHeight) * 0.9;
+  if (targetHeight > maxHeight) {
+    const scale = maxHeight / targetHeight;
+    targetWidth *= scale;
+    targetHeight = maxHeight;
+  }
+
+  // Apply calculated dimensions to the Fabric.js canvas
+  if (window.canvas) {
+    window.canvas.setWidth(targetWidth);
+    window.canvas.setHeight(targetHeight);
+    window.canvas.renderAll();
+  } else {
+    console.warn('Fabric.js canvas instance not found.');
+  }
+
+  // Save dimensions in local storage
+  localStorage.setItem('canvasWidth', targetWidth);
+  localStorage.setItem('canvasHeight', targetHeight);
+  localStorage.setItem('canvasAspectRatio', aspectRatio);
+
+  console.log('Canvas resized to:', targetWidth, targetHeight);
+});
+
+// Event listeners
+document.getElementById('categorySelect').addEventListener('change', updateAspectRatios);
+document.getElementById('documentType').addEventListener('change', toggleCustomInput);
+
+// Initialize the categories dropdown
+populateCategories();
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Initialize your Fabric.js canvas here
+  const canvas = new fabric.Canvas('designCanvas'); // Replace with your actual canvas ID
+
+  // Load saved canvas size and aspect ratio
+  loadCanvasSize()
+});
+
+function loadCanvasSize(canvas) {
+  // Retrieve saved dimensions and aspect ratio from localStorage
+  const savedWidth = localStorage.getItem('canvasWidth');
+  const savedHeight = localStorage.getItem('canvasHeight');
+  const savedAspectRatio = localStorage.getItem('canvasAspectRatio');
+
+  if (savedWidth && savedHeight && savedAspectRatio) {
+    // Apply the saved dimensions to the canvas
+    canvas.setWidth(Number(savedWidth));
+    canvas.setHeight(Number(savedHeight));
+    canvas.renderAll();
+
+    // Set the selected aspect ratio in the dropdown (if it exists)
+    document.getElementById('documentType').value = savedAspectRatio;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Initialize the canvas and load saved size on DOMContentLoaded
+document.addEventListener("DOMContentLoaded", function() {
+  // Initialize your Fabric.js canvas here
+  const canvas = new fabric.Canvas('designCanvas'); // Replace 'yourCanvasElementID' with your actual canvas ID
+
+  // After initializing, load the saved canvas size
+  loadCanvasSize(canvas);
+});
+
+function loadCanvasSize(canvas) {
+  // Retrieve saved dimensions and aspect ratio from localStorage
+  const savedWidth = localStorage.getItem('canvasWidth');
+  const savedHeight = localStorage.getItem('canvasHeight');
+  const savedAspectRatio = localStorage.getItem('canvasAspectRatio');
+
+  if (savedWidth && savedHeight && savedAspectRatio) {
+    // Apply the saved dimensions to the canvas
+    canvas.setWidth(Number(savedWidth));
+    canvas.setHeight(Number(savedHeight));
+    canvas.renderAll();
+
+    // Set the selected aspect ratio in the dropdown
+    document.getElementById('documentType').value = savedAspectRatio;
+  }
+}
+
+
+function loadCanvasSize() {
+  // Retrieve saved dimensions and aspect ratio from localStorage
+  const savedWidth = localStorage.getItem('canvasWidth');
+  const savedHeight = localStorage.getItem('canvasHeight');
+  const savedAspectRatio = localStorage.getItem('canvasAspectRatio');
+
+  if (savedWidth && savedHeight && savedAspectRatio) {
+    // Apply the saved dimensions to the canvas
+    canvas.setWidth(parseFloat(savedWidth));
+    canvas.setHeight(parseFloat(savedHeight));
+    canvas.renderAll();
+
+    // Set the selected aspect ratio in the dropdown
+    document.getElementById('documentType').value = savedAspectRatio;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Initialize the canvas here if needed
+
+  // Load saved canvas size and aspect ratio
+  loadCanvasSize();
+});
+
+
+
+
+// Function to export the canvas with the selected resolution
+function exportCanvas() {
+const resolutionMultiplier = parseInt(document.getElementById('exportResolution').value, 10);
+
+
+
+
+
+
+
+
+// Generate the data URL for the canvas export
+const dataURL = canvas.toDataURL({
+  format: 'png',
+  multiplier: resolutionMultiplier
+});
+
+
+
+
+
+
+
+
+// Trigger download
+const link = document.createElement('a');
+link.href = dataURL;
+link.download = 'canvas-export.png';
+document.body.appendChild(link); // Append to the document to avoid issues
+link.click();
+document.body.removeChild(link); // Remove the link after clicking
+
+
+
+
+
+
+
+
+// Refresh the page after initiating the download
+setTimeout(function() {
+  location.replace(location.href);
+}, 3000); // Adjust delay as needed
+}
+// Save the canvas state to localStorage
+function saveCanvasState() {
+const canvasState = JSON.stringify(canvas.toJSON());
+localStorage.setItem('canvasState', canvasState);
+}
+
+
+
+
+
+
+
+
+// Load the canvas state from localStorage on page load
+function loadCanvasState() {
+const savedState = localStorage.getItem('canvasState');
+if (savedState) {
+  canvas.loadFromJSON(savedState, () => {
+    canvas.renderAll();
+    loadCanvasSize();
+  });
+}
+}
+
+
+
+
+
+
+
+
+// Event listeners
+document.getElementById('exportCanvasBtn').addEventListener('click', function() {
+exportCanvas();
+saveCanvasState(); // Save state before any potential page reload
+});
+
+
+
+
+
+
+
+
+// Initial canvas resize and load state on page load
+window.onload = function() {
+loadCanvasState();
+};
+
+
+
+
+
+
+
+
+// Optional: Auto-save canvas state before page unload (refresh or close)
+window.addEventListener('beforeunload', saveCanvasState);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Export canvas as PNG
+document.getElementById('exportPngBtn').addEventListener('click', function () {
+ const dataURL = canvas.toDataURL({ format: 'png', quality: 1.0 });
+ downloadImage(dataURL, 'canvas.png');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Export canvas as JPEG
+document.getElementById('exportJpegBtn').addEventListener('click', function () {
+ const dataURL = canvas.toDataURL({ format: 'jpeg', quality: 1.0 });
+ downloadImage(dataURL, 'canvas.jpeg');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Export canvas as SVG
+document.getElementById('exportSvgBtn').addEventListener('click', function () {
+ const svgData = canvas.toSVG();
+ const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+ const svgURL = URL.createObjectURL(svgBlob);
+ downloadImage(svgURL, 'canvas.svg');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Helper function to download the image
+function downloadImage(data, filename) {
+ const link = document.createElement('a');
+ link.href = data;
+ link.download = filename;
+ link.click();
+}
+
+
+
+
+
+
+
+
+const snapTolerance = 5; // Set the snapping tolerance
+
+
+// Helper function to calculate the center position of the canvas
+function getCanvasCenter() {
+ return {
+   x: canvas.getWidth() / 2,
+   y: canvas.getHeight() / 2,
+ };
+}
+
+
+// Helper to apply snapping only if within tolerance
+function getSnappedPosition(position, snapTo) {
+ return Math.abs(position - snapTo) < snapTolerance ? snapTo : position;
+}
+
+
+// Calculate the bounding box of the active selection or single object
+function getSelectionBoundingBox(target) {
+ const objects = target._objects || [target];
+ let left = Math.min(...objects.map(obj => obj.left));
+ let top = Math.min(...objects.map(obj => obj.top));
+ let right = Math.max(...objects.map(obj => obj.left + obj.width * obj.scaleX));
+ let bottom = Math.max(...objects.map(obj => obj.top + obj.height * obj.scaleY));
+
+
+ return { left, top, right, bottom, width: right - left, height: bottom - top };
+}
+
+
+// Handle snapping for individual objects or multiple selected items
+function handleSnapping(target) {
+ const canvasCenter = getCanvasCenter();
+ const selectionBox = getSelectionBoundingBox(target);
+
+
+ // Initial snapped positions set to current target position
+ let snappedLeft = selectionBox.left;
+ let snappedTop = selectionBox.top;
+ let snappedRight = selectionBox.right;
+ let snappedBottom = selectionBox.bottom;
+
+
+ // Snap to canvas edges and center points
+ snappedLeft = getSnappedPosition(selectionBox.left, 0); // Canvas left edge
+ snappedTop = getSnappedPosition(selectionBox.top, 0); // Canvas top edge
+ snappedRight = getSnappedPosition(selectionBox.right, canvas.getWidth()); // Canvas right edge
+ snappedBottom = getSnappedPosition(selectionBox.bottom, canvas.getHeight()); // Canvas bottom edge
+
+
+ snappedLeft = getSnappedPosition(selectionBox.left, canvasCenter.x - selectionBox.width / 2); // Center horizontal
+ snappedTop = getSnappedPosition(selectionBox.top, canvasCenter.y - selectionBox.height / 2); // Center vertical
+
+
+ // Snap to other objects' edges and centers
+ canvas.forEachObject(obj => {
+   if (obj === target || (target._objects && target._objects.includes(obj))) return; // Skip self and items within selection
+
+
+   // Object edges and center points
+   const objLeft = obj.left;
+   const objTop = obj.top;
+   const objRight = obj.left + obj.width * obj.scaleX;
+   const objBottom = obj.top + obj.height * obj.scaleY;
+   const objCenterX = obj.left + obj.width * obj.scaleX / 2;
+   const objCenterY = obj.top + obj.height * obj.scaleY / 2;
+
+
+   // Snap selection box edges to object edges
+   snappedLeft = getSnappedPosition(snappedLeft, objLeft); // Left edge to left edge
+   snappedRight = getSnappedPosition(snappedRight, objRight); // Right edge to right edge
+   snappedTop = getSnappedPosition(snappedTop, objTop); // Top edge to top edge
+   snappedBottom = getSnappedPosition(snappedBottom, objBottom); // Bottom edge to bottom edge
+
+
+   // Snap selection box centers to object centers
+   snappedLeft = getSnappedPosition(snappedLeft, objCenterX - selectionBox.width / 2); // Center horizontal to center horizontal
+   snappedTop = getSnappedPosition(snappedTop, objCenterY - selectionBox.height / 2); // Center vertical to center vertical
+ });
+
+
+ // Apply snapping if any changes are detected
+ if (snappedLeft !== selectionBox.left || snappedTop !== selectionBox.top) {
+   const deltaX = snappedLeft - selectionBox.left;
+   const deltaY = snappedTop - selectionBox.top;
+
+
+   // Move each object in the selection by the same delta to snap the entire selection
+   (target._objects || [target]).forEach(obj => {
+     obj.set({
+       left: obj.left + deltaX,
+       top: obj.top + deltaY
+     });
+     obj.setCoords();
+   });
+
+
+   canvas.renderAll(); // Render after snapping
+ }
+}
+
+
+// Attach event listener for object moving
+canvas.on('object:moving', e => {
+ handleSnapping(e.target);
+});
+
+
+// Example objects for testing
+const rect1 = new fabric.Rect({ left: 50, top: 50, width: 100, height: 100, fill: 'red' });
+const rect2 = new fabric.Rect({ left: 200, top: 200, width: 100, height: 100, fill: 'blue' });
+canvas.add(rect1, rect2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Open the items container
+document.getElementById('openItemsContainerBtn').addEventListener('click', (event) => {
+ event.stopPropagation(); // Prevent the click from immediately closing the container
+ document.getElementById('itemsContainer').classList.add('visible');
+});
+
+
+// Function to close the items container
+function closeItemsContainer() {
+ document.getElementById('itemsContainer').classList.remove('visible');
+}
+
+
+// Close items container when clicking anywhere outside of it
+document.addEventListener('click', (event) => {
+ const container = document.getElementById('itemsContainer');
+
+
+ if (container.classList.contains('visible') && !container.contains(event.target)) {
+   closeItemsContainer();
+ }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ document.getElementById('drawingModeBtn').addEventListener('click', toggleFreeDrawingMode);
+ document.getElementById('pointModeBtn').addEventListener('click', togglePointDrawingMode);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Toggle dropdown menu visibility
+function toggleMenu(menuId) {
+ // Close all open menus
+ document.querySelectorAll('.dropdown').forEach(menu => {
+   if (menu.id !== menuId) {
+     menu.style.display = 'none';
+   }
+ });
+
+
+ // Toggle selected menu
+ const menu = document.getElementById(menuId);
+ menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+ const isClickInsideMenu = event.target.closest('.menu');
+ if (!isClickInsideMenu) {
+   document.querySelectorAll('.dropdown').forEach(menu => {
+     menu.style.display = 'none';
+   });
+ }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const tooltip = document.getElementById('tooltip');
+
+
+// Show tooltip near the user's cursor or touch point
+function showTooltip(event) {
+   const button = event.target;
+   tooltip.innerText = button.getAttribute('data-label');
+   tooltip.style.display = 'block';
+
+
+   // Position the tooltip immediately based on event type
+   positionTooltip(event);
+}
+
+
+// Position tooltip based on event type (mouse or touch)
+function positionTooltip(event) {
+   let x, y;
+   if (event.type.startsWith('touch')) {
+       // Touch event: use the first touch point
+       x = event.touches[0].clientX;
+       y = event.touches[0].clientY;
+   } else {
+       // Mouse event
+       x = event.pageX;
+       y = event.pageY;
+   }
+
+
+   // Set tooltip position with a slight offset for readability
+   tooltip.style.left = `${x + 10}px`;
+   tooltip.style.top = `${y + 10}px`;
+}
+
+
+// Hide tooltip
+function hideTooltip() {
+   tooltip.style.display = 'none';
+}
+
+
+// Toggle tooltip visibility on touch (for mobile)
+function toggleTooltip(event) {
+   event.preventDefault();
+   if (tooltip.style.display === 'block') {
+       hideTooltip();
+   } else {
+       showTooltip(event);
+   }
+}
+
+
+// Event listeners for desktop and mobile
+document.querySelectorAll('button').forEach(button => {
+   // Desktop events
+   button.addEventListener('mouseover', showTooltip);
+   button.addEventListener('mousemove', positionTooltip);
+   button.addEventListener('mouseleave', hideTooltip);
+
+
+   // Mobile events
+   button.addEventListener('touchstart', positionTooltip, toggleTooltip);
+   button.addEventListener('touchend', hideTooltip); // Hide when touch ends
+});
+
+// Event listeners for desktop and mobile
+document.querySelectorAll('input').forEach(input => {
+   // Desktop events
+   input.addEventListener('mouseover', showTooltip);
+   input.addEventListener('mousemove', positionTooltip);
+   input.addEventListener('mouseleave', hideTooltip);
+
+
+   // Mobile events
+   input.addEventListener('touchstart', positionTooltip, toggleTooltip);
+   input.addEventListener('touchend', hideTooltip); // Hide when touch ends
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const fullscreenButton = document.getElementById("fullscreenButton");
+
+
+fullscreenButton.addEventListener("click", () => {
+   if (document.fullscreenEnabled) { // Check if fullscreen API is supported
+       if (!document.fullscreenElement) {
+           document.documentElement.requestFullscreen()
+               .then(() => {
+                   fullscreenButton.textContent = "Exit Fullscreen";
+               })
+               .catch((err) => {
+                   console.error("Error enabling fullscreen mode:", err.message);
+               });
+       } else {
+           document.exitFullscreen()
+               .then(() => {
+                   fullscreenButton.textContent = "Go Fullscreen";
+               })
+               .catch((err) => {
+                   console.error("Error exiting fullscreen mode:", err.message);
+               });
+       }
+   } else {
+       console.error("Fullscreen API is not supported in this browser.");
+   }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let zoomLevel = 1;  // Initial zoom level
+let isPanning = false;  // Track panning state
+let startX, startY;  // Starting coordinates for panning
+let initialTouchDistance = 0; // Used for two-finger touch distance
+let isKeyActive = false;  // Track if the key is being held down
+
+// Get the canvas and its container
+const canvasContainer = document.getElementById('canvas-container');
+const canvas = document.getElementById('designCanvas');
+
+// Function to zoom in
+function zoomIn() {
+    zoomLevel += 0.1;
+    applyZoom();
+}
+
+// Function to zoom out
+function zoomOut() {
+    zoomLevel = Math.max(zoomLevel - 0.1, 0.1);  // Prevent zooming out too far
+    applyZoom();
+}
+
+// Function to reset zoom
+function resetZoom() {
+    zoomLevel = 1;
+    applyZoom();
+}
+
+// Function to apply the zoom level to the canvas
+function applyZoom() {
+    canvasContainer.style.transform = `scale(${zoomLevel})`;
+    canvasContainer.style.transformOrigin = 'center center';  // Keep canvas centered
+}
+
+// Start panning on mousedown, but only if the key is held down
+canvasContainer.addEventListener('mousedown', (e) => {
+    if (!isKeyActive) return;  // Prevent panning if the key is not active
+
+    isPanning = true;
+    startX = e.clientX - canvasContainer.offsetLeft;
+    startY = e.clientY - canvasContainer.offsetTop;
+    canvasContainer.style.cursor = 'grabbing';
+});
+
+// Stop panning on mouseup
+canvasContainer.addEventListener('mouseup', () => {
+    isPanning = false;
+    canvasContainer.style.cursor = 'default';
+});
+
+// Pan on mousemove, but only if the key is held down
+canvasContainer.addEventListener('mousemove', (e) => {
+    if (!isPanning || !isKeyActive) return;  // Only pan if panning is active and key is held
+    e.preventDefault();
+    const x = e.clientX - startX;
+    const y = e.clientY - startY;
+    canvasContainer.style.left = `${x}px`;
+    canvasContainer.style.top = `${y}px`;
+});
+
+// Keydown event to activate panning when a specific key is held down (e.g., "Shift")
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Shift') {  // Change this to any key you prefer
+        isKeyActive = true;
+    }
+});
+
+// Keyup event to deactivate panning when the key is released
+window.addEventListener('keyup', (e) => {
+    if (e.key === 'Shift') {  // Change this to the same key you used in keydown
+        isKeyActive = false;
+        
+    }
+});
+
+// For touch devices - handle touch start, move, and end for panning (only when key is active)
+canvasContainer.addEventListener('touchstart', (e) => {
+    if (!isKeyActive || e.touches.length !== 2) return;  // Ensure two-finger touch for panning
+    
+    isPanning = true;
+    startX = e.touches[0].clientX - canvasContainer.offsetLeft;
+    startY = e.touches[0].clientY - canvasContainer.offsetTop;
+    canvasContainer.style.cursor = 'grabbing';
+
+    initialTouchDistance = getTouchDistance(e); // Initialize touch distance
+}, { passive: true });
+
+canvasContainer.addEventListener('touchend', () => {
+    isPanning = false;
+    canvasContainer.style.cursor = 'default';
+}, { passive: true });
+
+canvasContainer.addEventListener('touchmove', (e) => {
+    if (!isPanning || e.touches.length !== 2) return;  // Only pan with two fingers
+    e.preventDefault();
+    
+    // Track the movement of the two fingers
+    const x = e.touches[0].clientX - startX;
+    const y = e.touches[0].clientY - startY;
+
+    canvasContainer.style.left = `${x}px`;
+    canvasContainer.style.top = `${y}px`;
+
+    initialTouchDistance = getTouchDistance(e); // Update touch distance
+}, { passive: true });
+
+// Helper function to calculate the distance between two touch points
+function getTouchDistance(e) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
+// Mouse wheel zooming
+canvasContainer.addEventListener('wheel', (e) => {
+    if (e.ctrlKey) {  // Optional: Only zoom when Ctrl is held (for trackpad)
+        e.preventDefault();
+        const zoomFactor = 0.1;
+        if (e.deltaY < 0) {
+            zoomIn(); // Zoom in
+        } else {
+            zoomOut(); // Zoom out
+        }
+    }
+}, { passive: true });
+
+document.getElementById('canvas-container').addEventListener('wheel', function(event) {
+  event.preventDefault(); // Prevent zooming on wheel
+}, { passive: false });
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
 
