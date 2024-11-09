@@ -44,6 +44,152 @@
 
 
 
+
+
+
+
+
+
+/* Launcher button */
+#launcherButton {
+  position: fixed;
+  bottom: 50%;
+  right: 15px;
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index:3;
+  
+}
+
+
+
+/* Launcher panel */
+#appLauncher {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 80%;
+  background-color: rgba(35,35,35,1);
+  border-radius: 15px 15px 0 0;
+  padding: 0;
+  box-sizing:border-box;
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5);
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+  overflow-y:scroll;
+  z-index: 10; /* Ensure it stays on top */
+  display:flex;
+  flex-wrap:wrap;
+  
+}
+
+#appLauncher.active {
+  transform: translateY(0);
+}
+
+
+#appSearchBarContainer {
+    width:100%;
+  background: rgba(40,40,40,1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-radius: 15px 15px 0 0;
+  position:sticky;
+  top:0;
+  padding:15px;
+  box-sizing: border-box;
+}
+
+/* Search bar */
+#searchBar {
+ border: 1px solid rgba(255,255,255,0.1);
+ border-radius:10px;
+ height:45px;
+ width:100%;
+ background: rgba(30,30,30,1);
+ padding:0 0 0 10px;
+ margin:0;
+ box-sizing: border-box;
+ font-size:1em;
+}
+
+#appBtnList {
+    width:100%;
+}
+
+/* App button styling */
+.appButton {
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-sizing:border-box;
+  overflow: hidden;
+  height:auto;
+  width:50%;
+  max-width:250px;
+  aspect-ratio: 1.3/1;
+  background: rgba(255,255,255,0.2);
+  color: rgba(200,200,200,1);
+}
+
+.appButton p{
+  padding: 0;
+  margin: 0;
+  box-sizing:border-box;
+  font-size:1em;
+}
+
+.appBtnImgWrapper {
+  width: 100%;
+  height: 50%;
+  overflow:hidden;
+  border-radius:10px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.appButton img {
+  width:100%;
+  height: auto;
+  margin:0;
+}
+
+.appButton:hover {
+  background-color: #eee;
+  color: rgba(40,40,40,1);
+}
+
+/* Hide the panel on tap outside */
+.backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 5; /* Place it below the launcher */
+}
+
+.backdrop.active {
+  display: block;
+}
+
+
+
+
+
+
+
+
 /* Top banner styling */
 .top-banner {
  display: flex;
@@ -55,7 +201,7 @@
  top: 0;
  width: 100%;
  height:30px;
- z-index: 1000;
+ z-index: 2;
  color: #fff;
  font-family: Arial, sans-serif;
 }
@@ -880,7 +1026,7 @@ input[type="color"]:focus {
       position:absolute;
       bottom:85px;
       right:15px;
-      z-index:10;
+      z-index:2;
     }
     
     
@@ -909,7 +1055,42 @@ input[type="color"]:focus {
 
 
 
+<!-- Launcher button -->
+<button id="launcherButton"><p>Apps</p></button>
 
+<!-- Launcher panel -->
+<div id="appLauncher">
+  <!-- Search bar -->
+  <div id="appSearchBarContainer">
+    <input type="text" id="searchBar" placeholder="Search apps...">
+  </div>
+
+  <div id="appBtnList">
+  <!-- App buttons -->
+  <a class="appButton" data-name="Calculator" href="https://linehomearomasdev.github.io/editando/EditandoHTML.html">
+    <div class="appBtnImgWrapper">
+      <img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/20241109_180213_0000.png?v=1731175370" alt="HTML Editor">
+    </div>
+    
+    <span>HTML Editor</span>
+
+    <p>Write and edit code quickly and easily with editandoHTML.</p>
+  </a>
+
+  <a class="appButton" data-name="Notes">
+    <img src="notes-icon.png" alt="Notes">
+    <span>Notes</span>
+  </a>
+  <a class="appButton" data-name="Gallery">
+    <img src="gallery-icon.png" alt="Gallery">
+    <span>Gallery</span>
+  </a>
+  <!-- Add more app buttons as needed -->
+  </div>
+</div>
+
+<!-- Background overlay for closing the panel when clicked outside -->
+<div class="backdrop" id="backdrop"></div>
 
 
 
@@ -1031,6 +1212,7 @@ input[type="color"]:focus {
 <div id="canvas-container">
  <canvas id="designCanvas"></canvas>
 </div>
+
 
 
 <!-- Button for layers -->
@@ -1273,6 +1455,37 @@ input[type="color"]:focus {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.min.js"></script>
 <script>
+
+
+// Elements
+const launcherButton = document.getElementById('launcherButton');
+const appLauncher = document.getElementById('appLauncher');
+const searchBar = document.getElementById('searchBar');
+const backdrop = document.getElementById('backdrop');
+const appButtons = document.querySelectorAll('.appButton');
+
+// Toggle launcher panel
+launcherButton.addEventListener('click', () => {
+  appLauncher.classList.toggle('active');
+  backdrop.classList.toggle('active');
+});
+
+// Hide launcher panel on backdrop click
+backdrop.addEventListener('click', () => {
+  appLauncher.classList.remove('active');
+  backdrop.classList.remove('active');
+});
+
+// Search functionality
+searchBar.addEventListener('input', () => {
+  const query = searchBar.value.toLowerCase();
+  appButtons.forEach(button => {
+    const name = button.getAttribute('data-name').toLowerCase();
+    button.style.display = name.includes(query) ? 'flex' : 'none';
+  });
+});
+
+
  document.addEventListener('DOMContentLoaded', function () {
    // Initialize the Fabric.js canvas
    const canvas = new fabric.Canvas('designCanvas', {
@@ -4263,6 +4476,9 @@ document.getElementById('canvas-container').addEventListener('wheel', function(e
 </script>
 </body>
 </html>
+
+
+
 
 
 
