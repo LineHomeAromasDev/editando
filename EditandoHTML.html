@@ -8,48 +8,85 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.5/lib/codemirror.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.5/theme/material-darker.css">
     <style>
-        body, html {
-            margin: 0; padding: 0; box-sizing: border-box; height: 100%; 
-            font-family: Arial, sans-serif; background-color: #1e1e2f; color: white;
-            display: flex; flex-direction: column;
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: 100vh;
+            width:100vw;
+            font-family: Arial, sans-serif; 
+            background-color: rgba(40,40,40,1); 
+            color: white;
+            display: block;
+            overflow:hidden;
         }
         #main-banner { 
-            background-color: #333; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+            background-color: #333;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center; }
 
-        #editor-container 
-        { flex: 1; position: relative; }
+#editor-container {
+    position: relative;
+    height: 100vh; /* Ensure this takes the full height of the viewport */
+}
+
+#code-editor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 16px;
+    z-index: 0;
+    height: 100%; /* Ensure the editor fills the container */
+}
 
         #autosave-notice 
         { font-size: 0.9rem; color: #4caf50; opacity: 0; transition: opacity 0.3s; }
 
-        .toolbar button 
-        { background: #4caf50; color: white; padding: 8px 12px; border: none; cursor: pointer; transition: 0.3s; }
+        .toolbar button { 
+        background: rgba(60,60,60,1);
+        color: white; 
+        padding: 8px 12px; 
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius:15px;
+        cursor: pointer; 
+        transition: all 0.2s ease; 
+        }
 
         .toolbar button:hover 
         { background-color: #45a049; }
 
-        #code-editor 
-        { position: absolute; top: 0; left: 0; right: 0; bottom: 0; font-size: 16px; z-index:0;}
 
         .preview {
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 50%;
-    height: 100%;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
     background: #f9f9f9;
     border-left: 2px solid #ddd;
-    display: none;
+    display: block;
+    transform: translateY(100%);
 }
 
 .preview.visiblePreview {
-    display: block;
+    transform: translateY(0%);
 }
 
 .preview.visibleExpanded {
     width: 100%;
     height: 100%;
     z-index: 10;
+}
+
+#preview-iframe {
+  position:absolute;
+  top:0;
+  width:100%;
+  height:100%;
 }
 
 #expand-button {
@@ -62,19 +99,33 @@
     padding: 5px 10px;
     cursor: pointer;
     z-index:1;
+    
+}
+
+#toggle-preview, #expand-button, .preview {
+  transition: all 0.3s ease;
 }
 
 
+#toggle-preview {
+  width:fit-content;
+  position: absolute;
+  bottom:0;
+  
+}
 /* Active class for the toggle button when preview is visible */
 #toggle-preview.active {
     background-color: #4caf50;
     color: white;
+    transform: translateY(-50vh);
 }
 
 /* Class for the toggle button when preview is expanded */
 #toggle-preview.expanded {
     background-color: #ff9800;
     color: white;
+    z-index:2000;
+    transform: translateY(-95vh);
 }
 
     </style>
@@ -126,7 +177,7 @@
         lineWrapping: true,
         styleActiveLine: true,
         matchBrackets: true,
-        autoCloseBrackets: true
+        autoCloseBrackets: true,
     });
 
     // Get references to buttons and autosave notice
