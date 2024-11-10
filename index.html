@@ -10,6 +10,63 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rochester&display=swap" rel="stylesheet">
 
   <style>
+
+
+/* Base Theme Variables */
+:root {
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --primary-color: #3498db;
+}
+
+/* Theme 1 - Light */
+.theme-light {
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --primary-color: #3498db;
+}
+
+/* Theme 2 - Dark */
+.theme-dark {
+  --background-color: #121212;
+  --text-color: #ffffff;
+  --primary-color: #1e88e5;
+}
+
+/* Theme 3 - Solarized */
+.theme-solarized {
+  --background-color: #fdf6e3;
+  --text-color: #586e75;
+  --primary-color: #b58900;
+}
+
+/* Theme 4 - Forest */
+.theme-forest {
+  --background-color: #2e8b57;
+  --text-color: #ffffff;
+  --primary-color: #3cb371;
+}
+
+/* Theme 5 - Ocean */
+.theme-ocean {
+  --background-color: #2b7a78;
+  --text-color: #ffffff;
+  --primary-color: #3aafa9;
+}
+
+/* Apply Variables */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+
+
     body {
   margin: 0;
   font-family: Poppins, Arial, sans-serif;
@@ -19,28 +76,7 @@
   width:100vw;
   overflow-x:hidden;
   overflow-y: scroll;
-  background: #111;
-}
-
-.light {
-  transition: all 0.5s ease;
-}
-
-.dark {
-  transition: all 0.5s ease;
-  color: rgb(150,150,150);
-}
-
-.default {
-    transition: all 0.5s ease;
-}
-
-body.light {
-  background: #999;
-}
-
-body.dark {
-  background: #000;
+  background-color: var(--background-color);
 }
 
 .landing-section {
@@ -48,14 +84,6 @@ body.dark {
   padding: 50px 0px 0px 0px;
   overflow:hidden;
   position:relative;
-}
-
-.landing-section.light {
-  
-}
-
-.landing-section.dark {
-  
 }
 
 .app-links {
@@ -141,7 +169,6 @@ body.dark {
   width: 100vw;
   height: 150px;
   overflow: hidden;
-  background-color: ;
   display: flex;
   align-items: center;
   z-index: 10;
@@ -230,7 +257,7 @@ body.dark {
   width: fit-content;
   background: rgba(255,255,255,0.1);
   border-radius: 15px;
-  border: 1px solid rgba(255,255,255,0.1); zz
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 
@@ -284,6 +311,55 @@ body.dark {
     background-position: 0% 50%;
   }
 }
+
+
+
+/* Style for the theme selector container */
+.theme-selector {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+/* Style for each theme button */
+.theme-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+/* Individual theme button styles */
+.theme-button[data-theme="theme-light"] {
+  background-color: #3498db;
+}
+
+.theme-button[data-theme="theme-dark"] {
+  background-color: #1e88e5;
+}
+
+.theme-button[data-theme="theme-solarized"] {
+  background-color: #b58900;
+}
+
+.theme-button[data-theme="theme-forest"] {
+  background-color: #3cb371;
+}
+
+.theme-button[data-theme="theme-ocean"] {
+  background-color: #3aafa9;
+}
+
+/* Highlight the active theme button */
+.theme-button.active {
+  border: 2px solid #ffffff;
+  transform: scale(1.1);
+}
+
+
 
   </style>
 </head>
@@ -351,11 +427,33 @@ body.dark {
 
 
 
-<div id=themeSection>
-  <a onclick="setTheme('default')">Default</a>
-  <a onclick="setTheme('dark')">Dark Theme</a>
-  <a onclick="setTheme('light')">Light Theme</a>
-</div>
+
+
+
+
+
+
+
+<div class="theme-selector">
+    <p>Choose a Theme:</p>
+    <button class="theme-button" data-theme="theme-light">Light</button>
+    <button class="theme-button" data-theme="theme-dark">Dark</button>
+    <button class="theme-button" data-theme="theme-solarized">Solarized</button>
+    <button class="theme-button" data-theme="theme-forest">Forest</button>
+    <button class="theme-button" data-theme="theme-ocean">Ocean</button>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -434,90 +532,35 @@ const button = document.querySelector('.button');
   
   
   
-  
-  
-// Define themes with class names for each theme
-  const themes = {
-    default: 'default',
-    dark: 'dark',
-    light: 'light'
-  };
-  
-  // Function to apply a specific theme by adding the relevant class to body and elements
-  function applyTheme(theme) {
-    // Remove the classes of all themes first to avoid conflicts
-    document.body.classList.remove(...Object.values(themes));
-    document.querySelector('.landing-section').classList.remove(...Object.values(themes));
-    document.querySelector('.app-card').classList.remove(...Object.values(themes));
-  
-    // Add the selected theme class
-    document.body.classList.add(themes[theme]);
-    document.querySelector('.landing-section').classList.add(themes[theme]);
-    document.querySelector('.app-card').classList.add(themes[theme]);
-  }
-  
-  // Set theme with debouncing and save to local storage
-  let lastClickTime = 0; // To track the last click time
-  
-  function setTheme(theme) {
-    const currentTime = Date.now();
-    const themeButton = document.querySelector(`[data-theme="${theme}"]`); // Find button with data-theme attribute
-  
-    if (currentTime - lastClickTime < 1000) {
-      // If clicked too quickly, show a message and prevent action
-      showMessage('Please wait a moment before changing the theme again.');
-      return;
-    }
-  
-    lastClickTime = currentTime; // Update last click time
-  
-    // Disable the button if it exists
-    if (themeButton) {
-      themeButton.disabled = true;
-    }
-  
-    // Apply the theme and store it
-    applyTheme(theme);
-    localStorage.setItem("selectedTheme", theme);
-  
-    // Re-enable the button after 1 second if it exists
-    if (themeButton) {
-      setTimeout(() => {
-        themeButton.disabled = false;
-      }, 1000);
-    }
-  }
-  
-  // Function to display a message when a failed attempt occurs
-  function showMessage(message) {
-    const messageDiv = document.createElement('div');
-    messageDiv.textContent = message;
-    messageDiv.style.position = 'fixed';
-    messageDiv.style.top = '20px';
-    messageDiv.style.left = '50%';
-    messageDiv.style.transform = 'translateX(-50%)';
-    messageDiv.style.padding = '10px';
-    messageDiv.style.backgroundColor = 'red';
-    messageDiv.style.color = 'white';
-    messageDiv.style.borderRadius = '5px';
-    document.body.appendChild(messageDiv);
-  
-    // Remove the message after 3 seconds
-    setTimeout(() => {
-      messageDiv.remove();
-    }, 3000);
-  }
-  
-  // Load saved theme on page load
-  window.addEventListener("load", () => {
-    const savedTheme = localStorage.getItem("selectedTheme");
-    if (savedTheme && themes[savedTheme]) {
-      applyTheme(savedTheme);
-    } else {
-      // Apply the default theme if no saved theme is found
-      applyTheme("default");
-    }
-  });
+
+
+    // Load saved theme or default to light
+    const savedTheme = localStorage.getItem('theme') || 'theme-light';
+    document.body.classList.add(savedTheme);
+
+    // Highlight the active theme button
+    const themeButtons = document.querySelectorAll('.theme-button');
+    themeButtons.forEach(button => {
+      if (button.getAttribute('data-theme') === savedTheme) {
+        button.classList.add('active');
+      }
+
+      // Add click event listener to each button
+      button.addEventListener('click', (event) => {
+        // Remove existing theme classes and active button styles
+        document.body.classList.remove('theme-light', 'theme-dark', 'theme-solarized', 'theme-forest', 'theme-ocean');
+        themeButtons.forEach(btn => btn.classList.remove('active'));
+        
+        // Apply the selected theme and highlight the button
+        const selectedTheme = event.target.getAttribute('data-theme');
+        document.body.classList.add(selectedTheme);
+        event.target.classList.add('active');
+        
+        // Save the selected theme in localStorage
+        localStorage.setItem('theme', selectedTheme);
+      });
+    });
+
 
 </script>
 </body>
