@@ -14,43 +14,94 @@
   margin: 0;
   font-family: Poppins, Arial, sans-serif;
   overflow-x: hidden;
-  background: #111;
   color: #f4f4f4;
+  height: 200vh;
+  width:100vw;
+  overflow-x:hidden;
+  overflow-y: scroll;
+  background: #111;
+}
+
+.light {
+  transition: all 0.5s ease;
+}
+
+.dark {
+  transition: all 0.5s ease;
+  color: rgb(150,150,150);
+}
+
+.default {
+    transition: all 0.5s ease;
+}
+
+body.light {
+  background: #999;
+}
+
+body.dark {
+  background: #000;
 }
 
 .landing-section {
   text-align: center;
-  padding: 100px 0px 0px 0px;
+  padding: 50px 0px 0px 0px;
+  overflow:hidden;
+  position:relative;
+}
+
+.landing-section.light {
+  
+}
+
+.landing-section.dark {
+  
 }
 
 .app-links {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
   padding: 50px 20px;
 }
 
 .app-card {
-  width: 25%;
-  height: auto;
-  aspect-ratio: 1/1;
-  background-color: #333;
+  height:fit-content;
+  background-color: transparent;
+  font-size: 1.2em;
+  transition: transform 0.2s ease;
+  position: relative;
+  text-decoration:none;
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  text-align:center;
+  flex: 0 0 33.33%;
+}
+
+.appCardImgWrapper {
+  width:100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2em;
-  transition: transform 0.2s ease; 
+  aspect-ratio: 1/1;
   overflow: hidden;
-  position: relative;
   border-radius:15px;
 }
 
 .app-card img {
-    position:absolute;
     height:100%;
 }
 
-
+.app-card p {
+  font-size: 10px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:0;
+  margin:5px 0 0 0;
+  color: rgb(180,180,180);
+}
 
 
 .full-screen-nav {
@@ -88,7 +139,7 @@
   width: 100vw;
   height: 150px;
   overflow: hidden;
-  background-color: #111;
+  background-color: ;
   display: flex;
   align-items: center;
   z-index: 10;
@@ -118,32 +169,33 @@
 .topGradient {
   height:auto;
   aspect-ratio:1/1;
-  position:absolute;
+  position:fixed;
   top:0;
   transform: translate(-50%, -50%);
   animation: growShrink 15s ease-in-out infinite, hueShift 25s infinite;
+  z-index: 0;
 }
 
 .gradient1 {
-    width:75%;
+    width:100%;
     background: radial-gradient(circle, rgba(90,255,157,0.1) 0%, rgba(90,255,157,0) 50%);
     left:20%;
 }
 
 .gradient2 {
-    width:110%;
+    width:200%;
     background: radial-gradient(circle, rgba(108,90,255,0.1) 0%, rgba(108,90,255,0) 50%);
     left:40%;
 }
 
 .gradient3 {
-    width:60%;
+    width:80%;
     background: radial-gradient(circle, rgba(255,90,225,0.1) 0%, rgba(255,90,225,0) 50%);
     left:60%;
 }
 
 .gradient4 {
-    width:80%;
+    width:100%;
     background: radial-gradient(circle, rgba(255,235,90,0.1) 0%, rgba(255,235,90,0) 50%);
     left:85%;
 }
@@ -158,10 +210,26 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: gradient-animation 30s ease alternate infinite;
+  animation: gradient-animation 30s linear infinite;
   font-family: 'Rochester';
 }
 
+
+
+#themeSection {
+  width:100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#themeSection button {
+  height: 35px;
+  width: fit-content;
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
 
 
 
@@ -234,10 +302,60 @@
 </div>
 
 <div class="app-links">
-  <a class="app-card" data-depth="0.2" href="https://linehomearomasdev.github.io/editando/EditandoHTML"><img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/20241109_180213_0000.png?v=1731175370"></a>
-  <a class="app-card" data-depth="0.3"  href="https://linehomearomasdev.github.io/editando/editandoVector">editando Vector Creator</a>
-  <a class="app-card" data-depth="0.4"  href="https://linehomearomasdev.github.io/editando/EditandoHTML">App 3</a>
+  <a class="app-card" data-depth="0.2" href="https://linehomearomasdev.github.io/editando/EditandoHTML">
+    <div class="appCardImgWrapper">
+      <img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/20241109_180213_0000.png?v=1731241156">
+    </div> 
+    <p>Code Maker</p>
+  </a>
+  
+  <a class="app-card" data-depth="0.3"  href="https://linehomearomasdev.github.io/editando/editandoVector">
+    <div class="appCardImgWrapper">
+      <img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/20241109_192209_0001.png?v=1731241160">
+    </div>
+    <p>Designer Studio</p>
+  </a>
+  
+  <a class="app-card" data-depth="0.4"  href="https://linehomearomasdev.github.io/editando/EditandoHTML">
+    <div class="appCardImgWrapper">
+      <img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/20241110_011002_0002.png?v=1731241164">
+    </div>
+    <p>Gradient Generator</p>
+  </a>
+  
+  
+    <a class="app-card" data-depth="0.5" href="https://linehomearomasdev.github.io/editando/EditandoHTML">
+      <div class="appCardImgWrapper">
+        <img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/HI__20241110_114722_0003.png?v=1731241172">
+      </div>
+      <p>Text Art Creator (coming)</p>
+    </a>
+  
+    <a class="app-card" data-depth="0.6" href="https://linehomearomasdev.github.io/editando/editandoVector">
+      <div class="appCardImgWrapper">
+        <img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/HI__20241110_114722_0004.png?v=1731241178">
+      </div>
+      <p>Document Creator (coming)</p>
+    </a>
+  
+    <a class="app-card" data-depth="0.7" href="https://linehomearomasdev.github.io/editando/EditandoHTML">
+      <div class="appCardImgWrapper">
+        <img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/20241110_011002_0002.png?v=1731201039">
+      </div>
+      <p>Gradients</p>
+    </a>
 </div>
+
+
+
+
+<div id=themeSection>
+  <button onclick="setTheme('default')">Default</button>
+  <button onclick="setTheme('dark')">Dark Theme</button>
+  <button onclick="setTheme('light')">Light Theme</button>
+</div>
+
+
 
 
   <!-- Scrolling Banner for app icons -->
@@ -304,6 +422,99 @@ const button = document.querySelector('.button');
 
     button.style.setProperty('--x', `${x}px`);
     button.style.setProperty('--y', `${y}px`);
+  });
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+// Define themes with class names for each theme
+  const themes = {
+    default: 'default',
+    dark: 'dark',
+    light: 'light'
+  };
+  
+  // Function to apply a specific theme by adding the relevant class to body and elements
+  function applyTheme(theme) {
+    // Remove the classes of all themes first to avoid conflicts
+    document.body.classList.remove(...Object.values(themes));
+    document.querySelector('.landing-section').classList.remove(...Object.values(themes));
+    document.querySelector('.app-card').classList.remove(...Object.values(themes));
+  
+    // Add the selected theme class
+    document.body.classList.add(themes[theme]);
+    document.querySelector('.landing-section').classList.add(themes[theme]);
+    document.querySelector('.app-card').classList.add(themes[theme]);
+  }
+  
+  // Set theme with debouncing and save to local storage
+  let lastClickTime = 0; // To track the last click time
+  
+  function setTheme(theme) {
+    const currentTime = Date.now();
+    const themeButton = document.querySelector(`[data-theme="${theme}"]`); // Find button with data-theme attribute
+  
+    if (currentTime - lastClickTime < 1000) {
+      // If clicked too quickly, show a message and prevent action
+      showMessage('Please wait a moment before changing the theme again.');
+      return;
+    }
+  
+    lastClickTime = currentTime; // Update last click time
+  
+    // Disable the button if it exists
+    if (themeButton) {
+      themeButton.disabled = true;
+    }
+  
+    // Apply the theme and store it
+    applyTheme(theme);
+    localStorage.setItem("selectedTheme", theme);
+  
+    // Re-enable the button after 1 second if it exists
+    if (themeButton) {
+      setTimeout(() => {
+        themeButton.disabled = false;
+      }, 1000);
+    }
+  }
+  
+  // Function to display a message when a failed attempt occurs
+  function showMessage(message) {
+    const messageDiv = document.createElement('div');
+    messageDiv.textContent = message;
+    messageDiv.style.position = 'fixed';
+    messageDiv.style.top = '20px';
+    messageDiv.style.left = '50%';
+    messageDiv.style.transform = 'translateX(-50%)';
+    messageDiv.style.padding = '10px';
+    messageDiv.style.backgroundColor = 'red';
+    messageDiv.style.color = 'white';
+    messageDiv.style.borderRadius = '5px';
+    document.body.appendChild(messageDiv);
+  
+    // Remove the message after 3 seconds
+    setTimeout(() => {
+      messageDiv.remove();
+    }, 3000);
+  }
+  
+  // Load saved theme on page load
+  window.addEventListener("load", () => {
+    const savedTheme = localStorage.getItem("selectedTheme");
+    if (savedTheme && themes[savedTheme]) {
+      applyTheme(savedTheme);
+    } else {
+      // Apply the default theme if no saved theme is found
+      applyTheme("default");
+    }
   });
 
 </script>
