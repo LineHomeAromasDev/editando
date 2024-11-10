@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Text Area with Blank Line and Space Handling</title>
+  <style>
+    /* A4 Page size and text formatting */
+    .page {
+      width: 794px; /* Width of A4 page in pixels */
+      height: 1123px; /* Height of A4 page in pixels */
+      font-size: 14px; /* Font size in px */
+      line-height: 1.5; /* Line height factor */
+      padding: 20px;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      white-space: pre-wrap; /* Preserve spaces and line breaks */
+      word-wrap: break-word;
+      overflow: hidden; /* Prevent scroll within page */
+      resize: none;
+      outline: none;
+    }
+
+    /* Container that holds all pages */
+    #container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: rgb(237, 246, 255);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="container">
+    <textarea id="textArea1" class="page" placeholder="Start typing..." oninput="handleInput(this)" onpaste="handlePaste(event, this)"></textarea>
+  </div>
+
+  <script>
+    // Constants for page size (A4 size in px)
+    const A4_WIDTH = 794; // A4 Width in px
+    const A4_HEIGHT = 1123; // A4 Height in px
+
+    // Font size and line height
+    const FONT_SIZE = 14;  // Font size in px
+    const LINE_HEIGHT = 1.5;  // Line height factor
+
+    // Calculate the line height in pixels
+    const LINE_HEIGHT_PX = FONT_SIZE * LINE_HEIGHT;
+
+    // Calculate the maximum number of lines that fit on the page based on font size and line height
+    function calculateMaxLines() {
+      return Math.floor(A4_HEIGHT / LINE_HEIGHT_PX);
+    }
+
+    // Calculate the maximum number of characters that fit in a line based on the font size
+    function calculateMaxCharsPerLine() {
+      return Math.floor(A4_WIDTH / FONT_SIZE);
+    }
+
+    // Calculate the total number of characters that fit on a page (ignoring blank lines initially)
+    function calculateMaxCharsPerPage() {
+      return calculateMaxLines() * calculateMaxCharsPerLine();
+    }
+
+    // Get the character limit for a single page
+    const MAX_CHARS_PER_PAGE = calculateMaxCharsPerPage();
+
+    // Handles user input and ensures text overflow moves to the next page
+    function handleInput(textArea) {
+      const content = textArea.value;
+      const contentWithBlankLines = content.split('\n');
+
+      // Remove lines that are empty or contain only spaces, and count as blank lines
+      const filteredLines = contentWithBlankLines.filter(line => line.trim() !== '');
+
+      // If the content exceeds the page limit, split the text and create new pages
+      if (filteredLines.length > calculateMaxLines()) {
+        let excessContent = contentWithBlankLines.slice(calculateMaxLines()).join('\n');
+        textArea.value = contentWithBlankLines.slice(0, calculateMaxLines()).join('\n');
+        createNewTextArea(excessContent);
+      }
+
+      // Check for empty pages and remove them
+      removeEmptyPages();
+    }
+
+    // Handle pasting content
+    function handlePaste(event, textArea) {
+      event.preventDefault(); // Prevent default paste action
+      const pastedText = event.clipboardData.getData('text');
+      insertPastedContent(pastedText, textArea);
+    }
+
+    // Insert pasted content into text areas
+    function insertPastedContent(content, textArea) {
+      let remainingContent = content;
+      while (remainingContent.length > 0) {
+        const currentPageContent = remainingContent.slice(0, MAX_CHARS_PER_PAGE);
+        textArea.value = currentPageContent; // Fill current page with content
+
+        remainingContent = remainingContent.slice(MAX_CHARS_PER_PAGE); // Remove content added to this page
+
+        if (remainingContent.length > 0) {
+          createNewTextArea(remainingContent); // Create a new page for overflow content
+        }
+
+        break; // Stop after filling the current text area
+      }
+    }
+
+    // Create a new text area dynamically when content overflows the current page
+    function createNewTextArea(content = '') {
+      const newTextArea = document.createElement('textarea');
+      newTextArea.classList.add('page');
+      newTextArea.setAttribute('oninput', 'handleInput(this)');
+      newTextArea.setAttribute('onpaste', 'handlePaste(event, this)');
+      newTextArea.setAttribute('placeholder', 'Continue typing...');
+      document.getElementById('container').appendChild(newTextArea);
+
+      if (content) {
+        newTextArea.value = content; // If content passed, add to new text area
+      }
+
+      newTextArea.focus(); // Set focus to new text area
+    }
+
+    // Make sure there's at least one page
+    function ensureAtLeastOnePage() {
+      const pages = document.querySelectorAll('.page');
+      if (pages.length === 0) {
+        createNewTextArea(); // Ensure at least one page exists
+      }
+    }
+
+    // Remove empty pages
+    function removeEmptyPages() {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach((page) => {
+        if (page.value.trim() === '' && pages.length > 1) {
+          page.remove(); // Remove the empty page
+        }
+      });
+    }
+
+    // Initialize by ensuring at least one page is created
+    ensureAtLeastOnePage();
+  </script>
+
+</body>
+</html>
