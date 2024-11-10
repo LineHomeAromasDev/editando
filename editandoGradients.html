@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+ <meta charset="UTF-8">
+
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+ <title>CSS Gradient Generator</title>
+
+ 
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+ <style>
+
+ body {
+
+ font-family: Arial, sans-serif;
+
+ margin: 0;
+
+ padding: 0;
+
+ background-color: #fff;
+
+ color: #000;
+
+ width: 100vw;
+
+ height: 100vh;
+
+ background-size: contain;
+
+ }
+
+ .openMenu {
+    position: fixed;
+    top: 40px;
+    width:80px;
+    height:80px;
+    transform: translateY(-50%);
+    left: 0;
+    padding:0;
+    margin:0;
+    border:none;
+    color:rgba(0,0,0,1);
+    font-size:35pt;
+    cursor:pointer;
+	background-image: linear-gradient(to right top, #ff1be4, #ff0088, #ff722c, #fdb900);
+	background-size:100%;
+	background-position:80px;
+	background-repeat:no-repeat;
+    transition: all 0.4s ease-in-out;
+    z-index:400;
+}
+
+.openMenu-active {
+    position: fixed;
+    top: 0;
+    width:80px;
+    height:80px;
+    transform: translateX(40vw);
+    left: 0;
+    padding:0;
+    margin:0 0 0 -80px;
+    border:none;
+    font-size:35pt;
+    color:rgba(255,255,255,1);
+    cursor:pointer;
+	background: linear-gradient(to right top, #ff1be4, #ff0088, #ff722c, #fdb900);
+	background-size:100%;
+	background-position:0px;
+	background-repeat:no-repeat;
+    transition: all 0.4s ease-in-out;
+    z-index:400;
+}
+
+
+#menu {
+    position: fixed;
+    top: 0;
+    left: -40vw;
+    width: 40vw;
+    height: 100%;
+    background-color: #333;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: left 0.4s ease-in-out;
+    z-index: 300;
+}
+
+#menu.open {
+    left: 0;
+}
+
+.menu-link {
+    padding: 10px 20px;
+    margin: 10px 0;
+    background-color: #444;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#closeMenuButton {
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    z-index: 200;
+    transition: all 0.3s ease-in-out;
+}
+
+#overlay.visible {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+.hidden {
+    display: none;
+}
+
+#topBanner {
+position: fixed;
+top: 0;
+left: 0;
+height: 80px;
+width: 100vw;
+z-index: 100;
+white-space: nowrap;
+background: rgba(255,255,255, 1);
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+#logoBtn {
+position:absolute;
+top:50%;
+left:50%;
+transform: translateY(-50%) translateX(-50%);
+height: fit-content;
+width: fit-content;
+}
+
+#logoBtn img {
+width: 130px;
+height: auto;
+}
+
+ .container {
+
+ width: 100%;
+
+ height: 100%;
+
+ display: flex;
+
+ justify-content: flex-start;
+
+ align-items: center;
+
+ flex-direction: column;
+
+ margin: auto;
+
+ padding: 0;
+
+ }
+
+ .gradient-preview {
+
+ height: 100%;
+
+ width: 100%;
+
+ margin: 0;
+
+ background-image: linear-gradient(to right top, #ff1be4, #ff0088, #ff722c, #fdb900);
+
+ background-size: 100%;
+
+ background-repeat: no-repeat;
+
+ }
+
+ .color-input {
+
+ display: flex;
+
+ width: 100%;
+
+ max-width:600px;
+
+ justify-content: center;
+
+ flex-wrap: wrap;
+
+ height: auto;
+
+ margin-bottom: 20px;
+
+ box-sizing: border-box;
+
+ transition: all 0.3s ease-in-out;
+
+ }
+
+ .color-input div {
+
+ flex: 1;
+
+ margin: 5px;
+
+ }
+
+ .color-input label {
+
+ display: block;
+
+ margin-bottom: 5px;
+
+ }
+
+ .color-input input[type="text"] {
+
+ width: 100%;
+
+ padding: 0 20px;
+
+ height: 50px;
+
+ font-size: 16px;
+
+ border: none;
+
+ border-radius: 25px;
+
+ box-sizing: border-box;
+
+ box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+
+ }
+
+ .angle-buttons {
+
+ display: flex;
+
+ justify-content: space-between;
+
+ margin-bottom: 20px;
+
+ }
+
+ .angle-buttons button {
+
+ flex: 1;
+
+ margin: 0 5px;
+
+ padding: 0;
+
+ height:50px;
+
+ width:50px;
+
+ font-size: 15pt;
+
+ background-color: #fff;
+
+ color: #000;
+
+ border: none;
+
+ border-radius: 50%;
+
+ cursor: pointer;
+
+ transition: all 0.3s ease-in-out;
+
+ box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+
+ }
+
+ .angle-buttons button.active {
+
+ background-color: #000;
+
+ color:#fff;
+
+ transform:scale(1.1);
+
+ }
+
+ .generate-button, .add-step-button, .remove-step-button, .random-gradient-button {
+
+ display: block;
+
+ height: 50px;
+
+ width: fit-content;
+
+ padding: 0 20px;
+
+ font-size: 16px;
+
+ background-color: #fff;
+
+ color: #000;
+
+ border: none;
+
+ border-radius: 25px;
+
+ cursor: pointer;
+
+ margin-bottom: 20px;
+
+ }
+
+ .generate-button:hover, .add-step-button:hover, .remove-step-button:hover, .random-gradient-button:hover {
+
+ background-color: #0056b3;
+
+ }
+
+ 
+
+ #codeArea {
+
+ display:flex;
+
+ flex-direction:column;
+
+ justify-content:center;
+
+ margin:5px;
+
+ box-sizing:border-box;
+
+ }
+
+ 
+
+ .css-code {
+
+ background: rgba(255, 255, 255, 0.3);
+
+ padding: 10px;
+
+ width: 100%;
+
+ border-radius: 4px;
+
+ font-family: monospace;
+
+ font-size: 16px;
+
+ cursor: pointer;
+
+ user-select: all;
+
+ border-left: 3px solid rgba(255, 255, 255, 1);
+
+ border-radius: 5px;
+
+ box-sizing: border-box;
+
+ }
+
+ .gradient-type-buttons {
+
+ display: flex;
+
+ justify-content: space-between;
+
+ margin-bottom: 20px;
+
+ }
+
+ .gradient-type-buttons button {
+
+ flex: 1;
+
+ margin: 0 5px;
+
+ padding: 10px;
+
+ font-size: 16px;
+
+ background-color: #007BFF;
+
+ color: #fff;
+
+ border: none;
+
+ border-radius: 4px;
+
+ cursor: pointer;
+
+ box-shadow: rgba(0, 0, 0, 1) 0px 25px 20px -20px;
+
+ }
+
+ 
+
+ 
+
+ .gradient-type-buttons button.active {
+
+ background-color: #0056b3;
+
+ font-weight: bold;
+
+ }
+
+ </style>
+
+</head>
+
+<body>
+
+<button id="openMenuButton" class="material-symbols-outlined openMenu">apps</button>
+<div id="overlay" class="hidden visible"></div>
+<div id="menu" class="hidden">
+  <a href="index.html" class="menu-link">Coding Engine</a>
+  <a href="colorPicker.html" class="menu-link">Advanced Colour Picker</a>
+  <a href="GradientGeneratorCSS.html" class="menu-link">CSS Gradient Generator</a>
+  <button id="closeMenuButton">Close</button>
+</div>
+
+<div id="topBanner">
+ 
+ <a id="logoBtn" href="index.html">
+   <img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/VisualSync_Logo_Gradient.svg?v=1718658819" alt="VisualSync Studio Logo">
+ </a>
+ 
+</div>
+ 
+
+<div class="gradient-preview" id="gradient-preview">
+
+ <div class="container">
+
+ <h1>CSS Gradient Generator</h1>
+
+ <div class="gradient-type-buttons">
+
+ <button onclick="setGradientType('linear')">Linear</button>
+
+ <button onclick="setGradientType('radial')">Radial</button>
+
+ </div>
+
+ 
+
+ <div class="color-input" id="color-input">
+
+ <div>
+
+ <label for="color1">Color 1</label>
+
+ <input type="text" id="color1" placeholder="Enter hex" maxlength="7" onfocus="handleFocus(this)" onblur="handleBlur(this)" oninput="updateColor(this)">
+
+ </div>
+
+ <div>
+
+ <label for="color2">Color 2</label>
+
+ <input type="text" id="color2" placeholder="Enter hex" maxlength="7" onfocus="handleFocus(this)" onblur="handleBlur(this)" oninput="updateColor(this)">
+
+ </div>
+
+ </div>
+
+ 
+
+ <button class="add-step-button" id="add-step-button" onclick="addStep()">Add Step</button>
+
+ <button class="remove-step-button" id="remove-step-button" onclick="removeStep()" style="display: none;">Remove Step</button>
+
+ 
+
+ <div class="angle-buttons" id="angle-buttons">
+
+ <button onclick="setAngle(0)"><span style="transform:rotate(-90deg)" class="material-symbols-outlined">
+
+ arrow_forward
+
+ </span></button>
+
+ <button onclick="setAngle(45)"><span style="transform:rotate(-45deg)" class="material-symbols-outlined">
+
+ arrow_forward
+
+ </span></button>
+
+ <button onclick="setAngle(90)"><span style="transform:rotate(0)" class="material-symbols-outlined">
+
+ arrow_forward
+
+ </span></button>
+
+ <button onclick="setAngle(135)"><span style="transform:rotate(45deg)" class="material-symbols-outlined">
+
+ arrow_forward
+
+ </span></button>
+
+ </div>
+
+ 
+
+ <button class="generate-button" onclick="generateGradient()">Generate Gradient</button>
+
+ <button class="random-gradient-button" onclick="generateRandomGradient()">Random Gradient</button>
+
+ 
+
+ <div id="codeArea">
+
+ <h2>CSS Code</h2>
+
+ <div class="css-code" id="css-code" onclick="copyToClipboard()"></div>
+
+ </div>
+
+ </div>
+
+</div>
+
+<script>
+
+ let currentAngle = 90;
+
+ let gradientType = 'linear';
+
+ let gradientGenerated = false;
+
+ let stepCount = 2;
+
+ function handleFocus(input) {
+
+ if (input.dataset.focused === 'true') {
+
+ return;
+
+ }
+
+ if (!input.value.startsWith('#')) {
+
+ input.value = '#' + input.value;
+
+ }
+
+ input.dataset.focused = 'true';
+
+ }
+
+ function handleBlur(input) {
+
+ if (input.value === '#') {
+
+ input.value = '';
+
+ }
+
+ input.dataset.focused = 'false';
+
+ }
+
+ function updateColor(input) {
+
+ if (input.value.length === 7) {
+
+ input.style.backgroundColor = input.value;
+
+ const luminance = calculateLuminance(input.value);
+
+ input.style.color = luminance < 0.5 ? '#fff' : '#000';
+
+ }
+
+ }
+
+ function setAngle(angle) {
+
+ currentAngle = angle;
+
+ document.querySelectorAll('.angle-buttons button').forEach(button => {
+
+ button.classList.remove('active');
+
+ });
+
+ document.querySelector(`.angle-buttons button[onclick="setAngle(${angle})"]`).classList.add('active');
+
+ if (gradientGenerated) {
+
+ generateGradient();
+
+ }
+
+ }
+
+ function setGradientType(type) {
+
+ gradientType = type;
+
+ document.querySelectorAll('.gradient-type-buttons button').forEach(button => {
+
+ button.classList.remove('active');
+
+ });
+
+ document.querySelector(`.gradient-type-buttons button[onclick="setGradientType('${type}')"]`).classList.add('active');
+
+ document.getElementById('angle-buttons').style.display = type === 'linear' ? 'flex' : 'none';
+
+ if (gradientGenerated) {
+
+ generateGradient();
+
+ }
+
+ }
+
+ function addStep() {
+
+ if (stepCount >= 5) return;
+
+ stepCount++;
+
+ const colorInputDiv = document.createElement('div');
+
+ colorInputDiv.innerHTML = `
+
+ <label for="color${stepCount}">Color ${stepCount}</label>
+
+ <input type="text" id="color${stepCount}" placeholder="Enter hex" maxlength="7" onfocus="handleFocus(this)" onblur="handleBlur(this)" oninput="updateColor(this)">
+
+ `;
+
+ document.getElementById('color-input').appendChild(colorInputDiv);
+
+ updateStepButtons();
+
+ }
+
+ function removeStep() {
+
+ if (stepCount <= 2) return;
+
+ const lastColorInputDiv = document.getElementById(`color${stepCount}`).parentNode;
+
+ lastColorInputDiv.remove();
+
+ stepCount--;
+
+ updateStepButtons();
+
+ }
+
+ function updateStepButtons() {
+
+ const addStepButton = document.getElementById('add-step-button');
+
+ const removeStepButton = document.getElementById('remove-step-button');
+
+ addStepButton.style.display = stepCount >= 5 ? 'none' : 'block';
+
+ removeStepButton.style.display = stepCount <= 2 ? 'none' : 'block';
+
+ }
+
+ function generateGradient() {
+
+ const colors = [];
+
+ for (let i = 1; i <= stepCount; i++) {
+
+ const color = document.getElementById(`color${i}`).value;
+
+ if (color) colors.push(color);
+
+ }
+
+ let gradient;
+
+ if (gradientType === 'linear') {
+
+ gradient = `linear-gradient(${currentAngle}deg, ${colors.join(', ')})`;
+
+ } else {
+
+ gradient = `radial-gradient(${colors.join(', ')})`;
+
+ }
+
+ const gradientPreview = document.getElementById('gradient-preview');
+
+ const cssCode = document.getElementById('css-code');
+
+ const generateButton = document.querySelector('.generate-button');
+
+ gradientPreview.style.background = gradient;
+
+ const cssText = `background: ${gradient};`;
+
+ cssCode.textContent = cssText;
+
+ const luminanceValues = colors.map(color => calculateLuminance(color));
+
+ const averageLuminance = luminanceValues.reduce((acc, val) => acc + val, 0) / luminanceValues.length;
+
+ document.body.style.color = averageLuminance < 0.5 ? '#fff' : '#000';
+
+ gradientGenerated = true;
+
+ generateButton.textContent = 'Regenerate Gradient';
+
+ }
+
+ function calculateLuminance(color) {
+
+ const r = parseInt(color.slice(1, 3), 16) / 255;
+
+ const g = parseInt(color.slice(3, 5), 16) / 255;
+
+ const b = parseInt(color.slice(5, 7), 16) / 255;
+
+ const a = [r, g, b].map(v => {
+
+ return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+
+ });
+
+ return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+
+ }
+
+ function copyToClipboard() {
+
+ const cssCode = document.getElementById('css-code');
+
+ navigator.clipboard.writeText(cssCode.textContent).then(() => {
+
+ alert('CSS code copied to clipboard!');
+
+ }).catch(err => {
+
+ console.error('Failed to copy text: ', err);
+
+ });
+
+ }
+
+ function getRandomHexColor() {
+
+ const letters = '0123456789ABCDEF';
+
+ let color = '#';
+
+ for (let i = 0; i < 6; i++) {
+
+ color += letters[Math.floor(Math.random() * 16)];
+
+ }
+
+ return color;
+
+ }
+
+ function getRandomAngle() {
+
+ const angles = [0, 45, 90, 135];
+
+ return angles[Math.floor(Math.random() * angles.length)];
+
+ }
+
+ function generateRandomGradient() {
+
+ const randomColorCount = Math.floor(Math.random() * 4) + 2;
+
+ while (stepCount > randomColorCount) {
+
+ removeStep();
+
+ }
+
+ while (stepCount < randomColorCount) {
+
+ addStep();
+
+ }
+
+ for (let i = 1; i <= stepCount; i++) {
+
+ const colorInput = document.getElementById(`color${i}`);
+
+ const randomColor = getRandomHexColor();
+
+ colorInput.value = randomColor;
+
+ colorInput.style.backgroundColor = randomColor;
+
+ const luminance = calculateLuminance(randomColor);
+
+ colorInput.style.color = luminance < 0.5 ? '#fff' : '#000';
+
+ }
+
+ const randomAngle = getRandomAngle();
+
+ setAngle(randomAngle);
+
+ generateGradient();
+
+ }
+
+ document.addEventListener('DOMContentLoaded', () => {
+
+ setAngle(currentAngle); // Set initial angle
+
+ setGradientType(gradientType); // Set initial gradient type
+
+ updateStepButtons(); // Update step buttons visibility
+
+ });
+
+</script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    const openMenuButton = document.getElementById('openMenuButton');
+    const closeMenuButton = document.getElementById('closeMenuButton');
+    const menu = document.getElementById('menu');
+    const overlay = document.getElementById('overlay');
+
+    function openMenu() {
+        menu.classList.add('open');
+        overlay.classList.add('visible');
+        overlay.classList.remove('hidden');
+  
+        // Add the class to the button
+        document.getElementById('openMenuButton').classList.add('openMenu-active');
+    }
+
+
+    function closeMenu() {
+        menu.classList.remove('open');
+        overlay.classList.remove('visible');
+        setTimeout(() => {
+            overlay.classList.add('hidden');
+        }, 300);
+  
+        // Remove the class from the button
+        document.getElementById('openMenuButton').classList.remove('openMenu-active');
+    }
+
+
+    openMenuButton.addEventListener('click', () => {
+        if (menu.classList.contains('open')) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    });
+
+    closeMenuButton.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
+});
+  
+</script>
+
+</body>
+
+</html>
