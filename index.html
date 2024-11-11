@@ -19,17 +19,24 @@
   --primary-color: #3498db;
 }
 
+
+.theme-dark, .theme-light, .theme-ocean, .theme-forest, .theme-solarized {
+  transition: all 0.3s ease;
+}
+
 /* Theme 1 - Light */
 .theme-light {
   --background-color: #ffffff;
   --text-color: #000000;
   --primary-color: #3498db;
+  --transition: all 0.3s ease;
 }
 
 /* Theme 2 - Dark */
 .theme-dark {
   --background-color: #121212;
   --text-color: #ffffff;
+  --filter:invert(1) hue-rotate(170deg) brightness(1.5) contrast(0.9) saturate(1.5);
   --primary-color: #1e88e5;
 }
 
@@ -60,30 +67,35 @@ body {
   color: var(--text-color);
 }
 
-button {
+.CTAButton {
   background-color: var(--primary-color);
   color: var(--text-color);
+  border: none;
+  border-radius: 15px;
+  height: 40px;
+  width: fit-content;
+  box-sizing: border-box;
+  padding:10px 15px;
+  margin:20px;
+  box-shadow: 0px 5px 5px rgba(0,0,0,0.2);
 }
-
-
 
     body {
   margin: 0;
   font-family: Poppins, Arial, sans-serif;
   overflow-x: hidden;
-  color: #f4f4f4;
-  height: 200vh;
+  height: auto;
   width:100vw;
   overflow-x:hidden;
   overflow-y: scroll;
-  background-color: var(--background-color);
 }
 
 .landing-section {
   text-align: center;
-  padding: 50px 0px 0px 0px;
+  padding: 40px 0px 0px 0px;
   overflow:hidden;
   position:relative;
+  z-index:2;
 }
 
 .app-links {
@@ -91,14 +103,14 @@ button {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
   padding: 50px 20px;
-  max-width:800px;
+  max-width:400px;
   margin: 0 auto;
 }
+
 
 .app-card {
   height:fit-content;
   background-color: transparent;
-  font-size: 1.2em;
   transition: transform 0.2s ease;
   position: relative;
   text-decoration:none;
@@ -107,7 +119,7 @@ button {
   align-items:center;
   text-align:center;
   flex: 0 0 33.33%;
-}
+  }
 
 .appCardImgWrapper {
   width:100%;
@@ -117,9 +129,11 @@ button {
   aspect-ratio: 1/1;
   overflow: hidden;
   border-radius:15px;
+  box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
 }
 
 .app-card img {
+    filter: var(--filter);
     height:100%;
 }
 
@@ -167,7 +181,7 @@ button {
   position: sticky;
   top: 0;
   width: 100vw;
-  height: 150px;
+  height: auto;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -183,8 +197,8 @@ button {
 
 /* Styling each icon */
 .banner-icon {
-  width: 120px;
-  height: 120px;
+  width: 80vw;
+  height: 80vh;
   background-color: #333;
   color: #fff;
   display: flex;
@@ -207,25 +221,25 @@ button {
 
 .gradient1 {
     width:100%;
-    background: radial-gradient(circle, rgba(90,255,157,0.1) 0%, rgba(90,255,157,0) 50%);
+    background: radial-gradient(circle, rgba(90,255,157,0.2) 0%, rgba(90,255,157,0) 50%);
     left:20%;
 }
 
 .gradient2 {
     width:200%;
-    background: radial-gradient(circle, rgba(108,90,255,0.1) 0%, rgba(108,90,255,0) 50%);
+    background: radial-gradient(circle, rgba(108,90,255,0.2) 0%, rgba(108,90,255,0) 50%);
     left:40%;
 }
 
 .gradient3 {
     width:80%;
-    background: radial-gradient(circle, rgba(255,90,225,0.1) 0%, rgba(255,90,225,0) 50%);
+    background: radial-gradient(circle, rgba(255,90,225,0.2) 0%, rgba(255,90,225,0) 50%);
     left:60%;
 }
 
 .gradient4 {
     width:100%;
-    background: radial-gradient(circle, rgba(255,235,90,0.1) 0%, rgba(255,235,90,0) 50%);
+    background: radial-gradient(circle, rgba(255,235,90,0.2) 0%, rgba(255,235,90,0) 50%);
     left:85%;
 }
 
@@ -376,8 +390,9 @@ button {
   <p>Your Creative Suite of Web Apps</p>
 
   
-  <button class="button">Hover Me</button>
-</div>
+  <button class="CTAButton">Hover Me</button>
+
+
 
 <div class="app-links">
   <a class="app-card" data-depth="0.2" href="https://linehomearomasdev.github.io/editando/EditandoHTML">
@@ -468,6 +483,8 @@ button {
       <!-- Add more icons as needed -->
     </div>
   </div>
+  
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
 <script>
@@ -479,11 +496,11 @@ document.querySelectorAll('.app-card').forEach(card => {
     const cardCenterY = rect.top + rect.height / 2;
     
     // Calculate the distance from the card center to the cursor position
-    const distanceX = (e.clientX - cardCenterX) * 0.1;  // Lower multiplier for gentle effect
-    const distanceY = (e.clientY - cardCenterY) * 0.1;
+    const distanceX = (e.clientX - cardCenterX) * 0.3;  // Lower multiplier for gentle effect
+    const distanceY = (e.clientY - cardCenterY) * 0.3;
     
     // Cap maximum movement to prevent excessive overlap
-    const maxMovement = 15;  // Adjust for max distance
+    const maxMovement = 50;  // Adjust for max distance
     const translateX = Math.max(-maxMovement, Math.min(maxMovement, distanceX));
     const translateY = Math.max(-maxMovement, Math.min(maxMovement, distanceY));
     
@@ -493,13 +510,13 @@ document.querySelectorAll('.app-card').forEach(card => {
 
   // Smoothly return to center when cursor leaves the card
   card.addEventListener('mouseleave', () => {
-    card.style.transition = 'transform 0.3s ease';
+    card.style.transition = 'transform 0.2s ease';
     card.style.transform = 'translate(0, 0)';
   });
 
   // Remove transition for smooth continuous effect on enter
   card.addEventListener('mouseenter', () => {
-    card.style.transition = 'none';
+    card.style.transition = 'transform 0.2s ease';
   });
 });
 
@@ -509,11 +526,11 @@ window.addEventListener('scroll', () => {
   const scrollPosition = window.scrollY;
   
   // Adjust scroll speed to control the horizontal movement
-  const scrollSpeed = 0.3;  // Lower for slower movement
+  const scrollSpeed = 0.1;  // Lower for slower movement
   bannerContent.style.transform = `translateX(${-scrollPosition * scrollSpeed}px)`;
 });
 
-const button = document.querySelector('.button');
+const button = document.querySelector('.CTAButton');
 
   button.addEventListener('mousemove', (e) => {
     const rect = button.getBoundingClientRect();
