@@ -12,55 +12,6 @@
   <style>
 
 
-/* Base Theme Variables */
-:root {
-  --background-color: #ffffff;
-  --text-color: #000000;
-  --primary-color: #3498db;
-}
-
-
-.theme-dark, .theme-light, .theme-ocean, .theme-forest, .theme-solarized {
-  transition: all 0.3s ease;
-}
-
-/* Theme 1 - Light */
-.theme-light {
-  --background-color: #ffffff;
-  --text-color: #000000;
-  --primary-color: #3498db;
-  --transition: all 0.3s ease;
-}
-
-/* Theme 2 - Dark */
-.theme-dark {
-  --background-color: #121212;
-  --text-color: #ffffff;
-  --filter:invert(1) hue-rotate(170deg) brightness(1.5) contrast(0.9) saturate(1.5);
-  --primary-color: #1e88e5;
-}
-
-/* Theme 3 - Solarized */
-.theme-solarized {
-  --background-color: #fdf6e3;
-  --text-color: #586e75;
-  --primary-color: #b58900;
-}
-
-/* Theme 4 - Forest */
-.theme-forest {
-  --background-color: #2e8b57;
-  --text-color: #ffffff;
-  --primary-color: #3cb371;
-}
-
-/* Theme 5 - Ocean */
-.theme-ocean {
-  --background-color: #2b7a78;
-  --text-color: #ffffff;
-  --primary-color: #3aafa9;
-}
-
 /* Apply Variables */
 body {
   background-color: var(--background-color);
@@ -259,21 +210,6 @@ body {
 
 
 
-#themeSection {
-  width:100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-#themeSection button {
-  height: 35px;
-  width: fit-content;
-  background: rgba(255,255,255,0.1);
-  border-radius: 15px;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-
 
 
 /* Keyframes for growing and shrinking */
@@ -328,53 +264,74 @@ body {
 
 
 
-/* Style for the theme selector container */
-.theme-selector {
-  display: flex;
-  gap: 10px;
-  margin: 20px 0;
-  flex-wrap: wrap;
-}
-
-/* Style for each theme button */
-.theme-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  color: #ffffff;
-  transition: background-color 0.3s ease;
-}
-
-/* Individual theme button styles */
-.theme-button[data-theme="theme-light"] {
-  background-color: #3498db;
-}
-
-.theme-button[data-theme="theme-dark"] {
-  background-color: #1e88e5;
-}
-
-.theme-button[data-theme="theme-solarized"] {
-  background-color: #b58900;
-}
-
-.theme-button[data-theme="theme-forest"] {
-  background-color: #3cb371;
-}
-
-.theme-button[data-theme="theme-ocean"] {
-  background-color: #3aafa9;
-}
-
-/* Highlight the active theme button */
-.theme-button.active {
-  border: 2px solid #ffffff;
-  transform: scale(1.1);
+#up {
+  position:fixed;
+  bottom:10px;
+  right:10px;
+  border-radius:50%;
+  z-index:10;
+  display:block;
+  width:60px;
+  aspect-ratio:1/1;
+  border:none;
+  font-size: 30px;
+  font-weight: thin;
+  box-shadow: 0px 10px 15px rgba(0,0,0,0.3);
 }
 
 
 
+
+
+    /* Style for the theme buttons */
+    .theme-button {
+      display: inline-flex;
+      align-items: center;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      margin: 10px;
+      border-radius: 20px;
+      outline: none;
+      transition: transform 0.2s;
+    }
+
+    .theme-button:hover {
+      transform: scale(1.1);
+    }
+
+    .theme-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin: 0 2px;
+    }
+
+    /* Theme styles */
+    .theme-1 {
+      background-color: #f0f8ff;
+      color: #333;
+    }
+
+    .theme-2 {
+      background-color: #ffefd5;
+      color: #5f370e;
+    }
+
+    .theme-3 {
+      background-color: #e0f7fa;
+      color: #004d40;
+    }
+
+    .theme-4 {
+      background-color: #f3e5f5;
+      color: #6a1b9a;
+    }
+
+    .theme-5 {
+      background-color: #fff3e0;
+      color: #bf360c;
+    }
   </style>
 </head>
 <body>
@@ -449,21 +406,6 @@ body {
 
 
 
-<div class="theme-selector">
-    <p>Choose a Theme:</p>
-    <button class="theme-button" data-theme="theme-light">Light</button>
-    <button class="theme-button" data-theme="theme-dark">Dark</button>
-    <button class="theme-button" data-theme="theme-solarized">Solarized</button>
-    <button class="theme-button" data-theme="theme-forest">Forest</button>
-    <button class="theme-button" data-theme="theme-ocean">Ocean</button>
-  </div>
-
-
-
-
-
-
-
 
 
 
@@ -474,7 +416,7 @@ body {
 
 
   <!-- Scrolling Banner for app icons -->
-  <div class="scrolling-banner">
+  <div id="scrollingBanner" class="scrolling-banner">
     <div class="banner-content">
       <div class="banner-icon">App 1</div>
       <div class="banner-icon">App 2</div>
@@ -484,10 +426,46 @@ body {
     </div>
   </div>
   
+  
+  
+    <!-- Theme buttons -->
+  <div id="theme-changer">
+    <button class="theme-button" onclick="changeTheme('theme-1')">
+      <div class="theme-color" style="background-color: #f0f8ff;"></div>
+      <div class="theme-color" style="background-color: #87cefa;"></div>
+      <div class="theme-color" style="background-color: #4682b4;"></div>
+    </button>
+    <button class="theme-button" onclick="changeTheme('theme-2')">
+      <div class="theme-color" style="background-color: #ffefd5;"></div>
+      <div class="theme-color" style="background-color: #ffdab9;"></div>
+      <div class="theme-color" style="background-color: #cd853f;"></div>
+    </button>
+    <button class="theme-button" onclick="changeTheme('theme-3')">
+      <div class="theme-color" style="background-color: #e0f7fa;"></div>
+      <div class="theme-color" style="background-color: #80deea;"></div>
+      <div class="theme-color" style="background-color: #006064;"></div>
+    </button>
+    <button class="theme-button" onclick="changeTheme('theme-4')">
+      <div class="theme-color" style="background-color: #f3e5f5;"></div>
+      <div class="theme-color" style="background-color: #ce93d8;"></div>
+      <div class="theme-color" style="background-color: #6a1b9a;"></div>
+    </button>
+    <button class="theme-button" onclick="changeTheme('theme-5')">
+      <div class="theme-color" style="background-color: #fff3e0;"></div>
+      <div class="theme-color" style="background-color: #ffb74d;"></div>
+      <div class="theme-color" style="background-color: #bf360c;"></div>
+    </button>
+  </div>
+
+  
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+<button id="up">♤</button>
 <script>
+
+document.querySelector( '#up' ).addEventListener( 'click' , () => {
+  window.scrollTo( { top: 0, behavior: 'smooth' })})
+
 document.querySelectorAll('.app-card').forEach(card => {
   // Calculate and update the card position based on pointer location
   card.addEventListener('mousemove', (e) => {
@@ -549,34 +527,22 @@ const button = document.querySelector('.CTAButton');
   
   
   
-
-
-    // Load saved theme or default to light
-    const savedTheme = localStorage.getItem('theme') || 'theme-light';
-    document.body.classList.add(savedTheme);
-
-    // Highlight the active theme button
-    const themeButtons = document.querySelectorAll('.theme-button');
-    themeButtons.forEach(button => {
-      if (button.getAttribute('data-theme') === savedTheme) {
-        button.classList.add('active');
+      // Function to change the theme
+      function changeTheme(themeClass) {
+        const scrollBanner = document.getElementById('scrollingBanner');
+        document.body.className = themeClass;
+        
+        localStorage.setItem('theme', themeClass); // Save the selected theme in localStorage
+      }
+  
+      // Check if a theme is saved in localStorage and apply it
+      window.onload = function() {
+        const savedTheme = localStorage.getItem('theme'); // Get the saved theme from localStorage
+        if (savedTheme) {
+          document.body.className = savedTheme; // Apply the saved theme
+        }
       }
 
-      // Add click event listener to each button
-      button.addEventListener('click', (event) => {
-        // Remove existing theme classes and active button styles
-        document.body.classList.remove('theme-light', 'theme-dark', 'theme-solarized', 'theme-forest', 'theme-ocean');
-        themeButtons.forEach(btn => btn.classList.remove('active'));
-        
-        // Apply the selected theme and highlight the button
-        const selectedTheme = event.target.getAttribute('data-theme');
-        document.body.classList.add(selectedTheme);
-        event.target.classList.add('active');
-        
-        // Save the selected theme in localStorage
-        localStorage.setItem('theme', selectedTheme);
-      });
-    });
 
 
 </script>
