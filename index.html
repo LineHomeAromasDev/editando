@@ -293,6 +293,18 @@
       transition: transform 0.2s;
     }
 
+    .active-theme-button {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(0,0,0,1;
+      cursor: pointer;
+      padding: 5px;
+      margin: 10px;
+      border-radius: 20px;
+      outline: none;
+      transition: transform 0.2s;
+    }
+
     .theme-button:hover {
       transform: scale(1.1);
     }
@@ -524,21 +536,24 @@ const button = document.querySelector('.CTAButton');
   
   
   
-      // Function to change the theme
       function changeTheme(themeClass) {
-        const scrollBanner = document.getElementById('scrollingBanner');
-        document.body.className = themeClass;
-        
-        localStorage.setItem('theme', themeClass); // Save the selected theme in localStorage
-      }
-  
-      // Check if a theme is saved in localStorage and apply it
-      window.onload = function() {
-        const savedTheme = localStorage.getItem('theme'); // Get the saved theme from localStorage
-        if (savedTheme) {
-          document.body.className = savedTheme; // Apply the saved theme
-        }
-      }
+  const scrollBanner = document.getElementById('scrollingBanner');
+  document.body.className = themeClass;
+
+  // Identify the clicked button
+  const clickedButton = event.target;
+
+  // Remove the 'active-button' class from all buttons
+  const allButtons = document.querySelectorAll('.theme-button');
+  allButtons.forEach(button => {
+    button.classList.remove('active-button');
+  });
+
+  // Add the 'active-button' class to the clicked button
+  clickedButton.classList.add('active-theme-button');
+
+  localStorage.setItem('theme', themeClass);
+}
 
 
 
