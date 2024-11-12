@@ -68,24 +68,41 @@
     // Get the character limit for a single page
     const MAX_CHARS_PER_PAGE = calculateMaxCharsPerPage();
 
-    // Handles user input and ensures text overflow moves to the next page
     function handleInput(textArea) {
-      const content = textArea.value;
-      const contentWithBlankLines = content.split('\n');
+  const content = textArea.value;
+  const lines = content.split('\n');
 
-      // Remove lines that are empty or contain only spaces, and count as blank lines
-      const filteredLines = contentWithBlankLines.filter(line => line.trim() !== '');
+  let currentLineIndex = 0;
+  let currentPage = textArea;
 
-      // If the content exceeds the page limit, split the text and create new pages
-      if (filteredLines.length > calculateMaxLines()) {
-        let excessContent = contentWithBlankLines.slice(calculateMaxLines()).join('\n');
-        textArea.value = contentWithBlankLines.slice(0, calculateMaxLines()).join('\n');
-        createNewTextArea(excessContent);
+  while (currentLineIndex < lines.length) {
+    let pageContent = '';
+    let currentLineHeight = 0;
+
+    // Iterate through lines until we reach the page limit
+    while (currentLineIndex < lines.length) {
+      const line = lines[currentLineIndex];
+      const lineHeight = line.split(' ').length * FONT_SIZE + LINE_HEIGHT_PX; // Estimate line height based on word count
+
+      if (currentLineHeight + lineHeight <= A4_HEIGHT) {
+        pageContent += line + '\n';
+        currentLineHeight += lineHeight;
+        currentLineIndex++;
+      } else {
+        break;
       }
-
-      // Check for empty pages and remove them
-      removeEmptyPages();
     }
+
+    currentPage.value = pageContent;
+
+    if (currentLineIndex < lines.length) {
+      currentPage = createNewTextArea();
+    }
+  }
+
+  // Remove empty pages
+  removeEmptyPages();
+}
 
     // Handle pasting content
     function handlePaste(event, textArea) {
