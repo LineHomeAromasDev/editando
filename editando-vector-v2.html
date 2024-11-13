@@ -75,17 +75,10 @@
         /* Styles for mobile: Make geniusBar vertical */
         @media (max-width: 768px) {
             .genius-bar {
-                flex-direction: column;
                 position: fixed;
                 left: 0;
                 right: 0;
                 top: 0;
-            }
-    
-            .elements-menu {
-                left: 0;
-                right: 0;
-                top: 50px;
             }
         }
 
@@ -273,7 +266,7 @@ canvasContainer.addEventListener('touchmove', (e) => {
     const zoomFactor = currentDistance / initialDistance;
 
     // Apply the zoom to the canvas
-    canvas.setZoom(canvas.getZoom() * zoomFactor);
+    canvasContainer.setZoom(canvasContainer.getZoom() * zoomFactor);
 
     // Prevent page scroll while zooming
     e.preventDefault();
