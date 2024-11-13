@@ -75,10 +75,17 @@
         /* Styles for mobile: Make geniusBar vertical */
         @media (max-width: 768px) {
             .genius-bar {
+                flex-direction: column;
                 position: fixed;
                 left: 0;
                 right: 0;
                 top: 0;
+            }
+    
+            .elements-menu {
+                left: 0;
+                right: 0;
+                top: 50px;
             }
         }
 
@@ -266,7 +273,7 @@ canvasContainer.addEventListener('touchmove', (e) => {
     const zoomFactor = currentDistance / initialDistance;
 
     // Apply the zoom to the canvas
-    canvasContainer.setZoom(canvasContainer.getZoom() * zoomFactor);
+    canvas.setZoom(canvas.getZoom() * zoomFactor);
 
     // Prevent page scroll while zooming
     e.preventDefault();
@@ -301,13 +308,6 @@ togglePanningButton.addEventListener('click', () => {
     isMobilePanningEnabled = !isMobilePanningEnabled;
     togglePanningButton.textContent = isMobilePanningEnabled ? 'Disable Panning' : 'Enable Panning';
 });
-
-
-        // Adjust canvas size
-        canvas.setWidth(window.innerWidth * 0.8);
-        canvas.setHeight(window.innerHeight * 0.8);
-
-
 
 
 
