@@ -118,7 +118,7 @@
     
     
     <div id="canvasContainer">
-        <canvas id="canvas" width="800" height="600"></canvas>
+        <canvas id="canvas"></canvas>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
@@ -145,7 +145,7 @@
 
         WebFont.load({
   google: {
-    families: ['Open+Sans', 'Roboto+Condensed', 'Montserrat']
+    families: ['Open+Sans', 'Roboto+Condensed']
   },
   active: function() {
     // Fonts are now loaded, you can apply them to your Fabric.js canvas
@@ -159,7 +159,7 @@ function addTextToCanvas() {
   const text = new fabric.Text('Hello World', {
     left: 100,
     top: 100,
-    fontFamily: 'Montserrat', // Set custom font here
+    fontFamily: 'Rototo Condensed', // Set custom font here
     fontSize: 30,
 
   });
@@ -199,29 +199,10 @@ function zoomCanvas(e) {
 
     // Update zoom level
     currentZoom += zoomStep * zoomDirection;
-    currentZoom = Math.max(1, Math.min(5, currentZoom)); // Zoom limits (min: 1, max: 5)
+    currentZoom = Math.max(1, Math.min(5, currentZoom)); // Zoom limits (min: 0.5, max: 3)
 
     updateTransform();
 }
-
-// Add desktop zoom listener for mouse wheel
-canvasContainer.addEventListener('wheel', zoomCanvas); // Desktop
-
-// For mobile zooming, make sure it zooms the container not the canvas content
-canvasContainer.addEventListener('gesturechange', (e) => {
-    e.preventDefault();
-    const zoomFactor = e.scale;
-    currentZoom *= zoomFactor;
-    currentZoom = Math.max(0.5, Math.min(5, currentZoom)); // Zoom limits (min: 1, max: 5)
-
-    updateTransform();
-});
-
-// Function to update transform on canvasContainer for both mobile and desktop zoom
-function updateTransform() {
-    canvasContainer.style.transform = `translate(${panX}px, ${panY}px) scale(${currentZoom})`;
-}
-
 
 // Add desktop and mobile zoom listeners
 canvasContainer.addEventListener('wheel', zoomCanvas); // Desktop
