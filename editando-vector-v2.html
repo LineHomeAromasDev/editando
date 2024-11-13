@@ -11,14 +11,15 @@
         body {
             height:100vh;
             width:100vh;
+            margin:0;
+            padding:0;
             display:block;
-            background: rgba(0,0,0,0.05)
+            background-image: url('https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Editor_Background.svg?v=1731034534')
         }
         /* Base styles for geniusBar */
         .genius-bar {
             display: flex;
             justify-content: space-evenly;
-
             background-color: #333;
             color: white;
             padding: 10px;
@@ -31,17 +32,18 @@
 
         #canvasContainer {
             position: relative;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             overflow: hidden;
-            border: 1px dashed rgba(0,0,0,0.3);
-            display:block;
+            background: rgba(0,0,0,0.05);
+            border: 1px dashed rgb(178, 255, 119);
+            display:flex;
+            align-items:center;
+            justify-content:center;
         }
 
         canvas{
             box-shadow: 0px 5px 10px rgba(0,0,0,0.05);
-            position:absolute;
-            right:0;
         }
     
         .genius-bar button {
@@ -166,7 +168,7 @@ function addTextToCanvas() {
     top: 100,
     fontFamily: 'Open Sans', // Set custom font here
     fontSize: 30,
-    
+
   });
 
   // Add the text to the canvas
@@ -183,6 +185,9 @@ let panX = 0;
 let panY = 0;
 let isPanning = false;
 let startPanPoint = { x: 0, y: 0 };
+// Variables to track touch events for zooming
+let initialDistance = 0;
+let isZooming = false;
 
 // Utility function to update transform style on canvasContainer
 function updateTransform() {
@@ -247,6 +252,48 @@ function panCanvas(e) {
 // End Pan (Mouse or Touch End)
 function endPan() {
     isPanning = false;
+}
+
+
+// Function to calculate distance between two points
+function getDistance(touch1, touch2) {
+  const dx = touch2.clientX - touch1.clientX;
+  const dy = touch2.clientY - touch1.clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+// Function to handle pinch zoom
+canvasContainer.addEventListener('touchstart', (e) => {
+  // If there are two touch points, it’s a pinch zoom
+  if (e.touches.length === 2) {
+    initialDistance = getDistance(e.touches[0], e.touches[1]);
+    isZooming = true;
+  }
+});
+
+canvasContainer.addEventListener('touchmove', (e) => {
+  // Only handle pinch zoom when there are two touch points
+  if (isZooming && e.touches.length === 2) {
+    const currentDistance = getDistance(e.touches[0], e.touches[1]);
+    const zoomFactor = currentDistance / initialDistance;
+
+    // Apply the zoom to the canvas
+    canvas.setZoom(canvas.getZoom() * zoomFactor);
+
+    // Prevent page scroll while zooming
+    e.preventDefault();
+
+    initialDistance = currentDistance; // Update initial distance for next move
+  }
+});
+
+canvasContainer.addEventListener('touchend', () => {
+  isZooming = false;
+});
+
+// Function to reset the zoom to a default value if needed
+function resetZoom() {
+  canvas.setZoom(1);
 }
 
 // Event listeners for desktop and mobile pan functionality
