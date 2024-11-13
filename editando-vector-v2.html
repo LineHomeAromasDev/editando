@@ -107,20 +107,13 @@
     
 </head>
 <body>
+
+    
     
     <div id="geniusBar" class="genius-bar">
-        <!-- Button to toggle the color/gradient picker -->
-        <button id="toggleFillColor">Fill Color/Gradient</button>
-        <button id="toggleStrokeColor">Stroke Color</button>
-        <div id="fillColorPicker" class="color-picker" style="display: none;">
-            <label for="fillSolidColor">Solid Color:</label>
-            <input type="color" id="fillSolidColor">
-            <button id="applyGradient">Apply Gradient</button>
-        </div>
-        <div id="strokeColorPicker" class="color-picker" style="display: none;">
-            <label for="strokeSolidColor">Solid Stroke Color:</label>
-            <input type="color" id="strokeSolidColor">
-        </div>
+        <!-- Button to toggle panning on mobile -->
+<button id="togglePanningButton">Enable Panning</button>
+
     </div>
     
     
@@ -152,7 +145,7 @@
 
         WebFont.load({
   google: {
-    families: ['Open+Sans', 'Roboto']
+    families: ['Open+Sans', 'Roboto+Condensed']
   },
   active: function() {
     // Fonts are now loaded, you can apply them to your Fabric.js canvas
@@ -166,7 +159,7 @@ function addTextToCanvas() {
   const text = new fabric.Text('Hello World', {
     left: 100,
     top: 100,
-    fontFamily: 'Open Sans', // Set custom font here
+    fontFamily: 'Rototo Condensed', // Set custom font here
     fontSize: 30,
 
   });
@@ -188,6 +181,8 @@ let startPanPoint = { x: 0, y: 0 };
 // Variables to track touch events for zooming
 let initialDistance = 0;
 let isZooming = false;
+let isMobilePanningEnabled = false; // Flag to toggle mobile panning
+
 
 // Utility function to update transform style on canvasContainer
 function updateTransform() {
@@ -204,7 +199,7 @@ function zoomCanvas(e) {
 
     // Update zoom level
     currentZoom += zoomStep * zoomDirection;
-    currentZoom = Math.max(0.5, Math.min(3, currentZoom)); // Zoom limits (min: 0.5, max: 3)
+    currentZoom = Math.max(1, Math.min(5, currentZoom)); // Zoom limits (min: 0.5, max: 3)
 
     updateTransform();
 }
@@ -213,11 +208,12 @@ function zoomCanvas(e) {
 canvasContainer.addEventListener('wheel', zoomCanvas); // Desktop
 canvasContainer.addEventListener('gesturechange', zoomCanvas); // Mobile (Pinch)
 
+
 // Start Pan (Mouse or Touch)
 function startPan(e) {
-    // Only start panning if not touching an object
+    // For desktop, check if Shift key is pressed, for mobile use isMobilePanningEnabled flag
     const isOverObject = canvas.getActiveObject() || canvas.findTarget(e);
-    if (!isOverObject) {
+    if ((!isOverObject && (e.shiftKey || isMobilePanningEnabled))) {
         isPanning = true;
         startPanPoint = {
             x: e.clientX || e.touches[0].clientX,
@@ -253,7 +249,6 @@ function panCanvas(e) {
 function endPan() {
     isPanning = false;
 }
-
 
 // Function to calculate distance between two points
 function getDistance(touch1, touch2) {
@@ -307,6 +302,14 @@ canvasContainer.addEventListener('touchstart', startPan);
 canvasContainer.addEventListener('touchmove', panCanvas);
 canvasContainer.addEventListener('touchend', endPan);
 
+// Toggle Button for Mobile Panning
+const togglePanningButton = document.getElementById('togglePanningButton');
+togglePanningButton.addEventListener('click', () => {
+    isMobilePanningEnabled = !isMobilePanningEnabled;
+    togglePanningButton.textContent = isMobilePanningEnabled ? 'Disable Panning' : 'Enable Panning';
+});
+
+
         // Adjust canvas size
         canvas.setWidth(window.innerWidth * 0.8);
         canvas.setHeight(window.innerHeight * 0.8);
@@ -359,6 +362,47 @@ canvasContainer.addEventListener('touchend', endPan);
         });
     });
     
+
+
+
+    // Function to copy selected items
+function copySelectedItems() {
+  const selectedObjects = canvas.getActiveObjects();
+
+  if (selectedObjects.length === 0) {
+    console.log('No objects selected.');
+    return;
+  }
+
+  // Create a deep copy of each selected object
+  const copiedObjects = selectedObjects.map(obj => obj.clone());
+
+  // Group the copied objects and add them to the canvas
+  const group = new fabric.Group(copiedObjects, {
+    left: selectedObjects[0].left + 20, // Offset by 20px horizontally
+    top: selectedObjects[0].top + 20,   // Offset by 20px vertically
+  });
+
+  // Add the new group to the canvas
+  canvas.add(group);
+  canvas.renderAll(); // Update the canvas view
+}
+
+// Function to paste copied items
+function pasteSelectedItems() {
+  const selectedObjects = canvas.getActiveObjects();
+
+  if (selectedObjects.length === 0) {
+    console.log('No objects selected.');
+    return;
+  }
+
+  // Copy and paste items
+  copySelectedItems();
+}
+
+
+
 
     </script>
 </body>
