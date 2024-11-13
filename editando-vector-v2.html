@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fabric.js Canvas Example</title>
     <!-- Use the latest Fabric.js version from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fabric@latest/dist/index.min.js"></script>
     <style>
 
         body {
@@ -145,7 +145,7 @@
 
         WebFont.load({
   google: {
-    families: ['Open+Sans', 'Roboto+Condensed']
+    families: ['Open+Sans', 'Roboto+Condensed', 'Montserrat']
   },
   active: function() {
     // Fonts are now loaded, you can apply them to your Fabric.js canvas
@@ -159,7 +159,7 @@ function addTextToCanvas() {
   const text = new fabric.Text('Hello World', {
     left: 100,
     top: 100,
-    fontFamily: 'Rototo Condensed', // Set custom font here
+    fontFamily: 'Montserrat', // Set custom font here
     fontSize: 30,
 
   });
