@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>editando</title>
   <link rel="icon" href="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Black_Simple_Letters_J_and_K_Monogram_Logo_20241102_165546_0000.png?v=1730566564" type="image/x-icon">
   <link rel="shortcut icon" href="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Black_Simple_Letters_J_and_K_Monogram_Logo_20241102_165546_0000.png?v=1730566564" type="image/x-icon">
@@ -1465,16 +1465,15 @@ function applyConsistentStyles() {
 
   // Add text button functionality
   document.getElementById('addTextBtn').addEventListener('click', function () {
+
     const text = new fabric.Textbox('Your Text Here', {
-      left: 100,
-      top: 100,
       width: 200, // Set width large enough to see alignment
       fontSize: 20,
       fill: '#333',
-      textAlign: 'left'
+      textAlign: 'center'
     });
     canvas.add(text);
-    canvas.setActiveObject(text);
+    centerObjectOnCanvas(text, canvas);
   });
 
 
@@ -1482,6 +1481,19 @@ function applyConsistentStyles() {
 
 
   
+function centerObjectOnCanvas(object, canvas) {
+  const canvasWidth = canvas.getWidth();
+  const canvasHeight = canvas.getHeight();
+
+  object.left = canvasWidth / 2;
+  object.top = canvasHeight / 2;
+  object.originX = 'center';
+  object.originY = 'center';
+
+  // Ensure Fabric recalculates positions
+  object.setCoords();
+  canvas.setActiveObject(text, canvas);
+}
 
 
 
@@ -1527,6 +1539,7 @@ canvas.selectionDashArray = [5, 5];
        top: 50
      });
      canvas.add(rect);
+     centerObjectOnCanvas(text, canvas);
    });
 
 
@@ -1710,14 +1723,14 @@ document.getElementById('addTriangleBtn').addEventListener('click', () => addSVG
 
 
 
- function changeFontFamily(font) {
+ function changeFontFamily(fontFamily) {
     const activeObject = canvas.getActiveObject();
     if (activeObject && activeObject.type === 'textbox') {
         // Load the font using WebFont Loader and apply it to the active object
         WebFont.load({
-            google: { families: [font] },
+            google: { families: [fontFamily] },
             active: function() {
-                activeObject.set('fontFamily', font);
+                activeObject.set('fontFamily', fontFamily);
                 canvas.renderAll();
             },
         });
