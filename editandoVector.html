@@ -8,7 +8,8 @@
   <link rel="shortcut icon" href="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Black_Simple_Letters_J_and_K_Monogram_Logo_20241102_165546_0000.png?v=1730566564" type="image/x-icon">
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
+
 
 
 
@@ -38,6 +39,7 @@
    height: 100vh;
    width: 100vw;
    overflow: hidden;
+   
    background-image: url('https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Editor_Background.svg?v=1731034534');
  }
 
@@ -52,17 +54,18 @@
 
 /* Launcher button */
 #launcherButton {
-  position: fixed;
-  bottom: 50%;
-  right: 15px;
-  padding: 15px;
-  background-color: #007bff;
+  position:absolute;
+  top:0;
+  right:0;
   color: white;
+  background:transparent;
   border: none;
-  border-radius: 50%;
   cursor: pointer;
   z-index:3;
-  
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 
@@ -74,7 +77,8 @@
   left: 0;
   right: 0;
   max-height: 80%;
-  background-color: rgba(35,35,35,1);
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(10px);
   border-radius: 15px 15px 0 0;
   padding: 0;
   box-sizing:border-box;
@@ -94,8 +98,8 @@
 
 
 #appSearchBarContainer {
-    width:100%;
-  background: rgba(40,40,40,1);
+  width:100%;
+  background:rgba(0,0,0,0.2);
   border-bottom: 1px solid rgba(255,255,255,0.1);
   border-radius: 15px 15px 0 0;
   position:sticky;
@@ -195,13 +199,12 @@
  display: flex;
  justify-content: flex-start;
  align-items: center;
- background-color: #2c2c2e;
- padding: 0 0 0 10px;
+ background:rgba(0,0,0,0.6);
  position: fixed;
  top: 0;
  width: 100%;
  height:30px;
- z-index: 2;
+ z-index: 3;
  color: #fff;
  font-family: Arial, sans-serif;
 }
@@ -218,13 +221,15 @@
  background: none;
  color: #fff;
  border: none;
- font-size: 16px;
+ font-size: 15px;
  cursor: pointer;
+ height:100%;
 }
 
 
 .menu-button:hover {
  color: #d1d1d6;
+ background:rgba(0,0,0,0.2);
 }
 
 
@@ -235,19 +240,21 @@
  top: 100%;
  transform:translateY(10px);
  left: 0;
- background-color: #3a3a3c;
+ background:rgba(0,0,0,0.6);
  border-radius: 5px;
- padding: 10px 0;
- min-width: 200px;
- max-height:60vh;
+ padding: 0;
+ min-width: 150px;
+ max-height:50vh;
  overflow-y:scroll;
  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+ backdrop-filter:blur(5px);
 }
 
 
 .dropdown button, .dropdown select {
  display: block;
  padding: 10px;
+ margin: 0;
  color: #fff;
  text-decoration: none;
  text-align:left;
@@ -255,8 +262,9 @@
  border-right:none;
  border-top:none;
  border-bottom: 1px solid rgba(255,255,255,0.1);
- background:transparent;
+ background:rgba(0,0,0,0.1);
  width:95%;
+ box-sizing:border-box;
 }
 
 
@@ -296,18 +304,20 @@
 
  #tool-footer {
    position: absolute;
-   bottom:10px;
+   bottom:20px;
    left:50%;
    transform: translateX(-50%);
    width: 95vw;
-   height:60px;
+   height:50px;
    max-width:700px;
-   background-color: #f4f4f4;
-   padding: 5px;
+   background-color: rgba(0,0,0,0.6);
+   backdrop-filter: blur(5px);
+   -webkit-backdrop-filter: blur(5px);
+   padding: 0 5px;
    display: flex;
    justify-content: flex-start;
    align-items: center;
-   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
    border-radius:15px;
    position: absolute;
    overflow-x:scroll;
@@ -319,40 +329,17 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
  #tool-footer button {
    padding: 5px;
-   border: none;
+   border: 1px solid rgba(255,255,255,0.2);
    background-color: rgba(0,0,0,0);
-   color: black;
+   color: white;
    cursor: pointer;
    box-sizing: border-box;
-   border-radius: 5px;
+   border-radius: 10px;
    transition: 0.2s ease;
    font-size:1.2em;
  }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -413,8 +400,7 @@
 
  canvas {
    transform-origin: center center;
-   border: 1px dashed #47D0FF;
-   transition: all 0.3s ease;
+   box-shadow: 0px 5px 10px rgba(0,0,0,0.1);
  }
 
 
@@ -570,53 +556,34 @@
  padding:5px;
  display:flex;
  gap:5px;
- background: rgb(255, 255, 255);
+ background:rgba(0,0,0,0.6);
+ backdrop-filter:blur(5px);
  z-index:2;
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 #secTools button {
- border:none;
+ background:rgba(0,0,0,0);
+ border:1px solid rgba(255,255,255,0.2);
  padding:10px;
+ color:white;
  border-radius: 5px;
  margin:0;
  font-size:1em;
+ transition: all 0.2s ease;
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 #secTools button:hover {
- border:none;
- padding:10px;
- border-radius: 5px;
- margin:0;
+    background:rgba(0,0,0,0.2);
+    transform: scale(1.05)
+}
+
+#secTools button:active {
+    background:rgba(0,0,0,0.2);
+    transform: scale(0.8)
 }
 
 
@@ -685,11 +652,15 @@
 #itemsContainer {
  position: absolute;
  bottom: -50vh;
- left: 0;
+ left: 50%;
+ transform: translateX(-50%);
  width: 100%;
+ width: 600px;
  max-height:50vh;
- background-color: rgba(40,40,40,1);
- padding: 20px;
+ background-color: rgba(0,0,0,0.6);
+ backdrop-filter: blur(5px);
+ -webkit-backdrop-filter: blur(5px);
+ padding: 10px;
  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5);
  border-radius:15px 15px 0 0;
  display: flex;
@@ -700,20 +671,22 @@
  flex-wrap:wrap;
  opacity:0;
  transition:all 0.3s ease;
- justify-content:flex-start;
+ justify-content:center;
  z-index:2;
  box-sizing:border-box;
  overflow-y:auto;
+ gap:10px;
 }
 
 
 #itemsContainer button{
- width: 33.33%;
+ width: calc(20% - 10px);
  aspect-ratio:1/1;
- border:none;
+ border:1px solid rgba(255,255,255,0.1);
  border-radius:10px;
  background: transparent;
  color:white;
+ box-sizing:border-box;
 }
 
 #itemsContainer button:hover {
@@ -750,8 +723,9 @@
  border-radius:50%;
  left:15px;
  padding: 0;
- background-color: #d776de;
- color: white;
+ background-color: #5ff33e;
+ box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
+ color: rgba(0,0,0,0.8);
  border: none;
  cursor: pointer;
  display:flex;
@@ -792,7 +766,8 @@
  padding:5px;
  display:flex;
  gap:5px;
- background: rgb(255, 255, 255);
+ background:rgba(0,0,0,0.6);
+ backdrop-filter:blur(5px);
  z-index:2;
 }
 
@@ -800,41 +775,31 @@
 
 
 #objectActions button {
- border:none;
+ background:rgba(0,0,0,0);
+ border:1px solid rgba(255,255,255,0.2);
  padding:10px;
+ color:white;
  border-radius: 5px;
  margin:0;
- background: rgba(0,0,0,0.1);
  font-size:1em;
+ transition: all 0.2s ease;
+}
+
+#objectActions button:hover {
+ background:rgba(0,0,0,0.2);
+ transform: scale(1.05);
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #objectActions button:active {
- border:none;
- padding:10px;
- border-radius: 5px;
- margin:0;
+ transform: scale(0.8);
 }
 
 
 
 
 #svgOutput {
-  min-width:100px;
+  max-width:100px;
   max-height:100%;
 }
 
@@ -862,62 +827,7 @@
 }
 
 
-#fontSelectMenu {
-   height: 50vh;
-   overflow-y: auto;
-   position: fixed;
-   bottom: -50vh;
-   left: 0;
-   width: 100%;
-   max-width:600px;
-   box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5);
-   padding: 0;
-   z-index: 10;
-   background: rgba(35, 35, 35, 1);
-   color: white;
-   transition: transform 0.3s ease; /* Animate transform */
-   box-sizing: border-box;
-}
 
-.fontMenuOpen {
-   transform: translate(0, -100%); /* Slide up into view */
-}
-
-#fontSearchContainer {
-  width:100%;
-  background: rgba(40,40,40,1);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  border-radius: 15px 15px 0 0;
-  position:sticky;
-  top:0;
-  padding:15px;
-  box-sizing: border-box;
-}
-
-#fontSearch {
- border: 1px solid rgba(255,255,255,0.1);
- border-radius:10px;
- height:45px;
- width:100%;
- background: rgba(30,30,30,1);
- padding:0 0 0 10px;
- margin:0;
- box-sizing: border-box;
- font-size:1em;
-}
-
-
-#fontList div {
-   padding: 10px;
-   font-size:17pt;
-   cursor: pointer;
-   border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-
-#fontList div:hover {
-   background-color: #f0f0f0;
-}
 
 
 #deleteInPlaceButton {
@@ -936,11 +846,14 @@
   display: flex;
   flex-direction: column;
   gap:5px;
-  background:white;
+  background:rgba(0,0,0,0.4);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter:blur(5px);
   box-sizing:border-box;
   padding:5px;
   border-radius:20px;
   width:40px;
+  box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
 }
 
 /* Custom color input style */
@@ -1010,13 +923,14 @@ input[type="color"]:focus {
 
 
     #logo{
-        height:80px;
+        height:60px;
         filter:invert(1);
         width:auto;
         padding:0;
         margin:0;
         pointer-events: none;
-        position:absolute;
+        position:sticky;
+        top:0;
         right:20px;
     }
     
@@ -1027,24 +941,39 @@ input[type="color"]:focus {
       bottom:85px;
       right:15px;
       z-index:2;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      padding:5px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:5px;
+      border-radius:20px;
     }
-    
-    
-    
-    
-    
-    #layersPanel {
-    width: 200px;
-    height: 300px;
-    overflow-y: auto;
+
+    #zoomControls button {
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0);
+      color:white;
+      height:30px;
+      width:30px;
+      border-radius:50%;
+      transition: all 0.2s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+
+    #zoomControls button:hover {
+ background:rgba(0,0,0,0.2);
+ transform: scale(1.05);
 }
 
-#layersButton {
-    background-color: #333;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
+
+#zoomControls button:active {
+ transform: scale(0.8);
 }
 
 
@@ -1053,10 +982,6 @@ input[type="color"]:focus {
 <body>
 
 
-
-
-<!-- Launcher button -->
-<button id="launcherButton"><p>Apps</p></button>
 
 <!-- Launcher panel -->
 <div id="appLauncher">
@@ -1206,22 +1131,14 @@ input[type="color"]:focus {
     
    </div>
  </div>
+
+    <!-- Launcher button -->
+<button id="launcherButton"><span>More apps</span><span class="material-icons-outlined">apps</span></button>
 </div>
 
 
 <div id="canvas-container">
  <canvas id="designCanvas"></canvas>
-</div>
-
-
-
-<!-- Button for layers -->
-<button id="layersButton" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); writing-mode: vertical-rl;">Layers</button>
-
-<!-- Layers panel -->
-<div id="layersPanel" style="display: none; position: absolute; left: 50px; top: 50px; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 10px;">
-    <h3>Layers</h3>
-    <ul id="layersList"></ul>
 </div>
 
 
@@ -1251,9 +1168,9 @@ input[type="color"]:focus {
 
 
 <div id="zoomControls">
-    <button onclick="zoomIn()">Zoom In</button>
-    <button onclick="zoomOut()">Zoom Out</button>
-    <button onclick="resetZoom()">Reset Zoom</button>
+    <button data-label="Zoom In" class="material-icons-outlined" onclick="zoomIn()">zoom_in</button>
+    <button data-label="Zoom Out" class="material-icons-outlined" onclick="zoomOut()">zoom_out</button>
+    <button data-label="Reset Zoom" class="material-icons-outlined" onclick="resetZoom()">restart_alt</button>
 </div>
 
 
@@ -1268,23 +1185,21 @@ input[type="color"]:focus {
 
 
 <div id="itemsContainer">
- <button id="drawingModeBtn">Enable Free Drawing Mode</button>
- <button id="pointModeBtn">Enable Point Drawing Mode</button>
- <button id="addTextBtn">Add Text</button>
- <button id="addRectBtn"><svg width="50" height="50"><rect width="50" height="50" style="fill:blue;"></rect></svg></button>
- <button id="addCircleBtn"><svg width="50" height="50"><circle cx="25" cy="25" r="25" style="fill:red;"></circle></svg></button>
- <button id="addTriangleBtn"><svg width="50" height="50"><polygon points="25,0 50,50 0,50" style="fill:green;"></polygon></svg></button>
- <button id="addEllipseBtn">ellipse</button>
-   <button id="addDiamondBtn">Diamond</button>
- <button id="addSimpleHeartBtn"><svg width="50" height="50" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+ <button data-label="Enable Drawing Mode" id="drawingModeBtn">Enable Free Drawing Mode</button>
+ <button data-label="Create a Custom Path" id="pointModeBtn"><img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/AddFreeformThumb.svg?v=1731631061"></button>
+ <button data-label="Add Text" id="addTextBtn"><img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/TextAddThumb.svg?v=1731624849"></button>
+ <button data-label="Add Rectangle" id="addRectBtn"><svg width="50" height="50"><rect width="50" height="50" style="fill:blue;"></rect></svg></button>
+ <button data-label="Add Circle" id="addCircleBtn"><svg width="50" height="50"><circle cx="25" cy="25" r="25" style="fill:red;"></circle></svg></button>
+ <button data-label="Add Triangle" id="addTriangleBtn"><svg width="50" height="50"><polygon points="25,0 50,50 0,50" style="fill:green;"></polygon></svg></button>
+ <button data-label="All Ellipse" id="addEllipseBtn">ellipse</button>
+ <button data-label="Add Diamond" id="addDiamondBtn">Diamond</button>
+ <button data-label="Add Simple Heart" id="addSimpleHeartBtn"><svg width="50" height="50" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
    <path fill="#555" d="M13.6705038,1.65775755 C15.7733256,1.1643364 17.8346764,1.87952015 18.8050117,3.09161872 C19.7007318,4.21051134 20.1078092,5.37372498 19.9755956,7.08978592 C19.8803055,8.32659959 19.4754445,9.24351338 18.6768484,10.253173 C18.5296466,10.4392792 18.3687155,10.6302896 18.1658464,10.862046 C18.0465566,10.9983221 17.5949329,11.5061955 17.6178177,11.4803526 C16.8186802,12.3827879 14.4625844,14.643494 10.5145935,18.299202 C10.224182,18.5681134 9.76777894,18.5667637 9.47905081,18.2961397 C6.089961,15.1195561 3.89625857,13.0278592 2.89042367,12.0135158 C1.03250481,10.1398805 0.326468943,9.0511668 0.0698691381,7.29291272 C-0.198560664,5.45359801 0.31465113,3.94412412 1.46841698,2.77151837 C2.55037542,1.67189257 4.4852998,1.26441086 6.39590277,1.65285729 C7.51456274,1.88029307 8.70597506,2.61194275 9.99645377,3.83297717 C11.0971959,2.70423085 12.323284,1.97387885 13.6705038,1.65775755 Z"></path>
  </svg></button>
- <button id="addStarBtn">Star</button>
- <button id="addDiamondBtn">Diamond</button>
- <button id="addCrescentBtn">Crescent</button>
- <button id="addCircleBtn">Circle</button>
- <button id="addTriangleBtn">Triangle</button>
- <button>Upload Image</button>
+ <button data-label="Add Star" id="addStarBtn">Star</button>
+ <button data-label="Add Diamond" id="addDiamondBtn">Diamond</button>
+ <button data-label="Add Crescent" id="addCrescentBtn">Crescent</button>
+ <button data-label="Upload an Image">Upload Image</button>
  <input type="file" id="uploadImage" accept="image/*">
 </div>
 
@@ -1317,28 +1232,20 @@ input[type="color"]:focus {
 
 
 
-
-
-
-
-<div id="fontSelectMenu">
-  <div id="fontSearchContainer">
-   <input type="text" id="fontSearch" placeholder="Search fonts..." />
-   </div>
-   <div id="fontList">
-    <div id="customFonts">
-        <h3>Custom Fonts</h3>
-    </div>
-   </div>
-</div>
-
-
-
-
 <!-- Footer for tools -->
 <div id="tool-footer">
+      <!-- Font selection dropdown -->
+
+  <select id="fontSelect">
+    <option value="Arial">Arial</option>
+    <option value="Roboto">Roboto</option>
+    <option value="Pacifico">Pacifico</option>
+    <option value="Open Sans">Open Sans</option>
+  </select>
+
+  <button onclick="convertTextToPath()">Convert to Path</button>
+
  <button class="material-icons-outlined"  id="deleteButton">delete</button>
- <button data-label="Change Font" class="material-icons-outlined" id="fontChangeButton">font_download</button>
  <button data-label="Text Align Left" class="material-icons-outlined" id="alignLeft">format_align_left</button>
  <button data-label="Text Align Center" class="material-icons-outlined" id="alignCenter">format_align_center</button>
  <button data-label="Text Align Right" class="material-icons-outlined" id="alignRight">format_align_right</button> 
@@ -1538,7 +1445,17 @@ function applyConsistentStyles() {
   });
 
 
-  fabric.Object.prototype.transparentCorners = false;
+
+
+
+  
+
+
+
+
+
+
+fabric.Object.prototype.transparentCorners = false;
 fabric.Object.prototype.cornerColor = 'rgba(255,255,255,0.1)';         // Color of the corner control points
 fabric.Object.prototype.cornerStrokeColor = 'lime';  // Stroke color of corner controls
 fabric.Object.prototype.cornerSize = 8;              // Size of corner controls
@@ -1760,6 +1677,52 @@ document.getElementById('addTriangleBtn').addEventListener('click', () => addSVG
 
 
 
+ // Function to change font family of the selected text object
+ function changeFontFamily(font) {
+      const activeObject = canvas.getActiveObject();
+      if (activeObject && activeObject.type === 'text') {
+        
+        // Load the font using Web Font Loader and apply it only after loading
+        WebFont.load({
+          google: { families: [font] },
+          active: function() {
+            activeObject.set('fontFamily', font);
+            activeObject.dirty = true; // Mark as dirty for re-render
+            canvas.renderAll(); // Explicitly re-render canvas
+          }
+        });
+      }
+    }
+
+    // Event listener for font selection dropdown
+    document.getElementById('fontSelect').addEventListener('change', function() {
+      changeFontFamily(this.value);
+    });
+
+    // Function to convert the selected text object to a path
+    function convertTextToPath() {
+      const activeObject = canvas.getActiveObject();
+      if (activeObject && activeObject.type === 'text') {
+        const svgPath = activeObject.toSVG();
+        const textPath = fabric.util.groupSVGElements(fabric.parseSVGDocument(svgPath));
+
+        textPath.set({
+          left: activeObject.left,
+          top: activeObject.top,
+          fill: activeObject.fill,
+          angle: activeObject.angle,
+          scaleX: activeObject.scaleX,
+          scaleY: activeObject.scaleY,
+        });
+
+        canvas.remove(activeObject);
+        canvas.add(textPath);
+        canvas.renderAll();
+      }
+    }
+
+
+
   // Function to change text alignment for single or multiple selected items
   function alignText(alignment) {
     const activeObject = canvas.getActiveObject();
@@ -1880,100 +1843,10 @@ document.getElementById('letterSpacingRange').addEventListener('input', (e) => {
 
   
 
-// Top 20 popular Google Fonts
-const googleFonts = [
-"ABeeZee", "Abel", "Abril Fatface", "Aclonica", "Acme",
-"Actor", "Adamina", "Aguafina Script", "Akronim", "Aladin",
-"Aldrich", "Alef", "Alegreya", "Alegreya Sans", "Alegreya SC",
-"Aleo", "Alfa Slab One", "Alice", "Alike", "Alike Angular",
-"Allan", "Allerta", "Allerta Stencil", "Allura", "Almarai",
-"Amarante", "Amatic SC", "Amethysta", "Amiko", "Amiri",
-"Amita", "Anaheim", "Andada", "Andika", "Angkor"
 
 
-];
 
 
-// Event listener to toggle the font select menu
-document.getElementById("fontChangeButton").onclick = () => {
-  const fontMenu = document.getElementById("fontSelectMenu");
-  fontMenu.classList.toggle("fontMenuOpen");
-
-  console.log("Toggled fontMenuOpen class. Current class list:", fontMenu.classList); // Debugging
-
-  // Only load fonts initially when opening the menu
-  if (fontMenu.classList.contains("fontMenuOpen")) {
-    displayFonts(googleFonts);
-  }
-};
-
-// Display fonts in the font menu
-function displayFonts(fontList) {
-  const fontListDiv = document.getElementById("fontList");
-  fontListDiv.innerHTML = ""; // Clear previous fonts
-
-  fontList.forEach(font => {
-    const fontDiv = document.createElement("div");
-    fontDiv.textContent = font;
-    fontDiv.classList.add("font-item");
-    fontDiv.style.fontFamily = "Arial, sans-serif"; // Set default font style
-    fontDiv.onclick = () => applyFont(font); // Apply font on click
-    fontListDiv.appendChild(fontDiv);
-
-    // Load each font individually and update its style once loaded
-    WebFont.load({
-      google: { families: [font] },
-      fontactive: function(familyName) {
-        if (familyName === font) {
-          fontDiv.style.fontFamily = font; // Update to the correct font style
-        }
-      },
-      inactive: function() {
-        console.error(`Could not load font ${font}`);
-      }
-    });
-  });
-}
-
-// Filter fonts as user types in the search bar
-document.getElementById("fontSearch").oninput = (event) => {
-  const searchTerm = event.target.value.toLowerCase();
-  const filteredFonts = googleFonts.filter(font => font.toLowerCase().includes(searchTerm));
-  displayFonts(filteredFonts);
-};
-
-// Apply the selected font to the active Fabric.js text object
-function applyFont(font) {
-  WebFont.load({
-    google: { families: [font] },
-    active: function() {
-      const activeObject = canvas.getActiveObject();
-      if (activeObject && activeObject.type === 'textbox') {
-        activeObject.set("fontFamily", font);
-        canvas.renderAll();
-      } else {
-        alert("Please select a text object to apply the font.");
-      }
-
-      // Close the font menu after applying the font
-      document.getElementById("fontSelectMenu").classList.remove("fontMenuOpen");
-    },
-    inactive: function() {
-      console.error(`Could not load font ${font}`);
-    }
-  });
-  saveState();
-}
-
-// Close the font menu if clicked outside
-document.addEventListener("click", (event) => {
-  const fontMenu = document.getElementById("fontSelectMenu");
-  const fontButton = document.getElementById("fontChangeButton");
-
-  if (!fontMenu.contains(event.target) && !fontButton.contains(event.target)) {
-    fontMenu.classList.remove("fontMenuOpen");
-  }
-});
 
 
 
@@ -2015,7 +1888,7 @@ function bringToFront() {
    if (activeObject) {
        activeObject.bringToFront();
        canvas.renderAll();
-       updateLayersList();
+
    }
 }
 
@@ -2026,7 +1899,6 @@ function sendToBack() {
    if (activeObject) {
        activeObject.sendToBack();
        canvas.renderAll();
-       updateLayersList();
    }
 }
 
@@ -2037,7 +1909,6 @@ function bringForward() {
    if (activeObject) {
        activeObject.bringForward();
        canvas.renderAll();
-       updateLayersList();
    }
 }
 
@@ -2048,7 +1919,6 @@ function sendBackward() {
    if (activeObject) {
        activeObject.sendBackwards();
        canvas.renderAll();
-       updateLayersList();
    }
 }
 
@@ -2162,15 +2032,13 @@ function saveState() {
   undoStack.push(JSON.stringify(canvas.toJSON(['fontFamily', 'fontSize', 'fill', 'left', 'top', 'text', 'width', 'height', 'scaleX', 'scaleY', 'angle', 'flipX', 'flipY'])));
   redoStack = []; // Clear redo stack after a new action
   canvas.renderAll();
-  updateLayersList(); // Update layers list after saving state
-}
+  }
 
 // Load a specific state and render it
 function loadState(state) {
   canvas.loadFromJSON(state, () => {
     canvas.renderAll();
-    updateLayersList(); // Update layers after loading
-  });
+    });
 }
 
 // Undo function
@@ -2195,76 +2063,6 @@ function initializeState() {
   saveState();
 }
 
-// Update layers list dynamically based on canvas z-order
-function updateLayersList() {
-  const layersList = document.getElementById('layersList');
-  layersList.innerHTML = ''; // Clear existing list
-
-  // Get all objects and groups in z-order
-  const items = canvas.getObjects().slice().reverse(); // Reverse to list top-most objects first
-  items.forEach((item, index) => {
-    const listItem = document.createElement('li');
-    listItem.textContent = item.layerName || `Layer ${canvas.getObjects().length - index}`;
-    listItem.style.cursor = 'pointer';
-    
-    // Rename functionality
-    listItem.addEventListener('click', () => renameLayer(item, index));
-
-    // Append to the list
-    layersList.appendChild(listItem);
-  });
-}
-
-// Rename layer functionality
-function renameLayer(item, index) {
-  const newLayerName = prompt('Enter a new name for the layer:', item.layerName || `Layer ${index + 1}`);
-  if (newLayerName) {
-    item.set('layerName', newLayerName); // Save layer name as a custom property
-    saveState(); // Save new state after renaming
-  }
-}
-
-// Toggle the layers panel visibility
-document.getElementById('layersButton').addEventListener('click', () => {
-  const layersPanel = document.getElementById('layersPanel');
-  layersPanel.style.display = (layersPanel.style.display === 'none') ? 'block' : 'none';
-  updateLayersList(); // Update the layers list whenever the panel is toggled
-});
-
-// Event listeners to update layers list on canvas changes
-canvas.on({
-  'object:added': updateLayersList,
-  'object:removed': updateLayersList,
-  'object:modified': updateLayersList,
-  'object:moving': updateLayersList,
-  'object:scaling': updateLayersList,
-  'object:rotating': updateLayersList
-});
-
-// Initial setup
-initializeState();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Capture canvas changes and save the state
 function attachCanvasListeners() {
  canvas.on('object:added', saveState);
@@ -2273,20 +2071,6 @@ function attachCanvasListeners() {
  canvas.on('object:scaled', saveState); // Capture scaling actions
  canvas.on('object:rotated', saveState); // Capture rotation actions
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Bind undo and redo buttons to the respective functions
@@ -2303,14 +2087,6 @@ document.getElementById('redoButton').addEventListener('click', redo);
 
 
 
-
-
-
-
-
-// Initialize and attach listeners
-initializeState();
-attachCanvasListeners();
 
 
 
@@ -4471,6 +4247,65 @@ document.getElementById('canvas-container').addEventListener('wheel', function(e
 
 
 
+
+
+
+
+
+
+
+
+
+const manifest = {
+    "name": "My PWA",
+    "short_name": "PWA",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "icons": [
+      {
+        "src": "icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  };
+  const stringManifest = JSON.stringify(manifest);
+  const blob = new Blob([stringManifest], { type: 'application/json' });
+  const manifestURL = URL.createObjectURL(blob);
+  document.head.appendChild(Object.assign(document.createElement('link'), { rel: 'manifest', href: manifestURL }));
+
+
+
+  // Check if the browser supports service workers
+  if ('serviceWorker' in navigator) {
+    // Create a service worker file dynamically
+    const serviceWorkerContent = `
+      self.addEventListener('install', event => {
+        event.waitUntil(
+          caches.open('v1').then(cache => cache.addAll(['/', '/index.html']))
+        );
+      });
+      self.addEventListener('fetch', event => {
+        event.respondWith(
+          caches.match(event.request).then(response => response || fetch(event.request))
+        );
+      });
+    `;
+    const blob = new Blob([serviceWorkerContent], { type: 'text/javascript' });
+    const swURL = URL.createObjectURL(blob);
+
+    // Register the dynamically created service worker
+    navigator.serviceWorker.register(swURL).then(registration => {
+      console.log('ServiceWorker registered:', registration);
+    });
+  }
 
 
 </script>
