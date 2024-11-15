@@ -11,6 +11,67 @@
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 
+  <script>
+    const manifest = {
+    "name": "editando Vector",
+    "short_name": "Vector",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "icons": [
+      {
+        "src": "https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Black_Simple_Letters_J_and_K_Monogram_Logo_20241102_165546_0000.png?v=1730756946",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Black_Simple_Letters_J_and_K_Monogram_Logo_20241102_165546_0000.png?v=1730756946",
+        "sizes": "120x120",
+        "type": "image/png"
+      }
+    ],
+    "screenshots": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Screenshot_2024-11-15_at_16.09.39.png?v=1731686996",
+      "sizes": "640x320",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Wonder Widgets"
+    }
+]
+  };
+  const stringManifest = JSON.stringify(manifest);
+  const blob = new Blob([stringManifest], { type: 'application/json' });
+  const manifestURL = URL.createObjectURL(blob);
+  document.head.appendChild(Object.assign(document.createElement('link'), { rel: 'manifest', href: manifestURL }));
+
+
+
+  // Check if the browser supports service workers
+  if ('serviceWorker' in navigator) {
+    // Create a service worker file dynamically
+    const serviceWorkerContent = `
+      self.addEventListener('install', event => {
+        event.waitUntil(
+          caches.open('v1').then(cache => cache.addAll(['/', '/index.html']))
+        );
+      });
+      self.addEventListener('fetch', event => {
+        event.respondWith(
+          caches.match(event.request).then(response => response || fetch(event.request))
+        );
+      });
+    `;
+    const blob = new Blob([serviceWorkerContent], { type: 'text/javascript' });
+    const swURL = URL.createObjectURL(blob);
+
+    // Register the dynamically created service worker
+    navigator.serviceWorker.register(swURL).then(registration => {
+      console.log('ServiceWorker registered:', registration);
+    });
+  }
+  </script>
 <style>
 
 
@@ -4243,56 +4304,7 @@ canvas.on('touch:end', function () {
 
 
 
-const manifest = {
-    "name": "editando Vector",
-    "short_name": "Vector",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#00000",
-    "theme_color": "#ffffff",
-    "icons": [
-      {
-        "src": "https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Black_Simple_Letters_J_and_K_Monogram_Logo_20241102_165546_0000.png?v=1730756946",
-        "sizes": "192x192",
-        "type": "image/png"
-      },
-      {
-        "src": "https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Black_Simple_Letters_J_and_K_Monogram_Logo_20241102_165546_0000.png?v=1730756946",
-        "sizes": "120x120",
-        "type": "image/png"
-      }
-    ]
-  };
-  const stringManifest = JSON.stringify(manifest);
-  const blob = new Blob([stringManifest], { type: 'application/json' });
-  const manifestURL = URL.createObjectURL(blob);
-  document.head.appendChild(Object.assign(document.createElement('link'), { rel: 'manifest', href: manifestURL }));
 
-
-
-  // Check if the browser supports service workers
-  if ('serviceWorker' in navigator) {
-    // Create a service worker file dynamically
-    const serviceWorkerContent = `
-      self.addEventListener('install', event => {
-        event.waitUntil(
-          caches.open('v1').then(cache => cache.addAll(['/', '/index.html']))
-        );
-      });
-      self.addEventListener('fetch', event => {
-        event.respondWith(
-          caches.match(event.request).then(response => response || fetch(event.request))
-        );
-      });
-    `;
-    const blob = new Blob([serviceWorkerContent], { type: 'text/javascript' });
-    const swURL = URL.createObjectURL(blob);
-
-    // Register the dynamically created service worker
-    navigator.serviceWorker.register(swURL).then(registration => {
-      console.log('ServiceWorker registered:', registration);
-    });
-  }
 
 
 
