@@ -1658,27 +1658,25 @@ document.getElementById('addTriangleBtn').addEventListener('click', () => addSVG
 
 
 
- // Function to change font family of the selected text object
  function changeFontFamily(font) {
-      const activeObject = canvas.getActiveObject();
-      if (activeObject && activeObject.type === 'text') {
-        
-        // Load the font using Web Font Loader and apply it only after loading
+    const activeObject = canvas.getActiveObject();
+    if (activeObject && activeObject.type === 'textbox') {
+        // Load the font using WebFont Loader and apply it to the active object
         WebFont.load({
-          google: { families: [font] },
-          active: function() {
-            activeObject.set('fontFamily', font);
-            activeObject.dirty = true; // Mark as dirty for re-render
-            canvas.renderAll(); // Explicitly re-render canvas
-          }
+            google: { families: [font] },
+            active: function() {
+                activeObject.set('fontFamily', font);
+                canvas.renderAll();
+            },
         });
-      }
     }
+}
 
-    // Event listener for font selection dropdown
-    document.getElementById('fontSelect').addEventListener('change', function() {
-      changeFontFamily(this.value);
-    });
+// Event listener for font dropdown
+document.getElementById('fontSelect').addEventListener('change', function() {
+    changeFontFamily(this.value);
+});
+
 
     // Function to convert the selected text object to a path
     function convertTextToPath() {
@@ -3576,35 +3574,28 @@ document.getElementById('exportJpegBtn').addEventListener('click', function () {
 
 
 
-// Export canvas as SVG
 document.getElementById('exportSvgBtn').addEventListener('click', function () {
- const svgData = canvas.toSVG();
- const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
- const svgURL = URL.createObjectURL(svgBlob);
- downloadImage(svgURL, 'canvas.svg');
+    const svgData = canvas.toSVG({
+        suppressPreamble: false, // Optional: Include SVG preamble
+        viewBox: {
+            x: 0,
+            y: 0,
+            width: canvas.width,
+            height: canvas.height,
+        },
+    });
+    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const svgURL = URL.createObjectURL(svgBlob);
+    downloadImage(svgURL, 'canvas.svg');
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Helper function to download the image
-function downloadImage(data, filename) {
- const link = document.createElement('a');
- link.href = data;
- link.download = filename;
- link.click();
+function downloadImage(url, filename) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 
 
@@ -4185,41 +4176,58 @@ document.getElementById('canvas-container').addEventListener('wheel', function(e
 }, { passive: false });
 
 
-
-let initialScale = 1, currentScale = 1;
-
-canvas.on('touch:gesture', function(event) {
-    if (event.e.touches && event.e.touches.length === 2) {
-        // Pinch-to-zoom
-        const scale = event.self.scale || 1;
-        canvas.setZoom(initialScale * scale);
-        currentScale = initialScale * scale;
-        canvas.renderAll();
-    }
-});
-
-canvas.on('touch:drag', function(event) {
-    if (event.e.touches && event.e.touches.length === 1) {
-        // Pan the canvas
+// Touch start event
+canvas.on('touch:start', function (event) {
+    if (event.e.touches.length === 2) {
+        // Pinch-to-zoom start
+        const touch1 = event.e.touches[0];
+        const touch2 = event.e.touches[1];
+        initialTouchDistance = Math.hypot(
+            touch2.clientX - touch1.clientX,
+            touch2.clientY - touch1.clientY
+        );
+        isPanning = false;
+    } else if (event.e.touches.length === 1) {
+        // Single-touch panning start
         const touch = event.e.touches[0];
-        if (!isPanning) {
-            startX = touch.clientX;
-            startY = touch.clientY;
-            isPanning = true;
-        } else {
-            const deltaX = touch.clientX - startX;
-            const deltaY = touch.clientY - startY;
-            canvas.relativePan({ x: deltaX, y: deltaY });
-            startX = touch.clientX;
-            startY = touch.clientY;
-        }
+        startX = touch.clientX;
+        startY = touch.clientY;
+        isPanning = true;
     }
 });
 
-canvas.on('touch:end', function() {
-    isPanning = false;
-    initialScale = currentScale;
+// Touch move event
+canvas.on('touch:move', function (event) {
+    if (event.e.touches.length === 2) {
+        // Pinch-to-zoom
+        const touch1 = event.e.touches[0];
+        const touch2 = event.e.touches[1];
+        const currentDistance = Math.hypot(
+            touch2.clientX - touch1.clientX,
+            touch2.clientY - touch1.clientY
+        );
+        const scale = currentDistance / initialTouchDistance;
+        canvas.zoomToPoint(
+            { x: event.e.touches[0].clientX, y: event.e.touches[0].clientY },
+            scale
+        );
+    } else if (isPanning && event.e.touches.length === 1) {
+        // Single-touch panning
+        const touch = event.e.touches[0];
+        const deltaX = touch.clientX - startX;
+        const deltaY = touch.clientY - startY;
+        canvas.relativePan({ x: deltaX, y: deltaY });
+        startX = touch.clientX;
+        startY = touch.clientY;
+    }
 });
+
+// Touch end event
+canvas.on('touch:end', function () {
+    isPanning = false;
+    initialTouchDistance = 0;
+});
+
 
 
 
