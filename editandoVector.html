@@ -17,7 +17,7 @@
     "short_name": "Vector",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#ffffff",
+    "background_image": "#000000",
     "theme_color": "#000000",
     "icons": [
       {
@@ -30,16 +30,7 @@
         "sizes": "120x120",
         "type": "image/png"
       }
-    ],
-    "screenshots": [
-    {
-     "src": "https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Screenshot_2024-11-15_at_16.09.39.png?v=1731686996",
-      "sizes": "640x320",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Wonder Widgets"
-    }
-]
+    ]
   };
   const stringManifest = JSON.stringify(manifest);
   const blob = new Blob([stringManifest], { type: 'application/json' });
