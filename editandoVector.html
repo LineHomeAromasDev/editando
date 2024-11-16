@@ -72,7 +72,7 @@
  body {
    font-family: "Poppins", sans-serif;
    margin: 0;
-   display: block;
+   display: flex;
    height: 100%;
    width: 100%;
    overflow: hidden;
@@ -82,6 +82,12 @@
 
 
 
+
+
+
+
+
+ 
 
 
 /* Launcher button */
@@ -232,7 +238,7 @@
  display: flex;
  justify-content: flex-start;
  align-items: center;
- background:rgba(0,0,0,0.6);
+ background:rgba(0,0,0,0.8);
  position: absolute;
  top: 0;
  width: 100%;
@@ -273,14 +279,15 @@
  top: 100%;
  transform:translateY(10px);
  left: 0;
- background:rgba(0,0,0,0.6);
+ background:rgba(0,0,0,0.8);
  border-radius: 5px;
  padding: 0;
  min-width: 150px;
  max-height:50vh;
  overflow-y:scroll;
  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
- backdrop-filter:blur(5px);
+ backdrop-filter:blur(10px);
+ -webkit-backdrop-filter:blur(10px);
 }
 
 
@@ -343,9 +350,9 @@
    width: 95vw;
    height:50px;
    max-width:700px;
-   background-color: rgba(0,0,0,0.6);
-   backdrop-filter: blur(5px);
-   -webkit-backdrop-filter: blur(5px);
+   background-color: rgba(0,0,0,0.8);
+   backdrop-filter: blur(10px);
+   -webkit-backdrop-filter: blur(10px);
    padding: 0 5px;
    display: flex;
    justify-content: flex-start;
@@ -589,8 +596,9 @@
  padding:5px;
  display:flex;
  gap:5px;
- background:rgba(0,0,0,0.6);
- backdrop-filter:blur(5px);
+ background:rgba(0,0,0,0.8);
+ backdrop-filter:blur(10px);
+ -webkit-backdrop-filter:blur(10px);
  z-index:2;
 }
 
@@ -690,9 +698,9 @@
  width: 100%;
  width: 600px;
  max-height:50vh;
- background-color: rgba(0,0,0,0.6);
- backdrop-filter: blur(5px);
- -webkit-backdrop-filter: blur(5px);
+ background-color: rgba(0,0,0,0.8);
+ backdrop-filter: blur(10px);
+ -webkit-backdrop-filter: blur(10px);
  padding: 10px;
  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5);
  border-radius:15px 15px 0 0;
@@ -799,8 +807,8 @@
  padding:5px;
  display:flex;
  gap:5px;
- background:rgba(0,0,0,0.6);
- backdrop-filter:blur(5px);
+ background:rgba(0,0,0,0.8);
+ backdrop-filter:blur(10px);
  z-index:2;
 }
 
@@ -850,7 +858,8 @@
    z-index:10;
    padding: 4px 8px;
    background-color: rgba(0,0,0,0.5);
-   backdrop-filter: blur(5px);
+   backdrop-filter: blur(10px);
+   -webkit-backdrop-filter:blur(10px);
    color: white;
    border-radius: 5px;
    font-size: 12px;
@@ -879,9 +888,9 @@
   display: flex;
   flex-direction: column;
   gap:5px;
-  background:rgba(0,0,0,0.4);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter:blur(5px);
+  background:rgba(0,0,0,0.8);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter:blur(10px);
   box-sizing:border-box;
   padding:5px;
   border-radius:20px;
@@ -974,9 +983,9 @@ input[type="color"]:focus {
       bottom:85px;
       right:15px;
       z-index:2;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       padding:5px;
       display:flex;
       align-items:center;
@@ -1130,7 +1139,6 @@ input[type="color"]:focus {
  <div class="menu">
    <button class="menu-button" onclick="toggleMenu('menu2')">Edit</button>
    <div class="dropdown" id="menu2">
-    <button id="convertToPaths">Convert Text to SVG Paths</button>
 
    </div>
  </div>
@@ -1372,24 +1380,28 @@ input[type="color"]:focus {
 
   </select>
 
-  <button onclick="convertTextToPath()">Convert to Path</button>
-
- <button class="material-icons-outlined"  id="deleteButton">delete</button>
+ <button data-label="Delete Selected" class="material-icons-outlined"  id="deleteButton">delete</button>
  <button data-label="Text Align Left" class="material-icons-outlined" id="alignLeft">format_align_left</button>
  <button data-label="Text Align Center" class="material-icons-outlined" id="alignCenter">format_align_center</button>
  <button data-label="Text Align Right" class="material-icons-outlined" id="alignRight">format_align_right</button> 
    <!-- Font Weight Slider -->
-   <label for="fontWeightSlider">Font Weight:</label>
-   <input type="range" id="fontWeightSlider" min="100" max="900" step="100" value="400">
+   <label class="material-icons-outlined" for="fontWeightSlider">format_bold</label>
+   <input data-label="Font Weight" type="range" id="fontWeightSlider" min="100" max="900" step="100" value="400">
  
    <!-- Letter Spacing Slider -->
-   <label for="letterSpacingSlider">Letter Spacing:</label>
-   <input type="range" id="letterSpacingSlider" min="0" max="1000" step="10" value="0">
+   <label class="material-icons-outlined" for="letterSpacingSlider">letter_spacing_2</label>
+   <input data-label="Letter Spacing" type="range" id="letterSpacingSlider" min="0" max="1000" step="10" value="0">
  
- <label class="material-icons-outlined" for="lineHeightRange">format_line_spacing</label>
- <input type="range" id="lineHeightRange" min="0.5" max="3" step="0.1" value="1.2" />
- <label class="material-icons-outlined" for="letterSpacingRange">format_letter_spacing</label>
-<input type="range" id="letterSpacingRange" min="-10" max="50" step="1" value="0" />
+     <!-- Italic and Underline Toggles -->
+  <label for="italicToggle">Italic:</label>
+  <input  data-label="Toggle Italic" type="checkbox" id="italicToggle">
+
+  <label for="underlineToggle">Underline:</label>
+  <input data-label="Toggle Underline" type="checkbox" id="underlineToggle">
+
+ <label class="material-icons-outlined" for="lineHeightRange">line_weight</label>
+ <input data-label="Line Height" type="range" id="lineHeightRange" min="0.5" max="3" step="0.1" value="1.2" />
+ 
 
 
 
@@ -1574,12 +1586,11 @@ function applyConsistentStyles() {
 
     const text = new fabric.Textbox('Your Text Here', {
       left: canvasWidth / 2,
-      top: canvasHeight / 2 - objHeight / 2,
+      top: canvasHeight / 2,
       width: 200, // Set width large enough to see alignment
       fontSize: 20,
       fill: '#333',
-      textAlign: 'center',
-      editable: true
+      textAlign: 'center'
     });
     canvas.add(text);
   });
@@ -1709,7 +1720,7 @@ document.getElementById('lineHeightRange').addEventListener('input', (e) => {
     // Function to change font weight
     function changeFontWeight(weight) {
       const activeObject = canvas.getActiveObject();
-      if (activeObject && activeObject.type === 'text') {
+      if (activeObject && activeObject.type === 'textbox') {
         activeObject.set('fontWeight', weight);
         activeObject.dirty = true;
         canvas.renderAll();
@@ -1717,14 +1728,56 @@ document.getElementById('lineHeightRange').addEventListener('input', (e) => {
     }
 
     // Function to change letter spacing
-    function changeLetterSpacing(spacing) {
+    function changeLetterSpacing(letterSpacing) {
       const activeObject = canvas.getActiveObject();
-      if (activeObject && activeObject.type === 'text') {
-        activeObject.set('charSpacing', spacing);
+      if (activeObject && activeObject.type === 'textbox') {
+        activeObject.set('charSpacing', letterSpacing);
         activeObject.dirty = true;
         canvas.renderAll();
       }
     }
+
+        // Function to toggle italic
+        function toggleItalic(isItalic) {
+      const activeObject = canvas.getActiveObject();
+      if (activeObject && activeObject.type === 'textbox') {
+        activeObject.set('fontStyle', isItalic ? 'italic' : 'normal');
+        activeObject.dirty = true;
+        canvas.renderAll();
+      }
+    }
+
+    // Function to toggle underline
+    function toggleUnderline(isUnderline) {
+      const activeObject = canvas.getActiveObject();
+      if (activeObject && activeObject.type === 'textbox') {
+        activeObject.set('underline', isUnderline);
+        activeObject.dirty = true;
+        canvas.renderAll();
+      }
+    }
+
+
+      // Event listeners for UI controls
+      document.getElementById('fontSelect').addEventListener('change', function() {
+      changeFontFamily(this.value);
+    });
+
+    document.getElementById('fontWeightSlider').addEventListener('input', function() {
+      changeFontWeight(this.value);
+    });
+
+    document.getElementById('letterSpacingSlider').addEventListener('input', function() {
+      changeLetterSpacing(Number(this.value));
+    });
+
+    document.getElementById('italicToggle').addEventListener('change', function() {
+      toggleItalic(this.checked);
+    });
+
+    document.getElementById('underlineToggle').addEventListener('change', function() {
+      toggleUnderline(this.checked);
+    });
 
 
 
@@ -1732,87 +1785,6 @@ document.getElementById('lineHeightRange').addEventListener('input', (e) => {
   document.getElementById('alignLeft').onclick = () => alignText('left');
   document.getElementById('alignCenter').onclick = () => alignText('center');
   document.getElementById('alignRight').onclick = () => alignText('right');
-  
-
-  document.getElementById('convertToPaths').onclick = () => {
-  const activeObject = canvas.getActiveObject();
-
-  // Check if active object is a text object
-  if (activeObject && activeObject.type === 'textbox') {
-    // Get the current values from the range inputs
-    const lineHeight = parseFloat(document.getElementById('lineHeightRange').value);
-    const letterSpacing = parseFloat(document.getElementById('letterSpacingRange').value);
-
-    // Set the line height and letter spacing on the active text object
-    activeObject.set({
-      lineHeight: lineHeight,      // Adjust line height
-      letterSpacing: letterSpacing, // Adjust letter spacing
-    });
-
-    // Clone the active text object after applying new settings
-    activeObject.clone((clonedText) => {
-      const text = clonedText.text;
-      const characters = text.split('');
-      const letterObjects = [];
-      let offsetX = 0;
-      let offsetY = 0;
-
-      // Loop through each character to create an individual letter object
-      characters.forEach((char, index) => {
-        const charObj = new fabric.Text(char, {
-          left: offsetX,
-          top: offsetY,
-          fontFamily: clonedText.fontFamily,
-          fontSize: clonedText.fontSize,
-          fill: clonedText.fill,
-          fontWeight: clonedText.fontWeight,
-          lineHeight: clonedText.lineHeight,
-          letterSpacing: clonedText.letterSpacing,
-          textAlign: clonedText.textAlign,
-          textBaseline: clonedText.textBaseline,
-        });
-
-        // Adjust for letter spacing and line height
-        offsetX += charObj.width + letterSpacing;
-
-        // If a new line is reached, adjust offsetY and reset offsetX
-        if (char === '\n') {
-          offsetY += lineHeight;
-          offsetX = 0;
-        }
-
-        letterObjects.push(charObj);
-      });
-
-      // Create a group of all the letter objects
-      const pathGroup = new fabric.Group(letterObjects, {
-        left: activeObject.left,
-        top: activeObject.top,
-      });
-
-      // Remove the original text from the canvas
-      canvas.remove(activeObject);
-
-      // Add the new path group to the canvas
-      canvas.add(pathGroup);
-      canvas.setActiveObject(pathGroup);
-      canvas.renderAll();
-    });
-  }
-};
-
-
-
-
-  
-
-
-
-
-
-
-
-
 
 
 
@@ -2787,7 +2759,7 @@ deleteButton.style.position = 'absolute';
 deleteButton.style.display = 'none';
 deleteButton.style.background = 'rgba(0,0,0,0.3)';
 deleteButton.style.color = 'rgba(220,220,220,1';
-deleteButton.style.backdropFilter = 'blur(5px)';
+deleteButton.style.backdropFilter = 'blur(10px)';
 deleteButton.style.padding = '5px';
 deleteButton.style.borderRadius = '15px';
 deleteButton.style.transform = 'translate(50%, 10px)'
