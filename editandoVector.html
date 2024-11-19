@@ -76,18 +76,10 @@
    height: 100%;
    width: 100%;
    overflow: hidden;
-   background-image: url('https://cdn.shopify.com/s/files/1/0550/8782/5151/files/Editor_Background.svg?v=1731034534');
- }
+   background: rgb(230, 230, 230);
+   }
 
 
-
-
-
-
-
-
-
- 
 
 
 /* Launcher button */
@@ -245,7 +237,6 @@
  height:30px;
  z-index: 3;
  color: #fff;
- font-family: Arial, sans-serif;
 }
 
 
@@ -349,18 +340,19 @@
    transform: translateX(-50%);
    width: 95vw;
    height:50px;
-   max-width:700px;
+   max-width:600px;
    background-color: rgba(0,0,0,0.8);
    backdrop-filter: blur(10px);
    -webkit-backdrop-filter: blur(10px);
-   padding: 0 5px;
+   padding: 0;
    display: flex;
    justify-content: flex-start;
    align-items: center;
    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-   border-radius:15px;
+   border-radius:25px;
    position: absolute;
    overflow-x:scroll;
+   overflow-y:hidden;
    box-sizing:border-box;
    gap:10px;
  }
@@ -370,29 +362,62 @@
 
 
  #tool-footer button {
-   padding: 5px;
-   border: 1px solid rgba(255,255,255,0.2);
+   border: none;
    background-color: rgba(0,0,0,0);
    color: white;
    cursor: pointer;
    box-sizing: border-box;
    border-radius: 10px;
    transition: 0.2s ease;
-   font-size:1.2em;
+   font-size:1em;
+   box-sizing:border-box;
+   height:100%;
+   aspect-ratio:1/1;
+   border-radius:50%;
+
  }
 
 
 
 
  #tool-footer button:hover {
-   background-color: rgba(0,0,0,0.1);
-   color: black;
+   background-color: rgba(255,255,255,0.1);
+   transform: scale(1.1)
+ }
+
+ #tool-footer label {
+   padding: 5px;
+   background-color: rgba(0,0,0,0);
+   color: white;
+   cursor: pointer;
+   box-sizing: border-box;
+   border-radius: 10px;
+   transition: 0.2s ease;
  }
 
 
+ .footer_toolbar_section {
+  position:relative;
+  height: 100%;
+  width:fit-content;
+  min-width:100px;
+  min-height:100%;
+}
 
+.footer_toolbar_section label {
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  font-size: 0.5em !important;
+}
 
-
+.footer_toolbar_section input {
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+}
 
 
 
@@ -696,12 +721,12 @@
  left: 50%;
  transform: translateX(-50%);
  width: 100%;
- width: 600px;
+ max-width: 600px;
  max-height:50vh;
  background-color: rgba(0,0,0,0.8);
  backdrop-filter: blur(10px);
  -webkit-backdrop-filter: blur(10px);
- padding: 10px;
+ padding: 0;
  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5);
  border-radius:15px 15px 0 0;
  display: flex;
@@ -713,7 +738,7 @@
  opacity:0;
  transition:all 0.3s ease;
  justify-content:center;
- z-index:2;
+ z-index:4;
  box-sizing:border-box;
  overflow-y:auto;
  gap:10px;
@@ -721,13 +746,14 @@
 
 
 #itemsContainer button{
- width: calc(20% - 10px);
+ width: calc(25% - 10px);
  aspect-ratio:1/1;
  border:1px solid rgba(255,255,255,0.1);
  border-radius:10px;
  background: transparent;
  color:white;
  box-sizing:border-box;
+ pointer-events:all;
 }
 
 #itemsContainer button:hover {
@@ -744,8 +770,8 @@
     opacity:1;
   }
   100% {
-    transform: scale(2);
-    opacity:0;
+    transform: scale(1.05);
+    opacity:0.5;
   }
 }
 
@@ -793,6 +819,58 @@
 
 #openItemsContainerBtn:hover span {
  transform: rotate(90deg) translate(-50%, 50%);
+ }
+
+
+ #itemSearchAndFilter {
+  position:sticky;
+  top:0;
+  width: 100%;
+  padding:10px;
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+  display:flex;
+  flex-direction:column;
+  background-color: rgba(40, 40, 40, 0.8);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+ }
+
+
+ #itemSearchInput {
+  padding:10px;
+  border: 1px solid rgba(255,255,255,0.5);
+  background: rgba(0,0,0,0.2);
+  width: 100%;
+  box-sizing:border-box;
+  border-radius: 10px;
+  margin-bottom:10px;
+  color:white;
+  font-family:'Poppins', sans-serif;
+ }
+
+ #filterSelectors {
+  display:flex;
+  gap:10px;
+ }
+
+ #filterSelectors select, #filterSelectors button  {
+  padding:5px;
+  background:transparent;
+  color:white;
+  border:1px solid rgba(255,255,255,0.5);
+  border-radius: 10px;
+  height:40px;
+ }
+
+ #shapesContainer {
+  width:100%;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  padding:0 10px;
+ }
+ #shapesContainer button {
+  max-width: calc(20% - 10px);
  }
    
    
@@ -881,13 +959,16 @@
 
 
     /* Container for color pickers */
-.color-picker-container {
+#color-picker-container {
+  display:flex;
+  align-content:center;
+  justify-content:center;
   position:absolute;
+  z-index:3;
   bottom:135px;
   left:15px;
   display: flex;
   flex-direction: column;
-  gap:5px;
   background:rgba(0,0,0,0.8);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter:blur(10px);
@@ -896,7 +977,9 @@
   border-radius:20px;
   width:40px;
   box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
+  overflow:hidden;
 }
+
 
 /* Custom color input style */
 input[type="color"] {
@@ -905,6 +988,7 @@ input[type="color"] {
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 50%;
   padding:0;
+  margin:0;
   cursor: pointer;
   overflow:hidden;
   transition: all 0.3s ease;
@@ -924,7 +1008,7 @@ input[type="color"]:focus {
 
 
     /* Optional: Adding a label for the color input */
-    .color-picker-container label {
+    #color-picker-container label {
       font-size: 15px;
       color: white;
       display: block;
@@ -932,10 +1016,10 @@ input[type="color"]:focus {
       position:absolute;
       pointer-events: none;
       transition: all 0.3s ease;
-      text-shadow: 0px 0px 15px rgba(0,0,0,1)
+      text-shadow: 0px 0px 15px rgba(0,0,0,1);
     }
 
-    .color-picker-container input:hover {
+    #color-picker-container input:hover {
       transform: scale(1.1);
       filter:brightness(0.85);
     }
@@ -962,6 +1046,82 @@ input[type="color"]:focus {
       opacity:1;
     }
     
+
+    #colorPickerObjects {
+      opacity:0.5;
+      pointer-events:none;
+      border: none;
+      height:0;
+      opacity:0;
+
+    }
+    #colorPickerObjects.itemSelected {
+      opacity:1;
+      pointer-events:all;
+      width: 30px;
+      height: 30px;
+      margin-top:5px;
+}
+
+
+#stroke-settings {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  background-color:transparent;
+}
+
+#stroke-settings label {
+  margin-right: 5px;
+}
+
+#stroke-settings input,
+#stroke-settings select {
+  margin-right: 10px;
+}
+
+#apply-stroke {
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+}
+
+
+#textboxTools {
+  display:none;
+  align-items:center;
+  transition: all 0.2s ease;
+  padding: 0 20px;
+  background-color: rgba(255,255,255,0.1);
+  border-radius:30px;
+  box-sizing: border-box;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity:0
+  }
+  100% {
+    opacity:1
+  }
+}
+#textboxTools.itemSelected {
+  display:flex;
+  animation: fade-in 0.2s ease;
+}
+
+
+#glowShadowSettings {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  background-color:transparent;
+}
+
+
 
 
     #logo{
@@ -1019,12 +1179,74 @@ input[type="color"]:focus {
 }
 
 
+
+#movementControls {
+      display: flex;
+      flex-direction:column;
+      gap: 5px;
+      position:absolute;
+      z-index:3;
+      bottom:140px;
+      right:15px;
+      padding:5px;
+      background-color: rgba(0,0,0,0.8);
+      width:40px;
+      border-radius:20px;
+      box-sizing:border-box;
+      opacity:0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      transform: scale(0.8) translate(0, 100%);
+    }
+
+    #movementControls.movementVisible {
+      display: flex;
+      flex-direction:column;
+      gap: 5px;
+      position:absolute;
+      z-index:3;
+      padding:5px;
+      background-color: rgba(0,0,0,0.8);
+      width:40px;
+      border-radius:20px;
+      box-sizing:border-box;
+      opacity:1;
+      pointer-events:all ;
+      transform: scale(1) translate(0%,0)
+    }
+
+    #movementControls button {
+      padding: 0;
+      cursor: pointer;
+      width:100%;
+      aspect-ratio:1/1;
+      background: rgba(0,0,0,0);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius:50%;
+      color:rgba(255,255,255,0.5);
+      transition: all 0.2s ease;
+    }
+
+    #movementControls button:hover {
+      transform: scale(1.1);
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.8);
+      color:rgba(255,255,255,0.8);
+    }
+
+    #movementControls button:hover {
+      transform: scale(0.8);
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.8);
+      color:rgba(255,255,255,0.8);
+    }
+
 </style>
 </head>
 <body>
 
 
-
+<div id="appletContainer">
 <!-- Launcher panel -->
 <div id="appLauncher">
   <!-- Search bar -->
@@ -1056,12 +1278,13 @@ input[type="color"]:focus {
   </div>
 </div>
 
+
 <!-- Background overlay for closing the panel when clicked outside -->
 <div class="backdrop" id="backdrop"></div>
 
 
 
-<div id="appletContainer">
+
 
 
 
@@ -1194,9 +1417,16 @@ input[type="color"]:focus {
 </div>
 
 
+<div id="movementControls">
+  <button class="material-icons-outlined" id="move-up">keyboard_double_arrow_up</button>
+  <button class="material-icons-outlined" id="move-down">keyboard_double_arrow_down</button>
+  <button class="material-icons-outlined" id="move-left">keyboard_double_arrow_left</button>
+  <button class="material-icons-outlined" id="move-right">keyboard_double_arrow_right</button>
+</div>
+
 
 <!-- Color Picker for Background and Selected Objects -->
-<div class="color-picker-container">
+<div id="color-picker-container">
     
     <input type="color" id="colorPickerBackground" data-label="Change Background Colour" data-target="background" value="#ffffff">
     <label class="material-icons-outlined" for="colorPickerBackground">edit</label>
@@ -1226,22 +1456,39 @@ input[type="color"]:focus {
 
 
 <div id="itemsContainer">
+
+
+  <div id="itemSearchAndFilter">
+    <input type="text" id="itemSearchInput" placeholder="Search..." />
+    <div id="filterSelectors">
+    <select id="itemSortSelect">
+      <option value="nameAsc">Sort by Name (A-Z)</option>
+      <option value="nameDesc">Sort by Name (Z-A)</option>
+      <option value="categoryAsc">Sort by Category (A-Z)</option>
+      <option value="categoryDesc">Sort by Category (Z-A)</option>
+    </select>
+  </div>
+  </div>
+  
+
+    <div id="shapesContainer"></div>
+  
+  
+
  <button data-label="Enable Drawing Mode" id="drawingModeBtn">Enable Free Drawing Mode</button>
- <button data-label="Create a Custom Path" id="pointModeBtn"><img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/AddFreeformThumb.svg?v=1731631061"></button>
- <button data-label="Add Text" id="addTextBtn"><img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/TextAddThumb.svg?v=1731624849"></button>
- <button data-label="Add Rectangle" id="addRectBtn"><svg width="50" height="50"><rect width="50" height="50" style="fill:blue;"></rect></svg></button>
- <button data-label="Add Circle" id="addCircleBtn"><svg width="50" height="50"><circle cx="25" cy="25" r="25" style="fill:red;"></circle></svg></button>
- <button data-label="Add Triangle" id="addTriangleBtn"><svg width="50" height="50"><polygon points="25,0 50,50 0,50" style="fill:green;"></polygon></svg></button>
- <button data-label="All Ellipse" id="addEllipseBtn">ellipse</button>
- <button data-label="Add Diamond" id="addDiamondBtn">Diamond</button>
- <button data-label="Add Simple Heart" id="addSimpleHeartBtn"><svg width="50" height="50" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-   <path fill="#555" d="M13.6705038,1.65775755 C15.7733256,1.1643364 17.8346764,1.87952015 18.8050117,3.09161872 C19.7007318,4.21051134 20.1078092,5.37372498 19.9755956,7.08978592 C19.8803055,8.32659959 19.4754445,9.24351338 18.6768484,10.253173 C18.5296466,10.4392792 18.3687155,10.6302896 18.1658464,10.862046 C18.0465566,10.9983221 17.5949329,11.5061955 17.6178177,11.4803526 C16.8186802,12.3827879 14.4625844,14.643494 10.5145935,18.299202 C10.224182,18.5681134 9.76777894,18.5667637 9.47905081,18.2961397 C6.089961,15.1195561 3.89625857,13.0278592 2.89042367,12.0135158 C1.03250481,10.1398805 0.326468943,9.0511668 0.0698691381,7.29291272 C-0.198560664,5.45359801 0.31465113,3.94412412 1.46841698,2.77151837 C2.55037542,1.67189257 4.4852998,1.26441086 6.39590277,1.65285729 C7.51456274,1.88029307 8.70597506,2.61194275 9.99645377,3.83297717 C11.0971959,2.70423085 12.323284,1.97387885 13.6705038,1.65775755 Z"></path>
- </svg></button>
- <button data-label="Add Star" id="addStarBtn">Star</button>
- <button data-label="Add Diamond" id="addDiamondBtn">Diamond</button>
- <button data-label="Add Crescent" id="addCrescentBtn">Crescent</button>
- <button data-label="Upload an Image">Upload Image</button>
+
+ <button data-label="Create a Custom Path" id="pointModeBtn">
+   <img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/AddFreeformThumb.svg?v=1731631061">
+  </button>
+
+ <button data-label="Add Text" id="addTextBtn">
+  <img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/TextAddThumb.svg?v=1731624849">
+</button>
+
+ <label for="uploadImage" data-label="Upload an Image">
+  Upload Image</label>
  <input type="file" id="uploadImage" accept="image/*">
+
 </div>
 
 
@@ -1275,8 +1522,14 @@ input[type="color"]:focus {
 
 <!-- Footer for tools -->
 <div id="tool-footer">
+
+
+  <div id="textboxTools">
       <!-- Font selection dropdown -->
 
+<label for="fontUpload">custom font</label>
+ <input type="file" id="fontUpload" accept=".ttf, .otf"/>
+ 
   <select id="fontSelect">
 <option value="Arial">Arial</option>
 <option value="Roboto">Roboto</option>
@@ -1384,28 +1637,75 @@ input[type="color"]:focus {
  <button data-label="Text Align Left" class="material-icons-outlined" id="alignLeft">format_align_left</button>
  <button data-label="Text Align Center" class="material-icons-outlined" id="alignCenter">format_align_center</button>
  <button data-label="Text Align Right" class="material-icons-outlined" id="alignRight">format_align_right</button> 
-   <!-- Font Weight Slider -->
-   <label class="material-icons-outlined" for="fontWeightSlider">format_bold</label>
-   <input data-label="Font Weight" type="range" id="fontWeightSlider" min="100" max="900" step="100" value="400">
  
+
+ 
+   <!-- Font Weight Slider -->
+   <div class="footer_toolbar_section">
+     <label for="fontWeightSlider">Font Weight</label>
+     <input data-label="Font Weight" type="range" id="fontWeightSlider" min="100" max="900" step="100" value="400">
+   </div>
    <!-- Letter Spacing Slider -->
-   <label class="material-icons-outlined" for="letterSpacingSlider">letter_spacing_2</label>
-   <input data-label="Letter Spacing" type="range" id="letterSpacingSlider" min="0" max="1000" step="10" value="0">
+   <label class="material-icons-outlined" for="letterSpacingSlider"></label>
+   <input data-label="Letter Spacing" type="range" id="letterSpacingSlider" min="0" max="1000" step="1" value="0">
  
      <!-- Italic and Underline Toggles -->
-  <label for="italicToggle">Italic:</label>
+  <label class="material-icons-outlined" for="italicToggle">format_italic</label>
   <input  data-label="Toggle Italic" type="checkbox" id="italicToggle">
 
-  <label for="underlineToggle">Underline:</label>
+  <label class="material-icons-outlined" for="underlineToggle">format_underlined</label>
   <input data-label="Toggle Underline" type="checkbox" id="underlineToggle">
 
  <label class="material-icons-outlined" for="lineHeightRange">line_weight</label>
- <input data-label="Line Height" type="range" id="lineHeightRange" min="0.5" max="3" step="0.1" value="1.2" />
+ <input data-label="Line Height" type="range" id="lineHeightRange" min="0.1" max="4" step="0.1" value="1.2" />
  
 
 
 
+</div>
 
+<div id="stroke-settings">
+  <label for="stroke-color">Stroke Color:</label>
+  <input type="color" id="stroke-color" />
+
+  <label for="stroke-width">Stroke Width:</label>
+  <input type="number" id="stroke-width" min="1" max="10" value="1" />
+
+  <label for="stroke-style">Stroke Style:</label>
+  <select id="stroke-style">
+    <option value="solid">Solid</option>
+    <option value="dashed">Dashed</option>
+    <option value="dotted">Dotted</option>
+  </select>
+</div>
+
+<div>
+  <!-- Glow Settings -->
+  <label for="glowColor">Glow Color:</label>
+  <input type="color" id="glowColor" value="#ffffff">
+  
+  <label for="glowBlur">Glow Blur:</label>
+  <input type="range" id="glowBlur" min="0" max="50" value="10">
+  
+  <label for="glowOffsetX">Glow X Offset:</label>
+  <input type="range" id="glowOffsetX" min="0" max="50" value="5">
+  
+  <label for="glowOffsetY">Glow Y Offset:</label>
+  <input type="range" id="glowOffsetY" min="0" max="50" value="5">
+
+  <!-- Shadow Settings -->
+  <label for="shadowColor">Shadow Color:</label>
+  <input type="color" id="shadowColor" value="#000000">
+  
+  <label for="shadowBlur">Shadow Blur:</label>
+  <input type="range" id="shadowBlur" min="0" max="50" value="10">
+  
+  <label for="shadowOffsetX">Shadow X Offset:</label>
+  <input type="range" id="shadowOffsetX" min="0" max="50" value="5">
+  
+  <label for="shadowOffsetY">Shadow Y Offset:</label>
+  <input type="range" id="shadowOffsetY" min="0" max="50" value="5">
+</div>
 
 
     <button class="material-icons-outlined" data-label="Group Selected" id="group">link</button>
@@ -1419,91 +1719,13 @@ input[type="color"]:focus {
    <button data-label="Bring Forward" id="bring-forward">Bring Forward</button>
    <button data-label="Send Backward" id="send-backward">Send Backward</button>
 
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
+ 
 <!-- Corner Rounding -->
 <input type="range" id="cornerRadius" min="0" max="50">
 <button id="roundCornersBtn">Round Corners</button>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- <!-- Rotate snapping toggle -->
- <div>
-   <label>
-     <input type="checkbox" id="rotateSnapToggle"> Enable Rotate Snapping
-   </label>
- </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- <!-- Snap angle dropdown and tolerance slider -->
- <div id="snapSection">
-   <label for="snapAngleSelect">Snap Angle:</label>
-   <select id="snapAngleSelect">
-     <option value="15">15°</option>
-     <option value="30">30°</option>
-     <option value="45">45°</option>
-     <option value="60">60°</option>
-     <option value="90">90°</option>
-   </select>
-    <!-- Tolerance slider -->
-   <label for="toleranceSlider">Tolerance:</label>
-   <input type="range" id="toleranceSlider" min="1" max="20" value="5">
-   <div id="toleranceValue">5px</div>
- </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
+</div>
 
 
 
@@ -1511,6 +1733,8 @@ input[type="color"]:focus {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.min.js"></script>
 <script>
+
+
 
 
 // Elements
@@ -1566,16 +1790,6 @@ document.getElementById('canvas-container').addEventListener('click', function (
 });
 
 
-// Function to apply consistent styles to all objects on the canvas
-function applyConsistentStyles() {
-   const allObjects = canvas.getObjects();  // Get all objects on the canvas
-   allObjects.forEach(obj => {
-       obj.set({
-           strokeUniform: true,  // Set strokeUniform to false
-       });
-   });
-}
-
 
 
 
@@ -1590,7 +1804,8 @@ function applyConsistentStyles() {
       width: 200, // Set width large enough to see alignment
       fontSize: 20,
       fill: '#333',
-      textAlign: 'center'
+      textAlign: 'center',
+      strokeUniform: true,
     });
     canvas.add(text);
   });
@@ -1627,39 +1842,314 @@ canvas.on('object:added', function(e) {
 
 
 
-// Function to add SVG paths to Fabric.js Canvas
-function addSVGPathToCanvas(svgPath) {
-  fabric.loadSVGFromString(svgPath, (objects, options) => {
-    const obj = fabric.util.groupSVGElements(objects, options);
-    obj.set({
-      left: 100,
-      top: 100,
-      scaleX: 2,
-      scaleY: 2,
-      strokeWidth: 0
+const shapes = [
+      { 
+        id: 'simpleHeart', 
+        name: 'Simple Heart', 
+        category: 'Hearts', 
+        tags: ['heart', 'simple'], 
+        svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="#555" d="M13.6705038,1.65775755 C15.7733256,1.1643364 17.8346764,1.87952015 18.8050117,3.09161872 C19.7007318,4.21051134 20.1078092,5.37372498 19.9755956,7.08978592 C19.8803055,8.32659959 19.4754445,9.24351338 18.6768484,10.253173 C18.5296466,10.4392792 18.3687155,10.6302896 18.1658464,10.862046 C18.0465566,10.9983221 17.5949329,11.5061955 17.6178177,11.4803526 C16.8186802,12.3827879 14.4625844,14.643494 10.5145935,18.299202 C10.224182,18.5681134 9.76777894,18.5667637 9.47905081,18.2961397 C6.089961,15.1195561 3.89625857,13.0278592 2.89042367,12.0135158 C1.03250481,10.1398805 0.326468943,9.0511668 0.0698691381,7.29291272 C-0.198560664,5.45359801 0.31465113,3.94412412 1.46841698,2.77151837 C2.55037542,1.67189257 4.4852998,1.26441086 6.39590277,1.65285729 C7.51456274,1.88029307 8.70597506,2.61194275 9.99645377,3.83297717 C11.0971959,2.70423085 12.323284,1.97387885 13.6705038,1.65775755 Z"/></svg>`
+      },
+      { 
+        id: 'happyHeart', 
+        name: 'Happy Heart', 
+        category: 'Hearts', 
+        tags: ['heart', 'happy', 'smile'], 
+        svg: `<svg height="100" width="100" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M506.6 423.6m-29.8 0a29.8 29.8 0 1 0 59.6 0 29.8 29.8 0 1 0-59.6 0Z" fill="#0F0F0F"></path><path d="M717.8 114.5c-83.5 0-158.4 65.4-211.2 122-52.7-56.6-127.7-122-211.2-122-159.5 0-273.9 129.3-273.9 288.9C21.5 562.9 429.3 913 506.6 913s485.1-350.1 485.1-509.7c0.1-159.5-114.4-288.8-273.9-288.8z" fill="#FAFCFB"></path><path d="M506.6 926c-22 0-61-20.1-116-59.6-51.5-37-109.9-86.4-164.6-139-65.4-63-217.5-220.6-217.5-324 0-81.4 28.6-157.1 80.6-213.1 53.2-57.2 126.4-88.8 206.3-88.8 40 0 81.8 14.1 124.2 41.9 28.1 18.4 56.6 42.8 86.9 74.2 30.3-31.5 58.9-55.8 86.9-74.2 42.5-27.8 84.3-41.9 124.2-41.9 79.9 0 153.2 31.5 206.3 88.8 52 56 80.6 131.7 80.6 213.1 0 103.4-152.1 261-217.5 324-54.6 52.6-113.1 102-164.6 139-54.8 39.5-93.8 59.6-115.8 59.6zM295.4 127.5c-72.6 0-139.1 28.6-187.3 80.4-47.5 51.2-73.7 120.6-73.7 195.4 0 64.8 78.3 178.9 209.6 305.3 53.8 51.8 111.2 100.3 161.7 136.6 56.1 40.4 88.9 54.8 100.9 54.8s44.7-14.4 100.9-54.8c50.5-36.3 108-84.9 161.7-136.6 131.2-126.4 209.6-240.5 209.6-305.3 0-74.9-26.2-144.2-73.7-195.4-48.2-51.9-114.7-80.4-187.3-80.4-61.8 0-127.8 38.5-201.7 117.9-2.5 2.6-5.9 4.1-9.5 4.1s-7.1-1.5-9.5-4.1C423.2 166 357.2 127.5 295.4 127.5z" fill="#141414"></path><path d="M353.9 415.6m-33.8 0a33.8 33.8 0 1 0 67.6 0 33.8 33.8 0 1 0-67.6 0Z" fill="#0F0F0F"></path><path d="M659.3 415.6m-33.8 0a33.8 33.8 0 1 0 67.6 0 33.8 33.8 0 1 0-67.6 0Z" fill="#0F0F0F"></path><path d="M411.6 538.5c0 52.3 42.8 95 95 95 52.3 0 95-42.8 95-95v-31.7h-190v31.7z" fill="#5B5143"></path><path d="M506.6 646.5c-59.6 0-108-48.5-108-108v-31.7c0-7.2 5.8-13 13-13h190.1c7.2 0 13 5.8 13 13v31.7c0 59.5-48.5 108-108.1 108z m-82-126.7v18.7c0 45.2 36.8 82 82 82s82-36.8 82-82v-18.7h-164z" fill="#141414"></path><path d="M450.4 578.9a54.7 27.5 0 1 0 109.4 0 54.7 27.5 0 1 0-109.4 0Z" fill="#EA64F9"></path><path d="M256 502.7a32.1 27.5 0 1 0 64.2 0 32.1 27.5 0 1 0-64.2 0Z" fill="#EFAFF9"></path><path d="M703.3 502.7a32.1 27.5 0 1 0 64.2 0 32.1 27.5 0 1 0-64.2 0Z" fill="#EFAFF9"></path></g></svg>`
+      },
+      { 
+        id: 'simpleStar', 
+        name: 'Simple Star', 
+        category: 'Stars', 
+        tags: ['star', 'simple'], 
+        svg: `<svg fill="#000000" viewBox="-4 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>star</title> <path d="M4.625 27.531l7.531-3.906 7.531 3.906-1.438-8.344 6.063-5.906-8.406-1.219-3.75-7.625-3.75 7.625-8.406 1.219 6.094 5.906z"></path> </g></svg>`
+      },
+      { 
+        id: 'textBubble', 
+        name: 'Text Bubble', 
+        category: 'Text Boxes', 
+        tags: ['text', 'bubble', 'box'], 
+        svg: `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M0 1H16V13H11L8 16L5 13H0V1Z" fill="#000000"></path> </g></svg>`
+      },
+      { 
+        id: 'starRounded', 
+        name: 'Star Rounded', 
+        category: 'Stars', 
+        tags: ['star', 'rounded'], 
+        svg: `<svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#231F20" d="M62.799,23.737c-0.47-1.399-1.681-2.419-3.139-2.642l-16.969-2.593L35.069,2.265 C34.419,0.881,33.03,0,31.504,0c-1.527,0-2.915,0.881-3.565,2.265l-7.623,16.238L3.347,21.096c-1.458,0.223-2.669,1.242-3.138,2.642 c-0.469,1.4-0.115,2.942,0.916,4l12.392,12.707l-2.935,17.977c-0.242,1.488,0.389,2.984,1.62,3.854 c1.23,0.87,2.854,0.958,4.177,0.228l15.126-8.365l15.126,8.365c0.597,0.33,1.254,0.492,1.908,0.492c0.796,0,1.592-0.242,2.269-0.72 c1.231-0.869,1.861-2.365,1.619-3.854l-2.935-17.977l12.393-12.707C62.914,26.68,63.268,25.138,62.799,23.737z"></path> </g></svg>`
+      },
+      { 
+        id: 'arrow', 
+        name: 'Arrow', 
+        category: 'Shapes', 
+        tags: ['arrow', 'direction'], 
+        svg: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12.7055 18.9112C12.2784 18.7306 12 18.3052 12 17.8333V15H5C4.44772 15 4 14.5523 4 14V10C4 9.44772 4.44771 9 5 9H12V6.1667C12 5.69483 12.2784 5.26942 12.7055 5.08884C13.1326 4.90826 13.6241 5.00808 13.951 5.34174L19.6653 11.175C20.1116 11.6307 20.1116 12.3693 19.6653 12.825L13.951 18.6583C13.6241 18.9919 13.1326 19.0917 12.7055 18.9112Z" fill="#000000"></path> </g></svg>`
+      },
+      { 
+        id: 'bookmark', 
+        name: 'Bookmark', 
+        category: 'Shapes', 
+        tags: ['bookmark', 'book', 'mark'], 
+        svg: `<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" viewBox="0 0 30 30" version="1.1" id="svg822" inkscape:version="0.92.4 (f8dce91, 2019-08-02)" sodipodi:docname="bookmark.svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs id="defs816"></defs> <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="17.833333" inkscape:cx="7.4859812" inkscape:cy="15" inkscape:document-units="px" inkscape:current-layer="layer1" showgrid="true" units="px" inkscape:window-width="1366" inkscape:window-height="713" inkscape:window-x="0" inkscape:window-y="0" inkscape:window-maximized="1"> <inkscape:grid type="xygrid" id="grid816"></inkscape:grid> </sodipodi:namedview> <metadata id="metadata819"> <rdf:rdf> <cc:work rdf:about=""> <dc:format>image/svg+xml</dc:format> <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"></dc:type> <dc:title></dc:title> </cc:work> </rdf:rdf> </metadata> <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1" transform="translate(0,-289.0625)"> <path style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 8.9999994,292.06249 H 20.999999 c 1.108,0 1.999999,0.892 1.999999,2 l 2e-6,22.00001 -8,-6 -8,6 1e-7,-22 c 0,-1.108 0.892,-1.99989 1.9999999,-2 z" id="rect1417" inkscape:connector-curvature="0" sodipodi:nodetypes="cscccccsc"></path> </g> </g></svg>`
+      },
+      { 
+        id: 'diamondGeometric', 
+        name: 'Geometric Diamond', 
+        category: 'Shapes', 
+        tags: ['Geometric', 'Geo', 'Diamond'], 
+        svg: `<svg fill="#000000" viewBox="0 -5.47 56.254 56.254" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path id="diamond_premium" data-name="diamond premium" d="M494.211,354.161l1.174-1.366H482.552L469.8,367.5h12.94Zm-8.4,13.336H510.05l-6.589-7.664-5.528-6.429-8.354,9.713Zm-15.856,2.329,24.1,25.356L482.53,369.826Zm40.824,0h-2.1l-8.829,0H485.083l12.774,28.1.082.178,12.17-26.8Zm-8.94,25.322,24.057-25.32H513.337Zm24.215-27.65L513.3,352.8H500.478l12.642,14.7Z" transform="translate(-469.802 -352.795)"></path> </g></svg>`
+      },
+
+      { 
+        id: 'cactusInPot', 
+        name: 'Cactus In Pot', 
+        category: 'Vectors', 
+        tags: ['Cactus', 'In', 'Pot'], 
+        svg: `<svg height="100" width="100" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M768.7 711.8H250.8c-15.4 0-27.9 12.5-27.9 27.9v136.8c0 15.4 12.5 27.9 27.9 27.9h517.8c15.4 0 27.9-12.5 27.9-27.9V739.8c0.1-15.4-12.4-28-27.8-28z" fill="#F2F5FB"></path><path d="M742.1 688.2v115.2c0 20.1-16.3 36.4-36.4 36.4H230.4v60.1h560.3V688.2h-48.6z" fill="#DEEAF4"></path><path d="M769.4 916.4H250.1c-21.5 0-39-17.5-39-39V680.9c0-21.5 17.5-39 39-39h519.3c21.5 0 39 17.5 39 39v196.5c0 21.5-17.5 39-39 39zM250.1 665.5c-8.5 0-15.4 6.9-15.4 15.4v196.5c0 8.5 6.9 15.4 15.4 15.4h519.3c8.5 0 15.4-6.9 15.4-15.4V680.9c0-8.5-6.9-15.4-15.4-15.4H250.1z" fill="#004364"></path><path d="M512.3 176.3s-128.4 2.8-180.3 67.4-90.3 127-90.3 207 0.3 108.4 0.3 108.4h543.3l-3-155.7s-24.2-83.1-77.5-147.8c-65.3-79.3-192.5-79.3-192.5-79.3z" fill="#95C751"></path><path d="M540.8 176.3c79.6 47 133.1 133.5 133.1 232.6v156.3H241.7v36.1h540.6V445c0-139.5-105.7-254.3-241.5-268.7z" fill="#79AA2B"></path><path d="M540.8 176.3c79.6 47 133.1 133.5 133.1 232.6v156.3H241.7v36.1h540.6V445c0-139.5-105.7-254.3-241.5-268.7z" fill="#80AF35"></path><path d="M782.6 542.5c-6.5 0-11.8-5.3-11.8-11.8v-84c0-142.5-116-258.5-258.5-258.5s-258.5 116-258.5 258.5v84c0 6.5-5.3 11.8-11.8 11.8-6.5 0-11.8-5.3-11.8-11.8v-84c0-155.6 126.6-282.1 282.1-282.1s282.1 126.6 282.1 282.1v84c0.1 6.5-5.2 11.8-11.8 11.8z" fill="#004364"></path><path d="M674.7 542.5c-6.5 0-11.8-5.3-11.8-11.8v-91.2c0-107.5-59.8-204.1-156-252.1-5.8-2.9-8.2-10-5.3-15.9 2.9-5.8 10-8.3 15.9-5.3 104.3 52 169.1 156.7 169.1 273.3v91.2c-0.1 6.5-5.4 11.8-11.9 11.8z" fill="#004364"></path><path d="M341.5 542.5c-6.5 0-11.8-5.3-11.8-11.8v-91.2c0-116.5 64.8-221.2 169.1-273.3 5.8-3 12.9-0.5 15.9 5.3 2.9 5.8 0.5 12.9-5.3 15.9-96.2 48-156 144.6-156 252.1v91.2c-0.1 6.5-5.4 11.8-11.9 11.8z" fill="#004364"></path><path d="M510.2 540.8c-6.5 0-11.8-5.3-11.8-11.8V176.8c0-6.5 5.3-11.8 11.8-11.8 6.5 0 11.8 5.3 11.8 11.8V529c0.1 6.5-5.2 11.8-11.8 11.8zM233.1 511h-58.7c-6.5 0-11.8-5.3-11.8-11.8 0-6.5 5.3-11.8 11.8-11.8h58.7c6.5 0 11.8 5.3 11.8 11.8 0.1 6.5-5.2 11.8-11.8 11.8zM242 406.8c-1.4 0-2.7-0.2-4.1-0.7l-55-20.3c-6.1-2.3-9.3-9.1-7-15.2 2.3-6.1 9.1-9.3 15.2-7l55 20.3c6.1 2.3 9.3 9.1 7 15.2-1.8 4.8-6.3 7.7-11.1 7.7zM281.2 305.5c-2.7 0-5.4-0.9-7.7-2.8l-44.6-38.1c-5-4.2-5.6-11.7-1.3-16.7 4.2-5 11.7-5.6 16.7-1.3l44.6 38.1c5 4.2 5.6 11.7 1.3 16.7-2.3 2.7-5.6 4.1-9 4.1zM370.2 230.1c-4.1 0-8.2-2.2-10.3-6l-28.7-51.2c-3.2-5.7-1.2-12.9 4.5-16.1 5.7-3.2 12.9-1.2 16.1 4.5l28.7 51.2c3.2 5.7 1.2 12.9-4.5 16.1-1.9 1-3.9 1.5-5.8 1.5zM477.4 189.2c-5.7 0-10.7-4.1-11.7-10l-9.2-57.9c-1-6.4 3.4-12.5 9.8-13.5 6.4-1.1 12.5 3.4 13.5 9.8l9.2 57.9c1 6.4-3.4 12.5-9.8 13.5-0.5 0.2-1.2 0.2-1.8 0.2zM852.9 511h-58.7c-6.5 0-11.8-5.3-11.8-11.8 0-6.5 5.3-11.8 11.8-11.8h58.7c6.5 0 11.8 5.3 11.8 11.8 0 6.5-5.3 11.8-11.8 11.8zM785.3 406.8c-4.8 0-9.3-3-11.1-7.7-2.3-6.1 0.9-12.9 7-15.2l55-20.3c6.1-2.3 12.9 0.9 15.2 7 2.3 6.1-0.9 12.9-7 15.2l-55 20.3c-1.3 0.5-2.7 0.7-4.1 0.7zM746.1 305.5c-3.3 0-6.7-1.4-9-4.1-4.2-5-3.6-12.4 1.3-16.7l44.6-38.1c5-4.3 12.4-3.6 16.7 1.3 4.2 5 3.6 12.4-1.3 16.7l-44.6 38.1c-2.3 1.9-5 2.8-7.7 2.8zM657.1 230.1c-2 0-3.9-0.5-5.8-1.5-5.7-3.2-7.7-10.4-4.5-16.1l28.7-51.2c3.2-5.7 10.4-7.7 16.1-4.5 5.7 3.2 7.7 10.4 4.5 16.1l-28.7 51.2c-2.1 3.9-6.1 6-10.3 6zM549.9 189.2c-0.6 0-1.2 0-1.9-0.2-6.5-1-10.8-7.1-9.8-13.5l9.2-57.9c1-6.5 7.1-10.9 13.5-9.8 6.5 1 10.8 7.1 9.8 13.5l-9.2 57.9c-0.9 5.9-5.9 10-11.6 10z" fill="#004364"></path><path d="M166.8 562.5h690.4v142H166.8z" fill="#F2F5FB"></path><path d="M808.6 562.3v69.4c0 20-16.2 36.2-36.2 36.2H166.8v36.5h690.4v-142h-48.6z" fill="#DEEAF4"></path><path d="M853.8 719.7H170.2c-8.4 0-15.2-6.8-15.2-15.2v-142c0-8.4 6.8-15.2 15.2-15.2h683.7c8.4 0 15.2 6.8 15.2 15.2v142c-0.1 8.4-6.9 15.2-15.3 15.2z m-675.2-23.6h666.8V570.9H178.6v125.2z" fill="#004364"></path><path d="M333.8 292.2m-14.4 0a14.4 14.4 0 1 0 28.8 0 14.4 14.4 0 1 0-28.8 0Z" fill="#004364"></path><path d="M407.9 339.9m-14.4 0a14.4 14.4 0 1 0 28.8 0 14.4 14.4 0 1 0-28.8 0Z" fill="#004364"></path><path d="M453.8 269.1m-14.4 0a14.4 14.4 0 1 0 28.8 0 14.4 14.4 0 1 0-28.8 0Z" fill="#004364"></path><path d="M812.8 618.9m-14.4 0a14.4 14.4 0 1 0 28.8 0 14.4 14.4 0 1 0-28.8 0Z" fill="#004364"></path><path d="M812.8 669.2m-14.4 0a14.4 14.4 0 1 0 28.8 0 14.4 14.4 0 1 0-28.8 0Z" fill="#004364"></path><path d="M209.1 665.9m-14.4 0a14.4 14.4 0 1 0 28.8 0 14.4 14.4 0 1 0-28.8 0Z" fill="#004364"></path><path d="M749.9 745.5m-14.4 0a14.4 14.4 0 1 0 28.8 0 14.4 14.4 0 1 0-28.8 0Z" fill="#004364"></path><path d="M749.9 805m-14.4 0a14.4 14.4 0 1 0 28.8 0 14.4 14.4 0 1 0-28.8 0Z" fill="#004364"></path><path d="M749.9 863.7m-14.4 0a14.4 14.4 0 1 0 28.8 0 14.4 14.4 0 1 0-28.8 0Z" fill="#004364"></path><path d="M209.1 601.3m-14.4 0a14.4 14.4 0 1 0 28.8 0 14.4 14.4 0 1 0-28.8 0Z" fill="#004364"></path><path d="M678.3 865.4m-14.4 0a14.4 14.4 0 1 0 28.8 0 14.4 14.4 0 1 0-28.8 0Z" fill="#004364"></path><path d="M266.9 836.7m-14.4 0a14.4 14.4 0 1 0 28.8 0 14.4 14.4 0 1 0-28.8 0Z" fill="#004364"></path></g></svg>`
+      },
+      { 
+        id: 'watermelonWedge', 
+        name: 'Watermelon Wedge', 
+        category: 'Vectors', 
+        tags: ['water', 'melon', 'watermelon', 'wedge'], 
+        svg: `<svg height="100" width="100" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M177.58779 8.244911A590.951062 590.951062 0 0 0 6.101524 425.290148c0 327.429494 265.441436 592.897229 592.897229 592.897229a591.003661 591.003661 0 0 0 417.097836-171.486266z" fill="#BFD94F"></path><path d="M598.998753 1023.999579A598.512185 598.512185 0 0 1 173.44561 4.15533L177.56149 0l846.727411 846.714261-4.15533 4.076431A596.855313 596.855313 0 0 1 598.998753 1023.999579zM177.627239 16.502972c-106.907702 110.142548-165.687214 255.10571-165.687213 408.787176 0 323.708106 263.363771 587.071877 587.085027 587.071877 153.707765 0 298.644628-58.792661 408.774025-165.687214z" fill="#541018"></path><path d="M215.840497 50.837045A530.97492 530.97492 0 0 0 61.790837 425.500544c0 294.160553 238.45809 532.631793 532.631793 532.631793a530.922321 530.922321 0 0 0 374.650349-154.049659z" fill="#FF667C"></path><path d="M594.42263 964.602028A539.140933 539.140933 0 0 1 211.238074 46.287222l4.576123-4.615573 4.602423 4.589273L978.251525 804.108977l-4.615572 4.602423a535.879788 535.879788 0 0 1-379.213323 155.890628zM215.893096 60.04189A522.861507 522.861507 0 0 0 68.260528 425.500544c0 290.123571 236.03853 526.162101 526.162102 526.162102a522.887806 522.887806 0 0 0 365.458654-147.632568z" fill="#541018"></path><path d="M811.340245 770.762267a22.893765 12.886783 68.67 1 0 24.0081-9.374851 22.893765 12.886783 68.67 1 0-24.0081 9.374851Z" fill="#541018"></path><path d="M717.51293 812.742829a22.893765 12.886783 82.7 1 0 25.564657-3.274908 22.893765 12.886783 82.7 1 0-25.564657 3.274908Z" fill="#541018"></path><path d="M610.399611 827.094791a22.893765 12.886783 90 1 0 25.773567 0 22.893765 12.886783 90 1 0-25.773567 0Z" fill="#541018"></path><path d="M492.537997 842.483896a12.886783 22.893765 12.19 1 0 9.668229-44.755147 12.886783 22.893765 12.19 1 0-9.668229 44.755147Z" fill="#541018"></path><path d="M367.808157 793.053757a12.886783 22.893765 27.71 1 0 21.291044-40.536272 12.886783 22.893765 27.71 1 0-21.291044 40.536272Z" fill="#541018"></path><path d="M260.818457 703.198226a12.886783 22.893765 45 1 0 32.376673-32.376673 12.886783 22.893765 45 1 0-32.376673 32.376673Z" fill="#541018"></path><path d="M193.69488 594.817833a12.886783 22.893765 60 1 0 39.653164-22.893765 12.886783 22.893765 60 1 0-39.653164 22.893765Z" fill="#541018"></path><path d="M158.65266 465.376347a12.886783 22.893765 87.12 1 0 45.729698-2.300563 12.886783 22.893765 87.12 1 0-45.729698 2.300563Z" fill="#541018"></path><path d="M183.514105 348.237211a22.893765 12.886783 2.9 1 0 1.30396-25.74056 22.893765 12.886783 2.9 1 0-1.30396 25.74056Z" fill="#541018"></path><path d="M218.681591 233.92251a22.893765 12.886783 12.19 1 0 5.442197-25.192444 22.893765 12.886783 12.19 1 0-5.442197 25.192444Z" fill="#541018"></path></g></svg>`
+      },
+      { 
+        id: 'monsteraLeaf', 
+        name: 'Monstera Leaf', 
+        category: 'Vectors', 
+        tags: ['monstera', 'tropical', 'leaf'], 
+        svg: `<svg height="100" width="100" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M450.72 418.17c-42.29-21.86-144.5-220-171.65-198.22s-40.59 114.28 0.29 171.31 132 97 153.52 129.58 18.45 57.07 13.36 63.2S262.49 462 217.66 485.53s-28.41 84.69 17.56 132.54S427 651.39 455.57 672.76s32.72 55 20.49 55-145.88-32.38-192.77-24.15-68.25 39.89 0.12 73.42 180.26 8.87 199.28 28.21 6.8 28.54-7.47 29.58-110.14-4.91-143.78 0.24 6.21 56.07 23.57 69.3 80.59 19.24 98.94 16.15 36.67-26.58 51-20.48 3.14 45.88 8.25 53 46.92 9.1 53-0.09-10.26-37.71-0.09-51 32.65 11.16 66.28-1.13 109-70.55 111-104.2-132.52 27.76-167.19 26.8c-24.48-4-34.71-21.36-19.43-30.56s228.33-55.45 244.57-96.27 4-34.68-21.47-34.63S605.6 724.45 590.26 700 791 610 813.3 555.9s29.37-119.36-0.22-127.47-147.62 137.92-194.54 130.86-1.06-21.41 19.29-48 132.36-120.51 133.32-154.16 10.08-67.32-27.65-71.33-129.27 135.84-149.69 123.63 52.89-78.61 64-143.89S632.09 133 611.7 137.14s-19.37 4.11-19.34 22.47 10.33 79.52-1.85 114.21-13.14 60.18-23.35 54.08-10.27-43.83-4.2-73.41 23.3-92.83 13.07-112.19S545.27 48.53 467.8 68s-72.25 89.86-65 136.75 27.67 83.57 45.09 128.41 21.71 94.77 2.83 85.01z" fill="#5AB286"></path></g></svg>`
+      },
+      { 
+        id: 'leafyBranch', 
+        name: 'Leafy Branch', 
+        category: 'Vectors', 
+        tags: ['leaf', 'leafy', 'branch'], 
+        svg: `<svg height="100" width="100" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M859.29 140.28c-5.31-15.34-79.28-7-116 9.42s-163.34 116.58-188.52 172-17.35 64.14-30 84.29-17.1 33.3-22.12 27.66-2.24-16.66 7.83-36.5 28-55 32.21-78.58-10.15-111.32-11.56-147.31-15.46-105.8-33.6-106.37-69.25 69.39-75.15 122.11-17.46 139.43 4.21 195.12 34.11 42.14 41.25 66.88-14 82.5-40.95 117.38-37 46.84-48.27 43.18-17-29-9.06-46.76 26.22-37.12 26.48-61.55-9.33-113.22-15.22-136.06S360 291.87 358 272.34s2.85-67.45-10.61-72.41c-23.69-7.57-57.39 50.77-76.1 132.25s6.86 148 15.18 161.37 27.85 46.23 41.65 61.22 25.81 20.89 29.44 46.57 5.44 38.52-9.79 74.66-66.06 149.34-83 166.45c-4.19-42.4 6.47-30.15 7.41-63.57s-3.05-43.81 3-74.05-21.14-139.41-46-168.41c-12.13-15.05-8-53.59-15.32-54.33s-9.44-2.44-13.92 22.33-43 102-34.27 169.44 12.82 73.72 21.86 87.69 21.56 23.3 31.14 50.25 10.82 40.5 20.73 48.44-16.17 92.81-16.17 92.81l28.17 6s24.82-125.4 50.13-137 37.28 17.63 83.27 17.95 103.84-15.91 129.29-26.22 41.21-16.06 66.32-36.4 56.41-67.58 74.87-89.77 31.63-25.58 25.85-33.46-33.3-3.41-61-1.88-114.7 6.52-178.61 29.73-85.12 71.8-96.12 84.38-14.63 27.62-24.49 21.32-4.73-14.71 1.28-23.38 78.23-177 162.4-192.17c40.67-5.8 37.86 24.72 92.36 26s138.9-18.76 202.48-98.5c47.14-59.19 61-113.91 66.63-121s-28.71-13.21-53.39-6.47-35 16.15-58.92 19.32S607 402.11 563.34 443s-47.73 91-66.93 103.09-41.9 25-44.33 17.05 42.39-100.88 78.53-141.68c11.65-13.69 29-5.41 67.11-24.61s144-102.73 174.92-136.36 32.09-58.69 57.77-79.74 30.84-34.75 28.88-40.47z" fill="#73C69A"></path><path d="M207.57 519c-11.4 41.54-7.11 122.14 1.1 161.26s31.48 151.17 31.48 151.17-17-118.18-24.28-165.4-8.3-147.03-8.3-147.03zM322.07 240.56C306.49 289.51 307.36 371 310.53 395s25.7 143.29 39 158.6c-17.27-74.25-28.49-121-33.21-164.41-4.65-43.1-0.32-77.72 5.75-148.63zM641.9 671.54c-33.45 39-103.26 81.1-125.27 91S381.22 816 361.2 812.71c72.25-24.34 117.88-39.36 157.31-58.18 39.09-18.66 66.27-40.53 123.39-82.99zM486 95.61c-10.09 27.71-43.91 204.72-21.09 280.17C450.33 288.82 486 95.61 486 95.61zM792.13 181.21c-39.45 21.42-213.55 167.5-225.74 185.64 33.42-22.3 225.74-185.64 225.74-185.64zM808.82 411.65c-18.6 24.78-170.91 157-273.46 145 159.64-32.19 273.46-145 273.46-145z" fill="#00757F"></path></g></svg>`
+      },
+      { 
+        id: 'heartGift', 
+        name: 'Heart Gift', 
+        category: 'Vectors', 
+        tags: ['heart', 'gift', 'christmas', 'present'], 
+        svg: `<svg height="100" width="100" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M805.3 330.2c48.9 55.4 38.9 137.2 36.5 153.1l-0.2 1.5c-0.1 0.5-0.4 1.1-0.5 1.7H653.2c-8.8-17.4-23.5-30.7-40.4-34.4-31.7-7.1-61.6 16-80.2 35.5V333.5c38.5-42.4 87.6-51.7 97.8-53.2l1.7-0.4c3.1-0.5 12.7-2.3 16.6-2.5 71.1-2.3 123.7 15.5 156.6 52.8z" fill="#F991A7"></path><path d="M658.1 498.7h180c-4.2 15.6-9.1 30.6-15.1 45H658.9c2.3-7.4 3.4-15.5 3.1-24.2-0.4-7.1-1.8-14.1-3.9-20.8z" fill="#FF6EA9"></path><path d="M649.7 520c0.5 12.9-2.3 44-39.8 55.7-0.2 0.1-29.1 7.4-53.7-7.9-15.9-9.8-26.7-26.9-32.2-50.9 8-11.1 46.9-61.7 86.1-53 21.4 4.9 38.5 28.9 39.6 56.1zM511.3 528.9c0 13-6 21.3-10.1 21.3s-10-8.2-10-21.3c0-13 5.9-21.3 10-21.3s10.1 8.2 10.1 21.3z" fill="#FFE843"></path><path d="M493.6 818.3C270.3 734.4 195.3 617.4 170.5 556h179.4c8.1 14.6 21.9 25.8 40.5 31.6 0.6 0.1 8.7 2.2 20.2 2.2 12.2 0 28-2.2 43-11.5 12-7.4 21.6-18.2 28.6-32.2 1.5 4.1 3.6 7.5 6 10.1-3.2 19.7-15 75.2-45.2 89-2.3 0.9-4.1 3.2-4.1 5.9 0 3.4 2.8 6.3 6.3 6.3 1.2 0 2.3-0.5 3.3-1.2 33.7-15.9 46.9-69.8 51.2-93.7 0.5 0 1 0.1 1.5 0.1 0.6 0 1.2-0.1 1.7-0.2 4.3 23.8 17.4 77.3 50.5 93.5 1.1 1 2.5 1.6 3.9 1.6 3.4 0 6.1-2.8 6.1-6.3 0-2.3-1.2-4.3-3.2-5.4l0.1-0.1c-0.2 0-0.4-0.1-0.6-0.2-15.2-6.9-25.8-24.3-32.9-42.5-7.2-18.1-10.9-36.9-12.5-46.7 2.7-2.8 4.8-6.6 6.4-10.9 7 14.5 16.7 25.6 29 33.2 15 9.2 30.8 11.5 43 11.5 11.5 0 19.7-2.1 20.5-2.3 18.4-5.7 32.2-16.8 40.3-31.5h164C740.7 723.5 547.9 803 505.7 818.7c-3.8 1.1-8.1 1.1-12.1-0.4z" fill="#F991A7"></path><path d="M501.2 495.3c-6.1 0-11.5 3.6-15.6 9.5-1.7-2.3-3.9-5-6.5-8V353.1c5.5 4.3 12.3 6.8 19.3 6.3 8.6-0.4 16.5-4.4 21.9-11.2v153.3c-1.1 1.4-2.1 2.6-2.9 3.8-4.1-6.2-9.8-10-16.2-10z" fill="#FF6EA9"></path><path d="M479.4 516.9c-5.5 24-16.3 41-32.2 50.9-24.5 15.2-53.3 8-53.4 8-37.8-11.8-40.6-42.9-40-55.8 1.1-27.2 18.1-51.2 39.4-56 39.2-8.6 78.2 41.9 86.2 52.9z" fill="#FFE843"></path><path d="M466.8 340.4v143.1c-18.8-18.6-46.7-38.1-76.2-31.5-17 3.7-31.7 17-40.5 34.4H155.4c-3.7-56.9 3.2-180.6 127.4-207.3 14.9-3.2 28.9-4.7 42.1-4.7 63.6 0.1 110.6 32.8 141.9 66z" fill="#F991A7"></path><path d="M156.4 498.7h189c-2.1 6.6-3.6 13.6-3.8 20.8-0.4 8.7 0.7 16.8 2.9 24.2H165.9c-6-17.6-7.4-28.4-7.4-29-0.2-1.2-1.2-7-2.1-16z" fill="#FF6EA9"></path><path d="M658.1 498.7c2.1 6.6 3.4 13.6 3.8 20.8 0.4 8.7-0.7 16.8-3.1 24.2H823c6-14.4 10.9-29.4 15.1-45h-180z m-125.5-11.1c18.7-19.5 48.5-42.6 80.2-35.5 17 3.7 31.6 17 40.4 34.4h187.9c0.1-0.6 0.4-1.2 0.5-1.7l0.2-1.5c2.5-15.9 12.4-97.7-36.5-153.1-32.9-37.2-85.5-55-156.7-52.7-3.9 0.1-13.5 2-16.6 2.5l-1.7 0.4c-10.2 1.5-59.3 10.8-97.8 53.2v154z m77.5-23.6c-39.2-8.7-78.1 41.9-86.1 53 5.5 24 16.3 41 32.2 50.9 24.6 15.2 53.4 8 53.7 7.9 37.5-11.7 40.3-42.8 39.8-55.7-1.1-27.3-18.2-51.3-39.6-56.1z m-108.9 86.1c4.1 0 10.1-8.2 10.1-21.3 0-13-6-21.3-10.1-21.3s-10 8.2-10 21.3c0.1 13.1 6 21.3 10 21.3z m-15.6-45.3c4.1-5.9 9.5-9.5 15.6-9.5 6.4 0 12 3.8 16.1 10.1 0.9-1.2 1.8-2.5 2.9-3.8V348.2c-5.4 6.8-13.3 10.8-21.9 11.2-7 0.5-13.8-2-19.3-6.3v143.6c2.7 3 4.9 5.7 6.6 8.1zM280.2 267.1c77.3-16.6 147.8 9.1 204.1 74.2 3.4 3.9 8.4 6.1 13.6 5.8 5.3-0.1 10.2-2.8 13.3-7.1 42.4-58.4 105.3-70.2 117.5-71.9l1.1-0.2c6.4-1.1 14.1-2.6 18.6-2.7 74.8-2.2 130.9 16.8 166.2 56.9 52.6 59.5 42 146.3 39.4 163.2l-0.4 2C805.5 710 559 811.8 510.1 829.9c-3.3 1.2-6.8 1.8-10.3 1.8-3.6 0-7.1-0.6-10.4-1.8-321.9-120.9-342.3-305.7-343-313.5-0.4-1.6-36.9-212.6 133.8-249.3z m64.3 276.6c-2.2-7.4-3.3-15.5-2.9-24.2 0.2-7.1 1.7-14.1 3.8-20.8h-189c1 9 2 14.7 2.2 16 0 0.6 1.4 11.4 7.4 29h178.5z m66.1 46.1c-11.4 0-19.5-2.1-20.2-2.2-18.7-5.8-32.4-17-40.5-31.6H170.5c24.8 61.4 99.8 178.4 323.1 262.3 3.9 1.5 8.2 1.5 12.2 0.1 42.3-15.7 235-95.2 311.8-262.4h-164c-8.1 14.6-21.9 25.8-40.3 31.5-0.9 0.2-9 2.3-20.5 2.3-12.2 0-28-2.3-43-11.5-12.3-7.6-22-18.7-29-33.2-1.6 4.3-3.7 8.1-6.4 10.9 1.6 9.8 5.3 28.6 12.5 46.7 7.1 18.2 17.7 35.6 32.9 42.5 0.2 0.1 0.4 0.2 0.6 0.2l-0.1 0.1c2 1.1 3.2 3.1 3.2 5.4 0 3.4-2.7 6.3-6.1 6.3-1.5 0-2.8-0.6-3.9-1.6-33.1-16.2-46.2-69.7-50.5-93.5-0.5 0.1-1.1 0.2-1.7 0.2-0.5 0-1-0.1-1.5-0.1-4.3 24-17.6 77.9-51.2 93.7-1 0.7-2.1 1.2-3.3 1.2-3.4 0-6.3-2.8-6.3-6.3 0-2.7 1.7-5 4.1-5.9 30.2-13.8 42-69.3 45.2-89-2.5-2.6-4.5-6-6-10.1-7 14-16.6 24.8-28.6 32.2-15.1 9.6-31 11.8-43.1 11.8z m-19.9-137.7c29.5-6.6 57.4 12.9 76.2 31.5V340.4c-31.3-33.2-78.4-65.9-141.9-65.9-13.3 0-27.3 1.5-42.1 4.7-124.2 26.7-131.1 150.4-127.4 207.3h194.7c8.8-17.5 23.5-30.8 40.5-34.4z m3 123.7c0.1 0 29 7.2 53.4-8 15.9-9.8 26.7-26.9 32.2-50.9-8-11.1-46.9-61.6-86.1-53-21.4 4.8-38.3 28.9-39.4 56-0.6 13 2.2 44.1 39.9 55.9z" fill="#D05C86"></path></g></svg>`
+      },
+      { 
+        id: 'giftBox', 
+        name: 'Gift Box', 
+        category: 'Vectors', 
+        tags: ['box', 'gift', 'christmas', 'present'], 
+        svg: `<svg height="100" width="100" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M877.5 378.7v97.2c0 15.3-12.6 27.8-27.8 27.8H610V350.9h239.7c15.2 0 27.8 12.4 27.8 27.8z" fill="#BCE1DB"></path><path d="M825.6 514.8c6.8 6.7 10.9 15.9 10.9 26.1s-4.1 19.6-10.9 26.2v-52.3zM799.3 503.7c10.2 0 19.6 4.2 26.2 11.1H773c6.8-6.9 16.1-11.1 26.3-11.1z" fill="#D66474"></path><path d="M579.4 820.8V567.2c6.7 6.7 16 10.9 26.2 10.9 20.4 0 37.1-16.7 37.1-37.1 0-10.2-4.2-19.4-10.8-26.1h141c-6.7 6.7-10.8 15.9-10.8 26.1 0 20.4 16.7 37.1 37.1 37.1 10.2 0 19.4-4.2 26.2-10.9v256.3c-6.8-8.2-17-13.4-28.4-13.4-20.4 0-37.1 16.8-37.1 37.2 0 10.1 4 19.3 10.7 26H632c6.7-6.7 10.7-15.9 10.7-26 0-20.4-16.7-37.2-37.1-37.2-10.2-0.1-19.4 4-26.2 10.7z m148.9-133.4c0-20.4-16.7-37.1-37.1-37.1-20.4 0-37.1 16.7-37.1 37.1 0 20.4 16.7 37.2 37.1 37.2 20.5 0 37.1-16.8 37.1-37.2z" fill="#BCE1DB"></path><path d="M825.6 514.8v52.3c-6.8 6.7-16 10.9-26.2 10.9-20.4 0-37.1-16.7-37.1-37.1 0-10.2 4.1-19.4 10.8-26.1h52.5zM825.6 845.4c0 15.3-12.4 27.8-27.8 27.8h-27.1c-6.7-6.7-10.7-15.9-10.7-26 0-20.4 16.7-37.2 37.1-37.2 11.4 0 21.7 5.2 28.4 13.4v22z" fill="#DCFFF8"></path><path d="M834.2 847.2c0-9-3.2-17.3-8.7-23.8V567.2c6.8-6.7 10.9-16 10.9-26.2h0.2v304.5c0 20.4-15.8 37.2-35.8 38.7 18.8-2 33.4-17.9 33.4-37z" fill="#D66474"></path><path d="M800.9 884.1c-1 0.2-2.1 0.2-3.1 0.2 1.1 0 2.1-0.1 3.1-0.2z" fill="#D66474"></path><path d="M834.2 847.2c0 19.1-14.7 35-33.3 36.9-1 0.1-2 0.2-3.1 0.2h-0.7c-10.3 0-19.7-4.2-26.4-11.1h27.1c15.3 0 27.8-12.4 27.8-27.8v-22c5.4 6.5 8.6 14.8 8.6 23.8z" fill="#D66474"></path><path d="M797.1 884.3H605.5c10.3 0 19.7-4.2 26.4-11.1h138.7c6.9 6.9 16.2 11.1 26.5 11.1z" fill="#D66474"></path><path d="M684.7 192.9c40.5 0 73.5 33 73.5 73.5 0 40.6-33 73.5-73.5 73.5H533.5l49.7-75.2c36.1-49.7 59.2-71.8 101.5-71.8z" fill="#F2C2B9"></path><path d="M691.2 650.3c20.4 0 37.1 16.7 37.1 37.1 0 20.4-16.7 37.2-37.1 37.2-20.4 0-37.1-16.8-37.1-37.2 0-20.5 16.7-37.1 37.1-37.1zM632 514.8c6.6 6.7 10.8 15.9 10.8 26.1 0 20.4-16.7 37.1-37.1 37.1-10.2 0-19.6-4.2-26.2-10.9v-52.3H632zM605.5 810c20.4 0 37.1 16.8 37.1 37.2 0 10.1-4 19.3-10.7 26h-52.6v-52.5c6.9-6.6 16.1-10.7 26.2-10.7z" fill="#DCFFF8"></path><path d="M632 514.8h-52.6c5.1-5.3 11.9-9.1 19.6-10.4 2.1-0.4 4.3-0.7 6.7-0.7 1.4 0 2.9 0.1 4.3 0.3 8.5 0.9 16.2 4.9 22 10.8zM632 873.2c-6.8 6.9-16.1 11.1-26.4 11.1-10.2 0-19.6-4.2-26.3-10.9l0.2-0.2H632z" fill="#D66474"></path><path d="M610 503.7h189.4c-10.2 0-19.6 4.2-26.3 11.1H632c-5.8-5.9-13.4-9.9-22-10.8v-0.3z" fill="#D66474"></path><path d="M598.9 350.9v152.8H444.3V350.9h77.8l0.1 0.1v-0.1h11.3zM576.8 143.6c21 36.5 17.7 73.2-10.9 122.9l-43.7 64.7-74.5-110.4c-9.7-16.7-12-37.7-6.4-57.6s18.3-36.8 35.1-46.5c11.3-6.6 23.9-9.9 36.7-9.9 6.3 0 12.8 0.8 19.1 2.4 18.9 5.3 34.8 17.5 44.6 34.4z" fill="#F2C2B9"></path><path d="M579.4 567.2v253.6c-6.8 6.8-11.1 16.1-11.1 26.4V540.9h0.1c0 10.3 4.2 19.6 11 26.3z" fill="#D66474"></path><path d="M579.4 873.2l-0.2 0.2c-6.7-6.7-10.9-16-10.9-26.2 0-10.3 4.3-19.7 11.1-26.4v52.4zM579.4 514.8v52.3c-6.8-6.7-11-16-11-26.2s4.1-19.4 11-26.1z" fill="#D66474"></path><path d="M568.3 847.2v26h-94.5V514.8h94.5v26.1zM463 264.4l49.9 75.3H361.7c-40.5 0-73.5-32.9-73.5-73.5 0-40.5 33-73.5 73.5-73.5 42.2 0.2 65.4 22.3 101.3 71.7z" fill="#F2C2B9"></path><path d="M605.5 884.3H436.7c10.2 0 19.6-4.2 26.2-10.9 6.7-6.7 10.9-16 10.9-26.2v26h94.5v-26c0 10.2 4.2 19.6 10.9 26.2 6.8 6.7 16.1 10.9 26.3 10.9z" fill="#D66474"></path><path d="M473.8 540.9v306.3c0-10.3-4.2-19.7-11.1-26.4V567.4c6.9-6.8 11.1-16.1 11.1-26.5z" fill="#D66474"></path><path d="M473.8 847.2c0 10.2-4.2 19.6-10.9 26.2l-0.2-0.2v-52.5c6.9 6.8 11.1 16.2 11.1 26.5zM462.8 514.6c6.8 6.7 11 16.1 11 26.3 0 10.3-4.2 19.7-11.1 26.4v-52.6l0.1-0.1z" fill="#D66474"></path><path d="M447.7 503.7h151.1l0.1 0.7c-7.7 1.3-14.4 5.1-19.6 10.4-6.9 6.7-11 15.9-11 26.1h-0.1v-26.1h-94.5v26.1c0-10.2-4.2-19.7-11-26.3-4.1-4.2-9.3-7.3-15.1-9.2v-1.7zM462.7 873.2l0.2 0.2c-6.7 6.7-16 10.9-26.2 10.9-10.3 0-19.7-4.2-26.4-11.1h52.4z" fill="#D66474"></path><path d="M462.8 514.6l-0.1 0.2h-52.3c5.9-6 13.8-10 22.6-10.9 1.2-0.1 2.4-0.2 3.8-0.2 3.8 0 7.6 0.6 11 1.7 5.7 1.9 10.9 5 15 9.2z" fill="#D66474"></path><path d="M462.7 820.8v52.5h-52.5c-6.6-6.7-10.7-15.9-10.7-26 0-20.4 16.7-37.2 37.1-37.2 10.2-0.1 19.5 4 26.1 10.7zM462.7 514.8v52.6c-6.7 6.6-15.9 10.7-26 10.7-20.4 0-37.1-16.7-37.1-37.1 0-10.2 4.2-19.4 10.8-26.1h52.3z" fill="#DCFFF8"></path><path d="M433.2 350.9v152.8H196.7c-15.2 0-27.8-12.4-27.8-27.8v-97.2c0-15.3 12.6-27.8 27.8-27.8h236.5z" fill="#BCE1DB"></path><path d="M247.5 503.7H433v0.2c-8.8 0.9-16.7 4.9-22.6 10.9H273.8c-6.8-6.9-16.1-11.1-26.3-11.1z" fill="#D66474"></path><path d="M330.8 650.3c20.4 0 37.1 16.7 37.1 37.1 0 20.4-16.7 37.2-37.1 37.2s-37.2-16.8-37.2-37.2c0-20.5 16.8-37.1 37.2-37.1zM273.8 514.8c6.7 6.7 10.8 15.9 10.8 26.1 0 20.4-16.7 37.1-37.1 37.1-10.3 0-19.8-4.3-26.7-11.2V515l0.2-0.2h52.8zM247.5 801.6c20.4 0 37.1 16.8 37.1 37.2 0 15.4-9.6 28.8-23 34.3h-13c-15.3 0-27.8-12.4-27.8-27.8v-32.6c6.9-6.7 16.3-11.1 26.7-11.1z" fill="#DCFFF8"></path><path d="M273.8 514.8H221c6.8-6.9 16.2-11.1 26.4-11.1s19.6 4.2 26.4 11.1z" fill="#D66474"></path><path d="M220.8 812.9v-246c6.9 6.9 16.3 11.2 26.7 11.2 20.4 0 37.1-16.7 37.1-37.1 0-10.2-4.1-19.4-10.8-26.1h136.6c-6.6 6.7-10.8 15.9-10.8 26.1 0 20.4 16.7 37.1 37.1 37.1 10.1 0 19.3-4.1 26-10.7v253.4c-6.7-6.7-15.9-10.8-26-10.8-20.4 0-37.1 16.8-37.1 37.2 0 10.1 4.1 19.3 10.7 26H261.6c13.4-5.6 23-18.9 23-34.3 0-20.4-16.7-37.2-37.1-37.2-10.4-0.1-19.8 4.3-26.7 11.2z m147.1-125.5c0-20.4-16.7-37.1-37.1-37.1s-37.2 16.7-37.2 37.1c0 20.4 16.8 37.2 37.2 37.2s37.1-16.8 37.1-37.2z" fill="#BCE1DB"></path><path d="M220.8 845.4c0 15.3 12.4 27.8 27.8 27.8h13c-4.3 1.8-9.1 2.8-14.1 2.8-20.4 0-37.2-16.7-37.2-37.1 0-10.1 4.1-19.2 10.6-26v32.5z" fill="#D66474"></path><path d="M220.8 566.8v246c-6.4 6.8-10.6 15.9-10.6 26h-0.6V540.9h0.6c0 10.1 4.2 19.3 10.6 25.9z" fill="#D66474"></path><path d="M220.8 515v51.8c-6.4-6.7-10.6-15.8-10.6-25.9 0-10.1 4.2-19.2 10.6-25.9zM247.5 876c5 0 9.8-1 14.1-2.8h148.7c6.8 6.9 16.1 11.1 26.4 11.1H248.6c-21.4 0-38.9-17.4-38.9-38.9v-6.6h0.6c-0.1 20.5 16.7 37.2 37.2 37.2z" fill="#D66474"></path><path d="M583.2 264.5l-49.7 75.2h151.1c40.5 0 73.5-32.9 73.5-73.5 0-40.5-33-73.5-73.5-73.5-42.2 0.2-65.3 22.3-101.4 71.8z m-17.3 2c28.6-49.7 31.9-86.5 10.9-122.9-9.8-16.9-25.7-29.1-44.6-34.2-6.3-1.7-12.8-2.4-19.1-2.4-12.8 0-25.3 3.3-36.7 9.9-16.8 9.7-29.6 26.6-35.1 46.5s-3.2 40.9 6.4 57.6l74.5 110.4 43.7-64.9z m-204.2 73.3h151.1L463 264.4c-35.9-49.5-59-71.6-101.2-71.6-40.5 0-73.5 33-73.5 73.5 0 40.6 33 73.5 73.4 73.5zM247.5 503.7c-10.2 0-19.7 4.2-26.4 11.1h-0.2v0.2c-6.4 6.7-10.6 15.8-10.6 25.9h-0.6v-26.1h-13c-21.3 0-38.9-17.4-38.9-38.9v-97.2c0-21.4 17.6-38.9 38.9-38.9h123.2c-25.4-14.6-42.8-42-42.8-73.5 0-46.6 37.9-84.6 84.6-84.6 28.4 0 48.9 8.8 69.1 27.2-4.6-15.4-4.8-32.3-0.2-48.7 6.2-22.6 21-42 40.2-53.1 19.6-11.3 42.5-14.3 64.2-8.4 21.8 5.8 40 19.8 51.3 39.3 16.9 29.2 19.4 59.3 7.4 94.2 28.4-34.7 52.2-50.6 90.8-50.6 46.7 0 84.6 38 84.6 84.6 0 31.4-17.3 58.9-42.8 73.5h123.2c21.3 0 38.9 17.4 38.9 38.9v97.2c0 21.4-17.6 38.9-38.9 38.9h-13v26.1h-0.2c0-10.2-4.1-19.4-10.9-26.1-6.7-6.9-16-11.1-26.2-11.1h50.3c15.2 0 27.8-12.4 27.8-27.8v-97.2c0-15.3-12.6-27.8-27.8-27.8H610V503.9c-1.4-0.2-2.9-0.3-4.3-0.3-2.3 0-4.6 0.2-6.7 0.7l-0.1-0.7V350.9h-76.6v0.1l-0.1-0.1h-77.8v152.8h3.4v1.7c-3.4-1.1-7.2-1.7-11-1.7-1.3 0-2.6 0.1-3.8 0.2v-0.2h0.2V350.9H196.7c-15.2 0-27.8 12.4-27.8 27.8v97.2c0 15.3 12.6 27.8 27.8 27.8h50.8z" fill="#D66474"></path></g></svg>`
+      },
+
+      { 
+        id: 'messenger', 
+        name: 'Messenger', 
+        category: 'Icons', 
+        tags: ['icon', 'messenger', 'facebook'], 
+        svg: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0015 2C6.36858 2 2 6.12644 2 11.7011C2 14.6169 3.1954 17.1356 5.14023 18.8751C5.30192 19.0215 5.40077 19.2238 5.40843 19.4444L5.4636 21.2245C5.46756 21.3554 5.50365 21.4833 5.56868 21.5969C5.63371 21.7106 5.7257 21.8065 5.83653 21.8762C5.94736 21.9459 6.07364 21.9873 6.20423 21.9968C6.33483 22.0062 6.46575 21.9834 6.58544 21.9303L8.57088 21.0552C8.74023 20.9816 8.92797 20.9671 9.10421 21.0146C10.0161 21.2651 10.987 21.4008 11.9985 21.4008C17.6314 21.4008 22 17.2751 22 11.7004C22 6.12644 17.6322 2 12.0015 2ZM17.2529 9.57854L14.7487 13.5502C14.6544 13.6997 14.5302 13.8281 14.3839 13.9272C14.2376 14.0263 14.0724 14.0941 13.8986 14.1262C13.7248 14.1583 13.5463 14.154 13.3742 14.1137C13.2021 14.0734 13.0403 13.9979 12.8989 13.892L10.9065 12.3992C10.8178 12.3329 10.71 12.2971 10.5992 12.2971C10.4885 12.2971 10.3807 12.3329 10.292 12.3992L7.60383 14.4398C7.24751 14.7119 6.77625 14.282 7.01533 13.9034L9.51954 9.9318C9.61378 9.7823 9.73796 9.65394 9.88427 9.55481C10.0306 9.45568 10.1958 9.38793 10.3696 9.35582C10.5434 9.32371 10.7219 9.32795 10.894 9.36826C11.0661 9.40857 11.2279 9.48408 11.3693 9.59004L13.3617 11.0828C13.4504 11.149 13.5582 11.1849 13.669 11.1849C13.7797 11.1849 13.8875 11.149 13.9762 11.0828L16.6644 9.04215C17.0245 8.76628 17.4958 9.19617 17.2529 9.57854Z" fill="#000000"></path> </g></svg>`
+      },
+      { 
+        id: 'telegram', 
+        name: 'Telegram', 
+        category: 'Icons', 
+        tags: ['telegram', 'icon'], 
+        svg: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM12.3583 9.38244C11.3857 9.787 9.44177 10.6243 6.52657 11.8944C6.05318 12.0827 5.8052 12.2669 5.78263 12.4469C5.74448 12.7513 6.12559 12.8711 6.64455 13.0343C6.71515 13.0565 6.78829 13.0795 6.86327 13.1038C7.37385 13.2698 8.06068 13.464 8.41773 13.4717C8.74161 13.4787 9.1031 13.3452 9.50219 13.0711C12.226 11.2325 13.632 10.3032 13.7202 10.2831C13.7825 10.269 13.8688 10.2512 13.9273 10.3032C13.9858 10.3552 13.98 10.4536 13.9738 10.48C13.9361 10.641 12.4401 12.0318 11.6659 12.7515C11.4246 12.9759 11.2534 13.135 11.2184 13.1714C11.14 13.2528 11.0601 13.3298 10.9833 13.4038C10.509 13.8611 10.1532 14.204 11.003 14.764C11.4114 15.0331 11.7381 15.2556 12.0641 15.4776C12.4201 15.7201 12.7752 15.9619 13.2347 16.2631C13.3517 16.3398 13.4635 16.4195 13.5724 16.4971C13.9867 16.7925 14.3589 17.0579 14.8188 17.0155C15.086 16.991 15.362 16.7397 15.5022 15.9903C15.8335 14.2193 16.4847 10.382 16.6352 8.80081C16.6484 8.66228 16.6318 8.48498 16.6185 8.40715C16.6051 8.32932 16.5773 8.21842 16.4761 8.13633C16.3563 8.03911 16.1714 8.01861 16.0886 8.02C15.7125 8.0267 15.1354 8.22735 12.3583 9.38244Z" fill="#000000"></path> </g></svg>`
+      },
+      { 
+        id: 'facebook', 
+        name: 'Facebook', 
+        category: 'Icons', 
+        tags: ['icon', 'facebook'], 
+        svg: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M22 12C22 6.47714 17.5229 1.99999 12 1.99999C6.47715 1.99999 2 6.47714 2 12C2 16.9913 5.65686 21.1283 10.4375 21.8785V14.8906H7.89844V12H10.4375V9.79687C10.4375 7.29062 11.9304 5.90624 14.2146 5.90624C15.3087 5.90624 16.4531 6.10155 16.4531 6.10155V8.56249H15.1921C13.9499 8.56249 13.5625 9.33333 13.5625 10.1242V12H16.3359L15.8926 14.8906H13.5625V21.8785C18.3431 21.1283 22 16.9913 22 12Z" fill="#000000"></path> </g></svg>`
+      },
+      { 
+        id: 'tiktok', 
+        name: 'Tiktok', 
+        category: 'Icons', 
+        tags: ['icon', 'tiktok'], 
+        svg: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.8218 5.1344C16.0887 4.29394 15.648 3.19805 15.648 2H14.7293C14.9659 3.3095 15.7454 4.43326 16.8218 5.1344Z" fill="#000000"></path> <path d="M8.3218 11.9048C6.73038 11.9048 5.43591 13.2004 5.43591 14.7931C5.43591 15.903 6.06691 16.8688 6.98556 17.3517C6.64223 16.8781 6.43808 16.2977 6.43808 15.6661C6.43808 14.0734 7.73255 12.7778 9.324 12.7778C9.62093 12.7778 9.90856 12.8288 10.1777 12.9124V9.40192C9.89927 9.36473 9.61628 9.34149 9.324 9.34149C9.27294 9.34149 9.22654 9.34614 9.1755 9.34614V12.0394C8.90176 11.9558 8.61873 11.9048 8.3218 11.9048Z" fill="#000000"></path> <path d="M19.4245 6.67608V9.34614C17.6429 9.34614 15.9912 8.77501 14.6456 7.80911V14.7977C14.6456 18.2851 11.8108 21.127 8.32172 21.127C6.97621 21.127 5.7235 20.6998 4.69812 19.98C5.8534 21.2198 7.50049 22 9.32392 22C12.8083 22 15.6478 19.1627 15.6478 15.6707V8.68211C16.9933 9.64801 18.645 10.2191 20.4267 10.2191V6.78293C20.0787 6.78293 19.7446 6.74574 19.4245 6.67608Z" fill="#000000"></path> <path d="M14.6456 14.7977V7.80911C15.9912 8.77501 17.6429 9.34614 19.4245 9.34614V6.67608C18.3945 6.45788 17.4899 5.90063 16.8218 5.1344C15.7454 4.43326 14.9704 3.3095 14.7245 2H12.2098L12.2051 15.7775C12.1495 17.3192 10.8782 18.5591 9.32393 18.5591C8.35884 18.5591 7.50977 18.0808 6.98085 17.3564C6.06219 16.8688 5.4312 15.9076 5.4312 14.7977C5.4312 13.205 6.72567 11.9094 8.31708 11.9094C8.61402 11.9094 8.90168 11.9605 9.17079 12.0441V9.35079C5.75598 9.42509 3 12.2298 3 15.6707C3 17.3331 3.64492 18.847 4.69812 19.98C5.7235 20.6998 6.97621 21.127 8.32172 21.127C11.8061 21.127 14.6456 18.2851 14.6456 14.7977Z" fill="#000000"></path> </g></svg>`
+      },
+      
+      // Add more shapes here...
+    ];
+
+    // Function to render the shapes as SVGs
+    function renderShapes(filteredShapes = shapes) {
+      const container = document.querySelector('#shapesContainer');
+      container.innerHTML = ''; // Clear the container before rendering
+
+      console.log('Rendering shapes:', filteredShapes); // Debugging line to see the filtered shapes
+
+      filteredShapes.forEach(shape => {
+        const div = document.createElement('button');
+        div.innerHTML = shape.svg; // Inject SVG directly into the container
+        div.classList.add('shapeSVG');
+        div.addEventListener('click', () => {
+          addSVGPathToCanvas(shape.svg); // Add SVG to canvas on click
+        });
+        container.appendChild(div);
+      });
+    }
+
+    // Function to add SVG paths to Fabric.js Canvas
+    function addSVGPathToCanvas(svgPath) {
+      fabric.loadSVGFromString(svgPath, (objects, options) => {
+        const obj = fabric.util.groupSVGElements(objects, options);
+        const canvasWidth = canvas.getWidth();
+        const canvasHeight = canvas.getHeight();
+        obj.set({
+          left: canvasWidth / 2,
+          top: canvasHeight / 2,
+          scaleX: 2,
+          scaleY: 2,
+          strokeWidth: 0,
+          strokeUniform: true
+        });
+        canvas.add(obj);
+        canvas.renderAll();
+      });
+    }
+
+
+
+    document.querySelector('#itemSortSelect').addEventListener('change', (event) => {
+      const selectedSort = event.target.value;
+      sortShapes(selectedSort); // Sort the shapes based on selected criteria
     });
-    canvas.add(obj);
-    canvas.renderAll();
-  });
-}
 
-// SVG path strings for each shape
-const shapes = {
-  heart: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="#555" d="M13.6705038,1.65775755 C15.7733256,1.1643364 17.8346764,1.87952015 18.8050117,3.09161872 C19.7007318,4.21051134 20.1078092,5.37372498 19.9755956,7.08978592 C19.8803055,8.32659959 19.4754445,9.24351338 18.6768484,10.253173 C18.5296466,10.4392792 18.3687155,10.6302896 18.1658464,10.862046 C18.0465566,10.9983221 17.5949329,11.5061955 17.6178177,11.4803526 C16.8186802,12.3827879 14.4625844,14.643494 10.5145935,18.299202 C10.224182,18.5681134 9.76777894,18.5667637 9.47905081,18.2961397 C6.089961,15.1195561 3.89625857,13.0278592 2.89042367,12.0135158 C1.03250481,10.1398805 0.326468943,9.0511668 0.0698691381,7.29291272 C-0.198560664,5.45359801 0.31465113,3.94412412 1.46841698,2.77151837 C2.55037542,1.67189257 4.4852998,1.26441086 6.39590277,1.65285729 C7.51456274,1.88029307 8.70597506,2.61194275 9.99645377,3.83297717 C11.0971959,2.70423085 12.323284,1.97387885 13.6705038,1.65775755 Z"/></svg>`,
-  star: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#555" d="M12 2L13.09 8.26L18 9.27L14.5 12.97L15.6 19L12 15.9L8.4 19L9.5 12.97L6 9.27L10.91 8.26L12 2Z"/></svg>`,
-  diamond: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#555" d="M12 2L20 12L12 22L4 12L12 2Z"/></svg>`,
-  crescent: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#555" d="M12.5 2C13.33 2 14.14 2.17 14.92 2.47C9.9 3.99 7 8.96 8.52 13.98C9.24 16.36 10.8 18.24 12.83 19.28C11.73 19.73 10.5 20 9.22 20C4.94 20 1.52 16.58 1.52 12.3C1.52 7.8 5.02 4.3 9.5 4.3C10.68 4.3 11.83 4.56 12.91 5.05C12.97 4.73 13 4.4 13 4.05C13 3.47 12.94 2.91 12.85 2.36C12.74 2.25 12.62 2.13 12.5 2Z"/></svg>`,
-  circle: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#555" /></svg>`,
-  triangle: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#555" d="M12 2L22 20H2L12 2Z"/></svg>`
-};
+    document.querySelector('#itemSearchInput').addEventListener('input', (event) => {
+      const searchQuery = event.target.value;
+      searchShapes(searchQuery); // Search and filter shapes by input
+    });
 
-// Add event listeners to each button
-document.getElementById('addSimpleHeartBtn').addEventListener('click', () => addSVGPathToCanvas(shapes.heart));
-document.getElementById('addStarBtn').addEventListener('click', () => addSVGPathToCanvas(shapes.star));
-document.getElementById('addDiamondBtn').addEventListener('click', () => addSVGPathToCanvas(shapes.diamond));
-document.getElementById('addCrescentBtn').addEventListener('click', () => addSVGPathToCanvas(shapes.crescent));
-document.getElementById('addCircleBtn').addEventListener('click', () => addSVGPathToCanvas(shapes.circle));
-document.getElementById('addTriangleBtn').addEventListener('click', () => addSVGPathToCanvas(shapes.triangle));
+    // Function to sort shapes based on the selected criteria
+    function sortShapes(criteria) {
+      let sortedShapes = [...shapes]; // Clone the shapes array to avoid mutation
+
+      switch (criteria) {
+        case 'nameAsc':
+          sortedShapes.sort((a, b) => a.name.localeCompare(b.name)); // Sort by name (A-Z)
+          break;
+        case 'nameDesc':
+          sortedShapes.sort((a, b) => b.name.localeCompare(a.name)); // Sort by name (Z-A)
+          break;
+        case 'categoryAsc':
+          sortedShapes.sort((a, b) => a.category.localeCompare(b.category)); // Sort by category (A-Z)
+          break;
+        case 'categoryDesc':
+          sortedShapes.sort((a, b) => b.category.localeCompare(a.category)); // Sort by category (Z-A)
+          break;
+        default:
+          break;
+      }
+
+      renderShapes(sortedShapes); // Render the sorted shapes
+    }
+
+    // Function to search shapes by query
+    function searchShapes(query) {
+      const filteredShapes = shapes.filter(shape => 
+        shape.name.toLowerCase().includes(query.toLowerCase()) || 
+        shape.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+      );
+      renderShapes(filteredShapes);
+    }
+
+    // Initial render
+    renderShapes();
+
+
+
+
+
+
+
+    const controls = document.getElementById('movementControls');
+
+    // Helper function to toggle movement controls visibility
+    function toggleMovementControls() {
+      if (canvas.getActiveObjects().length > 0) {
+        controls.classList.add('movementVisible');
+      } else {
+        controls.classList.remove('movementVisible');
+      }
+    }
+
+    // Attach selection events to toggle visibility
+    canvas.on('selection:created', toggleMovementControls);
+    canvas.on('selection:updated', toggleMovementControls);
+    canvas.on('selection:cleared', toggleMovementControls);
+
+    // Helper function to move selected items
+    function moveSelected(direction) {
+      const activeObjects = canvas.getActiveObjects(); // Get all selected objects
+      const moveBy = 1; // Pixels to move
+
+      if (activeObjects.length > 0) {
+        activeObjects.forEach((obj) => {
+          if (direction === 'up') obj.top -= moveBy;
+          if (direction === 'down') obj.top += moveBy;
+          if (direction === 'left') obj.left -= moveBy;
+          if (direction === 'right') obj.left += moveBy;
+          obj.setCoords(); // Update object's coordinates
+        });
+
+        // Render canvas after moving objects
+        canvas.requestRenderAll();
+      }
+    }
+
+    // On-screen button hold support
+    function addButtonHoldSupport(buttonId, direction) {
+      let intervalId;
+
+      const button = document.getElementById(buttonId);
+
+      // Start moving on mousedown
+      button.addEventListener('mousedown', () => {
+        moveSelected(direction);
+        intervalId = setInterval(() => moveSelected(direction), 100); // Repeat every 50ms
+      });
+
+      // Stop moving on mouseup or mouseleave
+      button.addEventListener('mouseup', () => clearInterval(intervalId));
+      button.addEventListener('mouseleave', () => clearInterval(intervalId));
+
+      // Support touch devices
+      button.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        moveSelected(direction);
+        intervalId = setInterval(() => moveSelected(direction), 100); // Repeat every 50ms
+      });
+      button.addEventListener('touchend', () => clearInterval(intervalId));
+    }
+
+    // Add hold functionality to buttons
+    addButtonHoldSupport('move-up', 'up');
+    addButtonHoldSupport('move-down', 'down');
+    addButtonHoldSupport('move-left', 'left');
+    addButtonHoldSupport('move-right', 'right');
+
+    // Key events for arrow keys
+    document.addEventListener('keydown', (event) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+        event.preventDefault();
+        const direction = {
+          'ArrowUp': 'up',
+          'ArrowDown': 'down',
+          'ArrowLeft': 'left',
+          'ArrowRight': 'right'
+        }[event.key];
+        moveSelected(direction);
+      }
+    });
+
+
+
+
+
 
 
 
@@ -1667,7 +2157,6 @@ document.getElementById('addTriangleBtn').addEventListener('click', () => addSVG
  function changeFontFamily(fontFamily) {
     const activeObject = canvas.getActiveObject();
     if (activeObject && activeObject.type === 'textbox') {
-        // Load the font using WebFont Loader and apply it to the active object
         WebFont.load({
             google: { families: [fontFamily] },
             active: function() {
@@ -1683,6 +2172,45 @@ document.getElementById('addTriangleBtn').addEventListener('click', () => addSVG
 document.getElementById('fontSelect').addEventListener('change', function() {
     changeFontFamily(this.value);
 });
+
+
+// Handle font file upload
+document.getElementById('fontUpload').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const fontData = e.target.result;
+
+            // Create a new FontFace object
+            const fontName = file.name.split('.')[0]; // Use the file name as the font name
+            const fontFace = new FontFace(fontName, `url(${fontData})`);
+            
+            // Load the font and add it to the document
+            fontFace.load().then(function(loadedFont) {
+                document.fonts.add(loadedFont);
+
+                // Add the new font to the dropdown
+                const fontSelect = document.getElementById('fontSelect');
+                const newOption = document.createElement('option');
+                newOption.value = fontName;
+                newOption.textContent = fontName;
+                fontSelect.appendChild(newOption);
+
+                // Automatically select the uploaded font
+                fontSelect.value = fontName;
+                changeFontFamily(fontName);
+            }).catch(function(error) {
+                console.error('Error loading font:', error);
+            });
+        };
+
+        // Read the font file as a data URL
+        reader.readAsDataURL(file);
+        changeFontFamily(this.value);
+    }
+});
+
 
 
 
@@ -1788,6 +2316,50 @@ document.getElementById('lineHeightRange').addEventListener('input', (e) => {
 
 
 
+
+
+  
+// Function to apply glow and shadow to the selected object
+function applyGlowAndShadow(object) {
+  if (object) {
+    // Set shadow effect
+    object.setShadow({
+      color: document.getElementById('shadowColor').value, // Shadow color
+      blur: parseInt(document.getElementById('shadowBlur').value), // Shadow blur
+      offsetX: parseInt(document.getElementById('shadowOffsetX').value), // Shadow distance X
+      offsetY: parseInt(document.getElementById('shadowOffsetY').value), // Shadow distance Y
+    });
+
+    // Set glow effect (this is a pseudo-function, fabric.js doesn't have a built-in glow function but we can simulate it)
+    object.set({
+      shadow: new fabric.Shadow({
+        color: document.getElementById('glowColor').value, // Glow color
+        blur: parseInt(document.getElementById('glowBlur').value), // Glow blur
+        offsetX: parseInt(document.getElementById('glowOffsetX').value), // Glow spread
+        offsetY: parseInt(document.getElementById('glowOffsetY').value),
+      }),
+    });
+
+    // Refresh canvas
+    canvas.renderAll();
+  }
+}
+
+// Add event listeners for shadow and glow customization
+document.getElementById('shadowColor').addEventListener('input', function () {
+  var selected = canvas.getActiveObject();
+  applyGlowAndShadow(selected);
+});
+
+document.getElementById('shadowBlur').addEventListener('input', function () {
+  var selected = canvas.getActiveObject();
+  applyGlowAndShadow(selected);
+});
+
+document.getElementById('shadowOffsetX').addEventListener('input', function () {
+  var selected = canvas.getActiveObject();
+  applyGlowAndShadow(selected);
+});
 
 
 
@@ -2007,18 +2579,61 @@ function attachCanvasListeners() {
  canvas.on('object:rotated', saveState); // Capture rotation actions
 }
 
-
 // Bind undo and redo buttons to the respective functions
 document.getElementById('undoButton').addEventListener('click', undo);
 document.getElementById('redoButton').addEventListener('click', redo);
 
 
+// Reference to the element you want to toggle
+const toolbar = document.getElementById('colorPickerObjects');
+const backgroundColor = document.getElementById('colorPickerBackground');
+
+// Event listener for when items are selected
+canvas.on('selection:created', () => {
+    toolbar.classList.add('itemSelected');
+});
+
+canvas.on('selection:updated', () => {
+    toolbar.classList.add('itemSelected');
+});
+
+// Event listener for when selection is cleared
+canvas.on('selection:cleared', () => {
+    toolbar.classList.remove('itemSelected');
+});
 
 
+// Reference to the toolbar for textbox-specific tools
+const textboxToolbar = document.getElementById('textboxTools');
 
+/**
+ * Function to check if a specific object type is selected
+ * @param {fabric.Canvas} canvas - The Fabric.js canvas instance
+ */
+function handleSpecificObjectType(canvas) {
+    const activeObject = canvas.getActiveObject();
 
+    // Check if the active object is of type 'textbox'
+    if (activeObject && activeObject.type === 'textbox') {
+        textboxToolbar.classList.add('itemSelected'); // Show textbox toolbar
+    } else {
+        textboxToolbar.classList.remove('itemSelected'); // Hide textbox toolbar
+    }
+}
 
+// Event listener for selection events
+canvas.on('selection:created', () => {
+    handleSpecificObjectType(canvas);
+});
 
+canvas.on('selection:updated', () => {
+    handleSpecificObjectType(canvas);
+});
+
+// Event listener for when selection is cleared
+canvas.on('selection:cleared', () => {
+    textboxToolbar.classList.remove('itemSelected');
+});
 
 
 
@@ -2078,6 +2693,56 @@ document.querySelectorAll('input[type="color"]').forEach(input => {
 
 
 
+// Event listener for stroke color
+document.getElementById('stroke-color').addEventListener('input', (event) => {
+  updateStroke('stroke', event.target.value);
+});
+
+// Event listener for stroke width
+document.getElementById('stroke-width').addEventListener('input', (event) => {
+  updateStroke('strokeWidth', parseInt(event.target.value, 10));
+});
+
+// Event listener for stroke style
+document.getElementById('stroke-style').addEventListener('change', (event) => {
+  updateStroke('strokeStyle', event.target.value);
+});
+
+// Function to update the stroke settings on selected objects
+function updateStroke(property, value) {
+  const activeObject = canvas.getActiveObject();
+
+  if (activeObject) {
+    if (activeObject.type === 'activeSelection') {
+      // If multiple items are selected, apply to each object
+      activeObject._objects.forEach((obj) => {
+        applyStroke(obj, property, value);
+      });
+    } else {
+      // Apply to the single selected object
+      applyStroke(activeObject, property, value);
+    }
+
+    canvas.requestRenderAll(); // Re-render canvas to apply changes
+  }
+}
+
+// Function to apply stroke settings based on property and value
+function applyStroke(obj, property, value) {
+  if (property === 'stroke') {
+    obj.set('stroke', value);
+  } else if (property === 'strokeWidth') {
+    obj.set('strokeWidth', value);
+  } else if (property === 'strokeStyle') {
+    if (value === 'dashed') {
+      obj.set('strokeDashArray', [5, 5]);
+    } else if (value === 'dotted') {
+      obj.set('strokeDashArray', [1, 5]);
+    } else {
+      obj.set('strokeDashArray', null); // Reset to solid
+    }
+  }
+}
 
 
 
@@ -2086,7 +2751,10 @@ document.querySelectorAll('input[type="color"]').forEach(input => {
 function roundCorners() {
   const radius = parseFloat(document.getElementById('cornerRadius').value);
 
-
+// Event listener for stroke color
+document.getElementById('cornerRadius').addEventListener('change', (event) => {
+  roundCorners();
+});
 
 
 
@@ -2317,20 +2985,6 @@ function getSnappedPoint(startPoint, endPoint) {
  const angle = Math.atan2(dy, dx) * (180 / Math.PI); // Angle in degrees
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  const snappedAngle = Math.round(angle / drawSnapAngle) * drawSnapAngle;
  if (Math.abs(snappedAngle - angle) <= drawTolerance) {
      const distance = Math.sqrt(dx * dx + dy * dy); // Distance to new point
@@ -2342,36 +2996,8 @@ function getSnappedPoint(startPoint, endPoint) {
  }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  return endPoint;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Check if points are within tolerance
@@ -2381,20 +3007,6 @@ function pointsAreWithinTolerance(p1, p2, tolerance) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Preview line when in point drawing mode and snapping
 canvas.on('mouse:move', function(event) {
  if (isPointDrawingMode && clickPathPoints.length > 0 && event.pointer) {
@@ -2402,37 +3014,9 @@ canvas.on('mouse:move', function(event) {
      let newPoint = { x: event.pointer.x, y: event.pointer.y };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
      if (isAngleSnappingEnabled) {
          newPoint = getSnappedPoint(lastPoint, newPoint);
      }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
      // Update or create preview line
@@ -2452,20 +3036,6 @@ canvas.on('mouse:move', function(event) {
      }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
      // Create or update snap line to indicate snapping point
      if (pointsAreWithinTolerance(clickPathPoints[0], newPoint, drawTolerance)) {
          if (!snapLine) {
@@ -2475,7 +3045,7 @@ canvas.on('mouse:move', function(event) {
                  selectable: false,
                  evented: false,
                  hasControls: false,
-             hasBorders: false
+                 hasBorders: false
              });
              canvas.add(snapLine);
          } else {
@@ -2488,38 +3058,9 @@ canvas.on('mouse:move', function(event) {
          }
      }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
      canvas.renderAll();
  }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Handle click in point drawing mode
@@ -2529,37 +3070,9 @@ canvas.on('mouse:down', function(event) {
      let newPoint = { x: event.pointer.x, y: event.pointer.y };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
      if (isAngleSnappingEnabled) {
          newPoint = getSnappedPoint(lastPoint, newPoint);
      }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
      // If the last point is within tolerance of the first point, snap it
@@ -2568,24 +3081,14 @@ canvas.on('mouse:down', function(event) {
      }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
      // Create a new line segment
      const line = new fabric.Line([lastPoint.x, lastPoint.y, newPoint.x, newPoint.y], {
          stroke: 'blue',
-         selectable: false
+         strokeWidth: 0.5,
+         selectable: false,
+         evented: false,
+         hasBorders: false,
+         hasControls: false,
      });
      canvas.add(line);
      lines.push(line); // Store the line in the lines array
@@ -2766,21 +3269,26 @@ deleteButton.style.transform = 'translate(50%, 10px)'
 document.body.appendChild(deleteButton);
 
 
-// Function to position the delete button
 function positionDeleteButton() {
- const activeObject = canvas.getActiveObject();
- if (activeObject) {
-   // Get the object's position on the canvas
-   const boundingRect = activeObject.getBoundingRect();
-  
-   // Calculate position for the button below the selected object
-   deleteButton.style.left = `${canvas._offset.left + boundingRect.left}px`;
-   deleteButton.style.top = `${canvas._offset.top + boundingRect.top + boundingRect.height}px`;
-  
-   // Show the delete button
-   deleteButton.style.display = 'block';
- }
+  const activeObject = canvas.getActiveObject();
+  if (activeObject) {
+    // Get the object's position on the canvas
+    const boundingRect = activeObject.getBoundingRect();
+
+    // Use the zoomLevel that you are applying to the canvasContainer
+    const scaleX = zoomLevel;  // Assuming zoomLevel is a global variable
+    const scaleY = zoomLevel;  // Assuming uniform scaling (if non-uniform scaling is used, adjust this accordingly)
+
+    // Calculate position for the button, adjusting for scale
+    deleteButton.style.left = `${canvas._offset.left + boundingRect.left * scaleX}px`;
+    deleteButton.style.top = `${canvas._offset.top + boundingRect.top * scaleY + boundingRect.height * scaleY}px`;
+
+    // Show the delete button
+    deleteButton.style.display = 'block';
+  }
 }
+
+
 
 
 // Hide delete button function
@@ -4048,12 +4556,14 @@ const canvas = document.getElementById('designCanvas');
 function zoomIn() {
     zoomLevel += 0.1;
     applyZoom();
+    // Reposition the delete button after zoom change
 }
 
 // Function to zoom out
 function zoomOut() {
     zoomLevel = Math.max(zoomLevel - 0.1, 0.1);  // Prevent zooming out too far
     applyZoom();
+    // Reposition the delete button after zoom change
 }
 
 // Function to reset zoom
@@ -4066,6 +4576,7 @@ function resetZoom() {
 function applyZoom() {
     canvasContainer.style.transform = `scale(${zoomLevel})`;
     canvasContainer.style.transformOrigin = 'center center';  // Keep canvas centered
+    
 }
 
 // Start panning on mousedown, but only if the key is held down
@@ -4201,6 +4712,10 @@ canvas.on('touch:end', function () {
 </script>
 </body>
 </html>
+
+
+
+
 
 
 
