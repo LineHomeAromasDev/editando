@@ -933,19 +933,26 @@
 
 .tooltip {
    position: absolute;
+   top:0;
+   left:0;
    z-index:10;
    padding: 4px 8px;
-   background-color: rgba(0,0,0,0.5);
+   background-color: rgba(0,0,0,0.8);
    backdrop-filter: blur(10px);
    -webkit-backdrop-filter:blur(10px);
    color: white;
    border-radius: 5px;
    font-size: 12px;
-   display: none; /* Hidden by default */
    pointer-events: none; /* Prevent blocking hover events */
    touch-action: none;
+   transition:all 0.2s ease;
+   opacity:0;
 }
 
+
+.tooltip.activeTooltip {
+  opacity:1;
+}
 
 
 
@@ -980,6 +987,24 @@
   overflow:hidden;
 }
 
+#makeTransparent {
+  position:absolute;
+  left:50%;
+  transform: translateX(-50%);
+  top:0;
+  z-index:-1;
+  margin-top:5px;
+  width:30px;
+  height:30px;
+  border:none;
+  border-radius:15px 15px 0 0;
+  font-size:10px;
+  display:flex;
+  padding:4px;
+  align-items:flex-start;
+  justify-content:center;
+}
+
 
 /* Custom color input style */
 input[type="color"] {
@@ -1011,7 +1036,9 @@ input[type="color"]:focus {
     #color-picker-container label {
       font-size: 15px;
       color: white;
-      display: block;
+      display: flex;
+      align-items:center;
+      justify-content:center;
       margin: 0;
       position:absolute;
       pointer-events: none;
@@ -1025,10 +1052,11 @@ input[type="color"]:focus {
     }
 
     label[for="colorPickerBackground"] {
-      top:20px;
+      top:35px;
       left:50%;
       transform: translate(-50%, -50%);
       opacity:0;
+
     }
 
     label[for="colorPickerObjects"] {
@@ -1046,7 +1074,9 @@ input[type="color"]:focus {
       opacity:1;
     }
     
-
+    #colorPickerBackground {
+      margin-top:15px;
+    }
     #colorPickerObjects {
       opacity:0.5;
       pointer-events:none;
@@ -1114,11 +1144,19 @@ input[type="color"]:focus {
 }
 
 
-#glowShadowSettings {
+.glowShadowSettings {
   margin: 0;
   padding: 0;
   display: flex;
+  flex-direction:row;
   background-color:transparent;
+  font-size:0.6em
+}
+
+#shadowControls, #glowControls {
+  display:flex;
+  flex-direction:row;
+  flex-wrap:nowrap;
 }
 
 
@@ -1234,12 +1272,43 @@ input[type="color"]:focus {
       color:rgba(255,255,255,0.8);
     }
 
-    #movementControls button:hover {
+    #movementControls button:active {
       transform: scale(0.8);
       background: rgba(0,0,0,0.2);
       border: 1px solid rgba(255,255,255,0.8);
       color:rgba(255,255,255,0.8);
     }
+
+    #movementControls img {
+      pointer-events: none;
+    }
+
+
+
+    #gradient-editor {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin: 10px;
+    background: #f9f9f9;
+}
+.color-stop {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.color-stop input[type="color"] {
+    margin-right: 5px;
+}
+.color-stop input[type="number"] {
+    width: 60px;
+    margin-right: 5px;
+}
+.color-stop button {
+    background: #ff4d4d;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
 
 </style>
 </head>
@@ -1337,17 +1406,18 @@ input[type="color"]:focus {
 
 
      <span id="menuSubtitle">Export Options</span>
-
-
      <button id="exportPngBtn">Export as PNG</button>
      <button id="exportJpegBtn">Export as JPEG</button>
      <button id="exportSvgBtn">Export as SVG</button>
 
 
      <select id="exportResolution">
-       <option value="1">Low (1x)</option>
-       <option value="2">Medium (2x)</option>
-       <option value="3">High (3x)</option>
+       <option value="1">Sample (Lower Res) (1x)</option>
+       <option value="2">Draft (Quick) (2x)</option>
+       <option value="4">Low Res (4x)</option>
+       <option value="6">Medium (6x)</option>
+       <option value="8">High (Minimum Recommended for Media) (8x)</option>
+       <option value="10">Highest (10x)</option>
      </select>
      <button id="exportCanvasBtn">Export Canvas</button>
 
@@ -1406,6 +1476,25 @@ input[type="color"]:focus {
 </div>
 
 
+<div id="gradient-editor">
+  <label>
+      Gradient Type:
+      <select id="gradient-type">
+          <option value="linear">Linear</option>
+          <option value="radial">Radial</option>
+      </select>
+  </label>
+  <div id="color-stops-container">
+      <button id="add-color-stop">Add Color Stop</button>
+      <div id="color-stops"></div>
+  </div>
+  <label>
+      Gradient Angle:
+      <input type="range" id="gradient-angle" min="0" max="360" value="0">
+  </label>
+  <button id="apply-gradient">Apply Gradient</button>
+</div>
+
 
 <div id="objectActions">
  <button id="copyBtn" class="material-icons-outlined">
@@ -1418,16 +1507,25 @@ input[type="color"]:focus {
 
 
 <div id="movementControls">
+
+    <button data-label="Distribute horizontally" id="distribute-horizontally"><img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/DistributeX.svg?v=1732122163"></button>
+    <button data-label="Distribute vertically" id="distribute-vertically"><img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/DistributeY.svg?v=1732122163"></button>
+    <button data-label="Align to left" id="align-left"><img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/AlignLeft.svg?v=1732122163"></button>
+    <button data-label="Align to center" id="align-center"><img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/AlignCenter.svg?v=1732122163"></button>
+    <button data-label="Align to right" id="align-right"><img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/AlignRight.svg?v=1732122163"></button>
+    <button data-label="Align to top" id="align-top"><img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/AlignTop.svg?v=1732122163"></button>
+    <button data-label="Align to middle" id="align-middle"><img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/AlignMiddle.svg?v=1732122163"></button>
+    <button data-label="Align to bottom" id="align-bottom"><img src="https://cdn.shopify.com/s/files/1/0550/8782/5151/files/AlignBottom.svg?v=1732122163"></button>
+  
   <button class="material-icons-outlined" id="move-up">keyboard_double_arrow_up</button>
   <button class="material-icons-outlined" id="move-down">keyboard_double_arrow_down</button>
   <button class="material-icons-outlined" id="move-left">keyboard_double_arrow_left</button>
   <button class="material-icons-outlined" id="move-right">keyboard_double_arrow_right</button>
 </div>
 
-
 <!-- Color Picker for Background and Selected Objects -->
 <div id="color-picker-container">
-    
+  <button class="material-icons-outlined" id="makeTransparent">cancel</button>
     <input type="color" id="colorPickerBackground" data-label="Change Background Colour" data-target="background" value="#ffffff">
     <label class="material-icons-outlined" for="colorPickerBackground">edit</label>
 
@@ -1679,33 +1777,38 @@ input[type="color"]:focus {
   </select>
 </div>
 
-<div>
-  <!-- Glow Settings -->
-  <label for="glowColor">Glow Color:</label>
-  <input type="color" id="glowColor" value="#ffffff">
-  
-  <label for="glowBlur">Glow Blur:</label>
-  <input type="range" id="glowBlur" min="0" max="50" value="10">
-  
-  <label for="glowOffsetX">Glow X Offset:</label>
-  <input type="range" id="glowOffsetX" min="0" max="50" value="5">
-  
-  <label for="glowOffsetY">Glow Y Offset:</label>
-  <input type="range" id="glowOffsetY" min="0" max="50" value="5">
 
-  <!-- Shadow Settings -->
-  <label for="shadowColor">Shadow Color:</label>
-  <input type="color" id="shadowColor" value="#000000">
-  
-  <label for="shadowBlur">Shadow Blur:</label>
-  <input type="range" id="shadowBlur" min="0" max="50" value="10">
-  
-  <label for="shadowOffsetX">Shadow X Offset:</label>
-  <input type="range" id="shadowOffsetX" min="0" max="50" value="5">
-  
-  <label for="shadowOffsetY">Shadow Y Offset:</label>
-  <input type="range" id="shadowOffsetY" min="0" max="50" value="5">
-</div>
+    <div class="glowShadowSettings">
+      <!-- Shadow Toggle -->
+      <label>
+        <input type="checkbox" id="toggleShadow"> Enable Shadow
+      </label>
+      <div id="shadowControls" style="display: none;">
+        <label for="shadowColor">Color:</label>
+        <input type="color" id="shadowColor" value="#000000">
+        
+        <label for="shadowBlur">Blur:</label>
+        <input type="range" id="shadowBlur" min="0" max="50" value="10">
+        
+        <label for="shadowOffsetX">X Offset:</label>
+        <input type="range" id="shadowOffsetX" min="-50" max="50" value="5">
+        
+        <label for="shadowOffsetY">Y Offset:</label>
+        <input type="range" id="shadowOffsetY" min="-50" max="50" value="5">
+      </div>
+      
+      <!-- Glow Toggle -->
+      <label>
+        <input type="checkbox" id="toggleGlow"> Enable Glow
+      </label>
+      <div id="glowControls" style="display: none;">
+        <label for="glowColor">Glow Color:</label>
+        <input type="color" id="glowColor" value="#ffffff">
+        
+        <label for="glowBlur">Glow Blur:</label>
+        <input type="range" id="glowBlur" min="0" max="50" value="15">
+      </div>    
+    </div>
 
 
     <button class="material-icons-outlined" data-label="Group Selected" id="group">link</button>
@@ -1772,7 +1875,7 @@ searchBar.addEventListener('input', () => {
     selectionColor: 'rgba(0, 255, 0, 0.3)', // Background color of the selection area
    selectionBorderColor: 'red',             // Border color of the selection area
    selectionLineWidth: 2,                   // Border width
-   selectionDashArray: [5, 5]               // Dashed line pattern
+   selectionDashArray: [5, 5],           // Dashed line pattern
    });
     canvas.isDrawingMode = false; // Start with drawing mode disabled
 
@@ -1898,6 +2001,20 @@ const shapes = [
         category: 'Shapes', 
         tags: ['Geometric', 'Geo', 'Diamond'], 
         svg: `<svg fill="#000000" viewBox="0 -5.47 56.254 56.254" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path id="diamond_premium" data-name="diamond premium" d="M494.211,354.161l1.174-1.366H482.552L469.8,367.5h12.94Zm-8.4,13.336H510.05l-6.589-7.664-5.528-6.429-8.354,9.713Zm-15.856,2.329,24.1,25.356L482.53,369.826Zm40.824,0h-2.1l-8.829,0H485.083l12.774,28.1.082.178,12.17-26.8Zm-8.94,25.322,24.057-25.32H513.337Zm24.215-27.65L513.3,352.8H500.478l12.642,14.7Z" transform="translate(-469.802 -352.795)"></path> </g></svg>`
+      },
+      { 
+        id: 'rectangle', 
+        name: 'Rectangle', 
+        category: 'Shapes', 
+        tags: ['Rectangle', 'Shape'], 
+        svg: `<svg width="50" height="50" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="100" height="50" fill="white" /></svg>`
+      },
+      { 
+        id: 'circle', 
+        name: 'Circle', 
+        category: 'Shapes', 
+        tags: ['Circle', 'Shape', 'Round'], 
+        svg: `<svg width="50" height="50" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50" fill="white"/></svg>`
       },
 
       { 
@@ -2066,6 +2183,130 @@ const shapes = [
 
 
 
+
+    // Function to align selected objects
+function alignObjects(alignment) {
+  const activeObject = canvas.getActiveObject();
+  const canvasWidth = canvas.getWidth();
+  const canvasHeight = canvas.getHeight();
+
+  if (!activeObject) {
+    alert("Please select an object or group to align.");
+    return;
+  }
+
+  if (activeObject.type === 'activeSelection') {
+    activeObject.forEachObject((obj) => alignSingleObject(obj, alignment));
+    activeObject.setCoords();
+  } else {
+    alignSingleObject(activeObject, alignment);
+  }
+
+  canvas.requestRenderAll();
+}
+
+// Helper function to align a single object
+function alignSingleObject(obj, alignment) {
+  const canvasWidth = canvas.getWidth();
+  const canvasHeight = canvas.getHeight();
+
+  switch (alignment) {
+    case 'left':
+      obj.left = 0;
+      break;
+    case 'center':
+      obj.left = (canvasWidth - obj.width * obj.scaleX) / 2;
+      break;
+    case 'right':
+      obj.left = canvasWidth - obj.width * obj.scaleX;
+      break;
+    case 'top':
+      obj.top = 0;
+      break;
+    case 'middle':
+      obj.top = (canvasHeight - obj.height * obj.scaleY) / 2;
+      break;
+    case 'bottom':
+      obj.top = canvasHeight - obj.height * obj.scaleY;
+      break;
+  }
+  obj.setCoords();
+}
+
+
+document.getElementById('align-left').addEventListener('click', () => alignObjects('left'));
+document.getElementById('align-center').addEventListener('click', () => alignObjects('center'));
+document.getElementById('align-right').addEventListener('click', () => alignObjects('right'));
+document.getElementById('align-top').addEventListener('click', () => alignObjects('top'));
+document.getElementById('align-middle').addEventListener('click', () => alignObjects('middle'));
+document.getElementById('align-bottom').addEventListener('click', () => alignObjects('bottom'));
+
+
+function distributeObjects(direction) {
+  const activeObject = canvas.getActiveObject();
+
+  if (!activeObject || activeObject.type !== 'activeSelection') {
+    alert("Please select multiple objects to distribute.");
+    return;
+  }
+
+  const objects = activeObject._objects.slice(); // Get selected objects
+  if (objects.length < 2) {
+    alert("At least two objects are required to distribute.");
+    return;
+  }
+
+  // Sort objects by their position
+  objects.sort((a, b) =>
+    direction === 'horizontal' ? a.left - b.left : a.top - b.top
+  );
+
+  if (direction === 'horizontal') {
+    distributeHorizontally(objects);
+  } else if (direction === 'vertical') {
+    distributeVertically(objects);
+  }
+
+  activeObject.setCoords(); // Update group coordinates
+  canvas.requestRenderAll();
+}
+
+// Helper function for horizontal distribution
+function distributeHorizontally(objects) {
+  const totalWidth = objects[objects.length - 1].left + objects[objects.length - 1].width * objects[objects.length - 1].scaleX - objects[0].left;
+  const totalObjectWidth = objects.reduce((sum, obj) => sum + obj.width * obj.scaleX, 0);
+  const spacing = (totalWidth - totalObjectWidth) / (objects.length - 1);
+
+  let currentLeft = objects[0].left;
+  objects.forEach((obj, index) => {
+    if (index > 0) currentLeft += objects[index - 1].width * objects[index - 1].scaleX + spacing;
+    obj.left = currentLeft;
+    obj.setCoords();
+  });
+}
+
+// Helper function for vertical distribution
+function distributeVertically(objects) {
+  const totalHeight = objects[objects.length - 1].top + objects[objects.length - 1].height * objects[objects.length - 1].scaleY - objects[0].top;
+  const totalObjectHeight = objects.reduce((sum, obj) => sum + obj.height * obj.scaleY, 0);
+  const spacing = (totalHeight - totalObjectHeight) / (objects.length - 1);
+
+  let currentTop = objects[0].top;
+  objects.forEach((obj, index) => {
+    if (index > 0) currentTop += objects[index - 1].height * objects[index - 1].scaleY + spacing;
+    obj.top = currentTop;
+    obj.setCoords();
+  });
+}
+
+
+document.getElementById('distribute-horizontally').addEventListener('click', () => distributeObjects('horizontal'));
+document.getElementById('distribute-vertically').addEventListener('click', () => distributeObjects('vertical'));
+
+
+
+
+
     const controls = document.getElementById('movementControls');
 
     // Helper function to toggle movement controls visibility
@@ -2145,6 +2386,7 @@ const shapes = [
         moveSelected(direction);
       }
     });
+
 
 
 
@@ -2319,47 +2561,87 @@ document.getElementById('lineHeightRange').addEventListener('input', (e) => {
 
 
   
-// Function to apply glow and shadow to the selected object
-function applyGlowAndShadow(object) {
+
+// Toggle and control elements
+const toggleShadow = document.getElementById('toggleShadow');
+const shadowControls = document.getElementById('shadowControls');
+
+const toggleGlow = document.getElementById('toggleGlow');
+const glowControls = document.getElementById('glowControls');
+
+// Show/hide shadow controls
+toggleShadow.addEventListener('change', function () {
+  const selected = canvas.getActiveObject();
+  if (this.checked) {
+    shadowControls.style.display = 'block';
+    applyShadow(selected); // Apply shadow if toggled on
+  } else {
+    shadowControls.style.display = 'none';
+    if (selected) selected.setShadow(null); // Remove shadow
+    canvas.renderAll();
+  }
+});
+
+// Show/hide glow controls
+toggleGlow.addEventListener('change', function () {
+  const selected = canvas.getActiveObject();
+  if (this.checked) {
+    glowControls.style.display = 'block';
+    applyGlow(selected); // Apply glow if toggled on
+  } else {
+    glowControls.style.display = 'none';
+    if (selected) selected.setShadow(null); // Remove glow
+    canvas.renderAll();
+  }
+});
+
+// Apply shadow
+function applyShadow(object) {
   if (object) {
-    // Set shadow effect
     object.setShadow({
-      color: document.getElementById('shadowColor').value, // Shadow color
-      blur: parseInt(document.getElementById('shadowBlur').value), // Shadow blur
-      offsetX: parseInt(document.getElementById('shadowOffsetX').value), // Shadow distance X
-      offsetY: parseInt(document.getElementById('shadowOffsetY').value), // Shadow distance Y
+      color: document.getElementById('shadowColor').value,
+      blur: parseInt(document.getElementById('shadowBlur').value),
+      offsetX: parseInt(document.getElementById('shadowOffsetX').value),
+      offsetY: parseInt(document.getElementById('shadowOffsetY').value),
     });
-
-    // Set glow effect (this is a pseudo-function, fabric.js doesn't have a built-in glow function but we can simulate it)
-    object.set({
-      shadow: new fabric.Shadow({
-        color: document.getElementById('glowColor').value, // Glow color
-        blur: parseInt(document.getElementById('glowBlur').value), // Glow blur
-        offsetX: parseInt(document.getElementById('glowOffsetX').value), // Glow spread
-        offsetY: parseInt(document.getElementById('glowOffsetY').value),
-      }),
-    });
-
-    // Refresh canvas
     canvas.renderAll();
   }
 }
 
-// Add event listeners for shadow and glow customization
-document.getElementById('shadowColor').addEventListener('input', function () {
-  var selected = canvas.getActiveObject();
-  applyGlowAndShadow(selected);
+// Apply glow (simulated using shadow with bright color and large blur)
+function applyGlow(object) {
+  if (object) {
+    object.setShadow({
+      color: document.getElementById('glowColor').value,
+      blur: parseInt(document.getElementById('glowBlur').value),
+      offsetX: 0,
+      offsetY: 0, // Centered
+    });
+    canvas.renderAll();
+  }
+}
+
+// Update effects dynamically
+document.getElementById('shadowColor').addEventListener('input', () => {
+  if (toggleShadow.checked) applyShadow(canvas.getActiveObject());
+});
+document.getElementById('shadowBlur').addEventListener('input', () => {
+  if (toggleShadow.checked) applyShadow(canvas.getActiveObject());
+});
+document.getElementById('shadowOffsetX').addEventListener('input', () => {
+  if (toggleShadow.checked) applyShadow(canvas.getActiveObject());
+});
+document.getElementById('shadowOffsetY').addEventListener('input', () => {
+  if (toggleShadow.checked) applyShadow(canvas.getActiveObject());
 });
 
-document.getElementById('shadowBlur').addEventListener('input', function () {
-  var selected = canvas.getActiveObject();
-  applyGlowAndShadow(selected);
+document.getElementById('glowColor').addEventListener('input', () => {
+  if (toggleGlow.checked) applyGlow(canvas.getActiveObject());
+});
+document.getElementById('glowBlur').addEventListener('input', () => {
+  if (toggleGlow.checked) applyGlow(canvas.getActiveObject());
 });
 
-document.getElementById('shadowOffsetX').addEventListener('input', function () {
-  var selected = canvas.getActiveObject();
-  applyGlowAndShadow(selected);
-});
 
 
 
@@ -2662,7 +2944,10 @@ canvas.on('selection:cleared', () => {
 
 
 
-
+// Button functionality to make the canvas background transparent
+document.getElementById('makeTransparent').addEventListener('click', () => {
+    canvas.setBackgroundColor(null, canvas.renderAll.bind(canvas));
+});
 
 
 
@@ -2691,6 +2976,61 @@ document.querySelectorAll('input[type="color"]').forEach(input => {
 });
 
 
+function applyGradient(target, options) {
+    const gradient = new fabric.Gradient({
+        type: options.type || 'linear', // 'linear' or 'radial'
+        gradientUnits: 'percentage', // Units: 'pixels' or 'percentage'
+        coords: options.coords || { x1: 0, y1: 0, x2: 1, y2: 1 }, // Define start/end
+        colorStops: options.colorStops || [
+            { offset: 0, color: 'red' },
+            { offset: 1, color: 'blue' }
+        ]
+    });
+
+    // Apply gradient to target
+    if (target) {
+        target.set('fill', gradient);
+        target.gradientOptions = options; // Store gradient options for later
+        target.dirty = true;
+        canvas.renderAll();
+    } else {
+        // Apply gradient to canvas background
+        canvas.backgroundColor = gradient.toLive(canvas.getContext());
+        canvas.renderAll();
+    }
+}
+
+function updateGradientPreview(iconCanvas, options) {
+    const previewRect = new fabric.Rect({
+        left: 0,
+        top: 0,
+        width: iconCanvas.width,
+        height: iconCanvas.height,
+        selectable: false
+    });
+
+    const gradient = new fabric.Gradient({
+        type: options.type || 'linear',
+        coords: options.coords || { x1: 0, y1: 0, x2: 1, y2: 1 },
+        colorStops: options.colorStops || [
+            { offset: 0, color: 'red' },
+            { offset: 1, color: 'blue' }
+        ]
+    });
+
+    previewRect.set('fill', gradient);
+    iconCanvas.clear();
+    iconCanvas.add(previewRect);
+    iconCanvas.renderAll();
+}
+
+canvas.on('selection:created', (event) => {
+    const target = event.target;
+    if (target && target.gradientOptions) {
+        applyGradient(target, target.gradientOptions);
+        updateGradientPreview(gradientPreviewCanvas, target.gradientOptions);
+    }
+});
 
 
 // Event listener for stroke color
@@ -2758,6 +3098,93 @@ document.getElementById('cornerRadius').addEventListener('change', (event) => {
 
 
 
+// References to editor elements
+const gradientTypeSelect = document.getElementById('gradient-type');
+const colorStopsContainer = document.getElementById('color-stops');
+const addColorStopButton = document.getElementById('add-color-stop');
+const gradientAngleInput = document.getElementById('gradient-angle');
+const applyGradientButton = document.getElementById('apply-gradient');
+
+// Initialize gradient configuration
+let gradientConfig = {
+    type: 'linear',
+    angle: 0,
+    colorStops: [
+        { offset: 0, color: '#FF0000' },
+        { offset: 1, color: '#0000FF' }
+    ]
+};
+
+// Function to render color stops
+function renderColorStops() {
+    colorStopsContainer.innerHTML = '';
+    gradientConfig.colorStops.forEach((stop, index) => {
+        const colorStopDiv = document.createElement('div');
+        colorStopDiv.className = 'color-stop';
+        colorStopDiv.innerHTML = `
+            <input type="color" value="${stop.color}" data-index="${index}" class="color-input">
+            <input type="number" value="${stop.offset * 100}" data-index="${index}" class="offset-input" min="0" max="100">
+            <button class="remove-color-stop" data-index="${index}">Remove</button>
+        `;
+        colorStopsContainer.appendChild(colorStopDiv);
+    });
+}
+
+// Event: Add new color stop
+addColorStopButton.addEventListener('click', () => {
+    gradientConfig.colorStops.push({ offset: 0.5, color: '#FFFFFF' });
+    renderColorStops();
+});
+
+// Event: Update color stop
+colorStopsContainer.addEventListener('input', (event) => {
+    const index = event.target.dataset.index;
+    if (event.target.classList.contains('color-input')) {
+        gradientConfig.colorStops[index].color = event.target.value;
+    } else if (event.target.classList.contains('offset-input')) {
+        gradientConfig.colorStops[index].offset = parseFloat(event.target.value) / 100;
+    }
+});
+
+// Event: Remove color stop
+colorStopsContainer.addEventListener('click', (event) => {
+    if (event.target.classList.contains('remove-color-stop')) {
+        const index = event.target.dataset.index;
+        gradientConfig.colorStops.splice(index, 1);
+        renderColorStops();
+    }
+});
+
+// Event: Update gradient type or angle
+gradientTypeSelect.addEventListener('change', (event) => {
+    gradientConfig.type = event.target.value;
+});
+gradientAngleInput.addEventListener('input', (event) => {
+    gradientConfig.angle = parseInt(event.target.value, 10);
+});
+
+// Function to apply gradient
+applyGradientButton.addEventListener('click', () => {
+    const activeObject = canvas.getActiveObject();
+    const coords = gradientConfig.type === 'linear'
+        ? { x1: 0.5 + 0.5 * Math.cos((Math.PI * gradientConfig.angle) / 180), y1: 0.5 - 0.5 * Math.sin((Math.PI * gradientConfig.angle) / 180), x2: 0.5 - 0.5 * Math.cos((Math.PI * gradientConfig.angle) / 180), y2: 0.5 + 0.5 * Math.sin((Math.PI * gradientConfig.angle) / 180) }
+        : { x1: 0.5, y1: 0.5, r1: 0, x2: 0.5, y2: 0.5, r2: 0.5 };
+
+    const gradient = new fabric.Gradient({
+        type: gradientConfig.type,
+        coords,
+        colorStops: gradientConfig.colorStops
+    });
+
+    if (activeObject) {
+        activeObject.set('fill', gradient);
+        activeObject.gradientOptions = gradientConfig; // Store for later
+        canvas.renderAll();
+    } else {
+        canvas.backgroundColor = gradient.toLive(canvas.getContext());
+        canvas.renderAll();
+    }
+});
 
 
 
@@ -3718,31 +4145,6 @@ populateCategories();
 
 
 
-document.addEventListener("DOMContentLoaded", function() {
-  // Initialize your Fabric.js canvas here
-  const canvas = new fabric.Canvas('designCanvas'); // Replace with your actual canvas ID
-
-  // Load saved canvas size and aspect ratio
-  loadCanvasSize()
-});
-
-function loadCanvasSize(canvas) {
-  // Retrieve saved dimensions and aspect ratio from localStorage
-  const savedWidth = localStorage.getItem('canvasWidth');
-  const savedHeight = localStorage.getItem('canvasHeight');
-  const savedAspectRatio = localStorage.getItem('canvasAspectRatio');
-
-  if (savedWidth && savedHeight && savedAspectRatio) {
-    // Apply the saved dimensions to the canvas
-    canvas.setWidth(Number(savedWidth));
-    canvas.setHeight(Number(savedHeight));
-    canvas.renderAll();
-
-    // Set the selected aspect ratio in the dropdown (if it exists)
-    document.getElementById('documentType').value = savedAspectRatio;
-  }
-}
-
 
 
 
@@ -4373,81 +4775,73 @@ document.addEventListener('click', function(event) {
 
 const tooltip = document.getElementById('tooltip');
 
-
-// Show tooltip near the user's cursor or touch point
+// Show tooltip near the hovered element
 function showTooltip(event) {
-   const button = event.target;
-   tooltip.innerText = button.getAttribute('data-label');
-   tooltip.style.display = 'block';
+    const target = event.target;
+    const label = target.getAttribute('data-label');
 
+    if (!label) return; // Exit if no label is found
+    tooltip.innerText = label;
+    tooltip.classList.add('activeTooltip');
 
-   // Position the tooltip immediately based on event type
-   positionTooltip(event);
+    // Position the tooltip relative to the target element
+    positionTooltip(target);
 }
 
+// Position the tooltip based on the element's position
+function positionTooltip(target) {
+    const rect = target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
 
-// Position tooltip based on event type (mouse or touch)
-function positionTooltip(event) {
-   let x, y;
-   if (event.type.startsWith('touch')) {
-       // Touch event: use the first touch point
-       x = event.touches[0].clientX;
-       y = event.touches[0].clientY;
-   } else {
-       // Mouse event
-       x = event.pageX;
-       y = event.pageY;
-   }
+    let top = 0, left = 0;
 
+    // Default placement is above the element
+    top = rect.top - tooltipRect.height - 8; // Add some space
+    left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
 
-   // Set tooltip position with a slight offset for readability
-   tooltip.style.left = `${x + 10}px`;
-   tooltip.style.top = `${y + 10}px`;
+    // Check for offscreen conditions and adjust position
+    if (top < 0) {
+        // If offscreen above, place below
+        top = rect.bottom + 8;
+    }
+    if (left < 0) {
+        // If offscreen on the left, align to the left edge
+        left = 8;
+    } else if (left + tooltipRect.width > viewportWidth) {
+        // If offscreen on the right, align to the right edge
+        left = viewportWidth - tooltipRect.width - 8;
+    }
+    if (top + tooltipRect.height > viewportHeight) {
+        // If offscreen below, place above (fallback)
+        top = rect.top - tooltipRect.height - 8;
+    }
+
+    // Apply the calculated positions
+    tooltip.style.top = `${top}px`;
+    tooltip.style.left = `${left}px`;
 }
 
-
-// Hide tooltip
+// Hide the tooltip
 function hideTooltip() {
-   tooltip.style.display = 'none';
+  tooltip.classList.remove('activeTooltip');
 }
 
+// Event listeners for buttons and inputs
+document.querySelectorAll('button, input').forEach(element => {
+    // Desktop events
+    element.addEventListener('mouseover', showTooltip);
+    element.addEventListener('mouseleave', hideTooltip);
 
-// Toggle tooltip visibility on touch (for mobile)
-function toggleTooltip(event) {
-   event.preventDefault();
-   if (tooltip.style.display === 'block') {
-       hideTooltip();
-   } else {
-       showTooltip(event);
-   }
-}
-
-
-// Event listeners for desktop and mobile
-document.querySelectorAll('button').forEach(button => {
-   // Desktop events
-   button.addEventListener('mouseover', showTooltip);
-   button.addEventListener('mousemove', positionTooltip);
-   button.addEventListener('mouseleave', hideTooltip);
-
-
-   // Mobile events
-   button.addEventListener('touchstart', positionTooltip, toggleTooltip);
-   button.addEventListener('touchend', hideTooltip); // Hide when touch ends
+    // Mobile events (optional)
+    element.addEventListener('touchstart', (event) => {
+        showTooltip(event);
+        event.preventDefault(); // Prevent accidental triggers
+    });
+    element.addEventListener('touchend', hideTooltip);
 });
 
-// Event listeners for desktop and mobile
-document.querySelectorAll('input').forEach(input => {
-   // Desktop events
-   input.addEventListener('mouseover', showTooltip);
-   input.addEventListener('mousemove', positionTooltip);
-   input.addEventListener('mouseleave', hideTooltip);
-
-
-   // Mobile events
-   input.addEventListener('touchstart', positionTooltip, toggleTooltip);
-   input.addEventListener('touchend', hideTooltip); // Hide when touch ends
-});
 
 
 
